@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ua.company</groupId>
+  <artifactId>Testing</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>Testing Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+
+    <project_charset>UTF-8</project_charset>
+    <junit.version>3.8.1</junit.version>
+    <log4j.version>1.2.17</log4j.version>
+    <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
+    <javaee-web-api.version>8.0</javaee-web-api.version>
+    <servlet-api.version>3.1.0</servlet-api.version>
+    <!--<jstl.version>1.2</jstl.version>-->
+    <!--<tomcat-dbcp.version>9.0.0.M21</tomcat-dbcp.version>-->
+
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql-connector-java.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/javax/javaee-web-api -->
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-web-api</artifactId>
+      <version>${javaee-web-api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet-api.version}</version>
+    </dependency>
+  <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-jndi -->
+  </dependencies>
+
+
+
+<build>
+    <finalName>Testing</finalName>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <version>3.7.0</version>
+              <configuration>
+                  <source>1.8</source>
+                  <target>1.8</target>
+              </configuration>
+          </plugin>
+      </plugins>
+  </build>
+</project>
