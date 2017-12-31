@@ -11,6 +11,9 @@ import java.io.Serializable;
 public class Result implements Serializable {
     private long id;
     private double score;
+    private String login;
+    private String testName;
+    private String subjectName;
 
     public Result() {
     }
@@ -29,6 +32,30 @@ public class Result implements Serializable {
 
     public void setScore(double score) {
         this.score = score;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     @Override

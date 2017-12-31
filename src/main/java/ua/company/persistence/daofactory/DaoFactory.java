@@ -1,7 +1,6 @@
 package ua.company.persistence.daofactory;
 
 import ua.company.persistence.dao.*;
-import ua.company.persistence.datasource.ConnectionPool;
 import ua.company.persistence.datasource.ConnectionWithoutPool;
 import ua.company.persistence.idao.*;
 
@@ -26,39 +25,32 @@ public class DaoFactory {
         return new UserTypeDao(new ConnectionWithoutPool().connect_to_database());
     }
 
-    public static IAnswer getIAnswer() {
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        return new AnswerDao(connectionPool.getConnection());
-    }
-
-    public static ILanguage getILanguage() {
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        return new LanguageDao(connectionPool.getConnection());
+    public static ITest getITest() {
+        return new TestDao();
     }
 
     public static IQuestion getIQuestion() {
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        return new QuestionDao(connectionPool.getConnection());
-    }
-
-    public static IResult getIResult() {
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        return new ResultDao(connectionPool.getConnection());
-    }
-
-    public static ITest getITest() {
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        return new TestDao(connectionPool.getConnection());
+        return new QuestionDao();
     }
 
     public static ITestQuestion getITestQuestion() {
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        return new TestQuestionDao(connectionPool.getConnection());
+        return new TestQuestionDao();
     }
 
-    public static ISubject getITopic() {
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        return new SubjectDao(connectionPool.getConnection());
+    public static IAnswer getIAnswer() {
+        return new AnswerDao();
+    }
+
+    public static ILanguage getILanguage() {
+        return new LanguageDao();
+    }
+
+    public static IResult getIResult() {
+        return new ResultDao();
+    }
+
+    public static ISubject getISubject() {
+        return new SubjectDao();
     }
 
 //    public static void closeConnection(Connection connection){

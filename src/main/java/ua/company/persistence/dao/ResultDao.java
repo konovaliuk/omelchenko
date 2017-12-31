@@ -2,7 +2,6 @@ package ua.company.persistence.dao;
 
 import ua.company.persistence.idao.IResult;
 
-import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -12,11 +11,6 @@ import java.util.List;
  * @version 1.0 15.12.2017
  */
 public class ResultDao implements IResult {
-    private Connection connection = null;
-
-    public ResultDao(Connection connection){
-        this.connection=connection;
-    }
 
     public void insertResult() {
 

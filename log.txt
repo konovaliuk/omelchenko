@@ -1,2 +1,0 @@
-INFO - Page was updated.
-INFO - Create new userdao.

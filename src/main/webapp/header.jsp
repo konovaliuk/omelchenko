@@ -12,7 +12,7 @@
 <body>
 	<div id="logo">
 		<h1><a href="#">JavaQuiz</a></h1>
-		<p>Rapid quiz</p>
+		<p>Fast quiz</p>
 	</div>
 	<hr />
 	
@@ -22,7 +22,7 @@
 				<li><a href="index.jsp" class="first">Main</a></li>
 				<li><a href="login.jsp">Login</a></li>
 				<li><a href="registration.jsp">Registration</a></li>
-				<li class="quiz"><a href="#">Quiz</a></li>
+				<li class="quiz"><a href="quiz.jsp">Quiz</a></li>
 			</ul>
 		</div>
 		

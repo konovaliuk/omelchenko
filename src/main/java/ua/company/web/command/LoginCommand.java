@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * LoginCommand.java -
+ * LoginCommand.java - receive request from user, manage actions deal with user authorization
+ * and return appropriate page.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 22.12.2017

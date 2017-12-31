@@ -88,10 +88,10 @@
 				<li>
 					<h2>Subject </h2>
 					<ul>
-						<li><a href="test.jsp?subject_id=1">Classes, methods, types </a></li>
-						<li><a href="test.jsp?subject_id=2">Collections </a></li>
-						<li><a href="test.jsp?subject_id=3">Nested/Inner classes </a></li>
-						<li><a href="test.jsp?subject_id=4">Exceptions </a></li>
+						<li><a href="quiz.jsp?subject_id=1">Classes, methods, types </a></li>
+						<li><a href="quiz.jsp?subject_id=2">Collections </a></li>
+						<li><a href="quiz.jsp?subject_id=3">Nested/Inner classes </a></li>
+						<li><a href="quiz.jsp?subject_id=4">Exceptions </a></li>
 					</ul>
 				</li>
 			</ul>

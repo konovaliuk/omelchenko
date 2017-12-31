@@ -18,14 +18,6 @@
 			</td> 
 			<td> 
 				<div class="input"><input type="text" name="login" value="${param.login eq 'null'?'':param.login}" ></div>
-				<!--<c:choose>
-					<c:when test="${!(user.login eq null)}">
-						<input type='text' name='login' value="${user.login}"/>
-					</c:when>
-					<c:otherwise>
-						<input type='text' name='login' value=''/>
-					</c:otherwise>
-				</c:choose>!-->
 			</td> 
 			<td> 
 				<c:if test="${!(validator.loginMessage eq 'null')}">
@@ -75,23 +67,12 @@
 				</c:if>		
 			</td>
 		</tr>
-		
-		
 		<tr>
 			<td width='200' height='30'> 
 				E-mail
 			</td> 
 			<td> 
 				<div class="email"><input type="text" name="email" value="${param.email eq 'null'?'':param.email}" ></div>
-				
-				<!--<c:choose>
-					<c:when test="${!(user.email eq null)}">
-						<input type='text' name='email' value="${user.email}"/>
-					</c:when>
-					<c:otherwise>
-						<input type='text' name='email' value=''/>
-					</c:otherwise>
-				</c:choose>!-->
 			</td>	
 			<td> 
 				<c:if test="${not empty validator.emailMessage}">
@@ -101,8 +82,6 @@
 				</c:if>		
 			</td>
 		</tr>
-		
-		
 		<tr>
 			<td width='200' height='30'> 
 				Country
@@ -148,9 +127,6 @@
 		</tr>
 		
 		<tr>
-			<!--<td width='200' height='30' align="center">
-			<input type='submit' value='Reset' />		
-			</td>!-->
 			<td width='200' height='30' align="center">
 			<input type='submit' name="command" value="registration"/>		
 			</td>
@@ -172,10 +148,10 @@
 				<li>
 					<h2>Subject </h2>
 					<ul>
-						<li><a href="test.jsp?subject_id=1">Classes, methods, types </a></li>
-						<li><a href="test.jsp?subject_id=2">Collections </a></li>
-						<li><a href="test.jsp?subject_id=3">Nested/Inner classes </a></li>
-						<li><a href="test.jsp?subject_id=4">Exceptions </a></li>
+						<li><a href="quiz.jsp?subject_id=1">Classes, methods, types </a></li>
+						<li><a href="quiz.jsp?subject_id=2">Collections </a></li>
+						<li><a href="quiz.jsp?subject_id=3">Nested/Inner classes </a></li>
+						<li><a href="quiz.jsp?subject_id=4">Exceptions </a></li>
 					</ul>
 				</li>
 			</ul>

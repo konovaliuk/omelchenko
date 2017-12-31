@@ -14,6 +14,8 @@ public class MessageManager {
     private static final String BUNDLE_NAME = "config.messages";
     private static final String LOGIN_ERROR = "LOGIN_ERROR";
     private static final String REGISTRATION_ERROR = "REGISTRATION_ERROR";
+    private static final String STARTQUIZ_ERROR = "STARTQUIZ_ERROR";
+    private static final String FINISHQUIZ_ERROR = "FINISHQUIZ_ERROR";
     private static final String SERVLET_EXCEPTION_ERROR_MESSAGE = "SERVLET_EXCEPTION_ERROR_MESSAGE";
     private static final String IO_EXCEPTION_ERROR_MESSAGE="IO_EXCEPTION_ERROR_MESSAGE";
 
@@ -23,6 +25,14 @@ public class MessageManager {
 
     public static String getRegistrationError() {
         return REGISTRATION_ERROR;
+    }
+
+    public static String getStartQuizError() {
+        return STARTQUIZ_ERROR;
+    }
+
+    public static String getFinishQuizError() {
+        return FINISHQUIZ_ERROR;
     }
 
     public static String getServletExceptionErrorMessage() {

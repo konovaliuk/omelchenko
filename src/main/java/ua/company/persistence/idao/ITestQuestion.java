@@ -11,5 +11,5 @@ import java.util.List;
  * @version 1.0 15.12.2017
  */
 public interface ITestQuestion {
-    List<Question> getQuestionByTestId();
+    List<Question> getQuestionByTestId(int testId);
 }

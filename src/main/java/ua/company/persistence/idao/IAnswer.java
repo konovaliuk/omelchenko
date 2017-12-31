@@ -1,5 +1,7 @@
 package ua.company.persistence.idao;
 
+import ua.company.persistence.domain.Answer;
+
 import java.util.List;
 
 /**
@@ -9,5 +11,5 @@ import java.util.List;
  * @version 1.0 15.12.2017
  */
 public interface IAnswer {
-    List<IQuestion> getAnswerByQuestionId();
+    List<Answer> getAnswerByQuestionId(int questionId);
 }

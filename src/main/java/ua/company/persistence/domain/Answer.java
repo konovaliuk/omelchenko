@@ -9,19 +9,20 @@ import java.io.Serializable;
  * @version 1.0 12.12.2017
  */
 public class Answer implements Serializable {
-    private long id;
+    private int answerId;
     private String answerText;
-    private boolean isRightAnswer;
+    private int isRightAnswer;
+    private int questionId;
 
     public Answer() {
     }
 
-    public long getId() {
-        return id;
+    public int getAnswerId() {
+        return answerId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setAnswerId(int answerId) {
+        this.answerId = answerId;
     }
 
     public String getAnswerText() {
@@ -32,12 +33,20 @@ public class Answer implements Serializable {
         this.answerText = answerText;
     }
 
-    public boolean isRightAnswer() {
+    public int getIsRightAnswer() {
         return isRightAnswer;
     }
 
-    public void setIsRightAnswer(boolean isRightAnswer) {
+    public void setIsRightAnswer(int isRightAnswer) {
         this.isRightAnswer = isRightAnswer;
+    }
+
+    public int getQuestionId() {
+        return questionId;
+    }
+
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
     }
 
     @Override
@@ -47,19 +56,19 @@ public class Answer implements Serializable {
 
         Answer answer = (Answer) o;
 
-        return id == answer.id;
+        return answerId == answer.answerId;
 
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (answerId ^ (answerId >>> 32));
     }
 
     @Override
     public String toString() {
         return "Answer{" +
-                "id=" + id +
+                "id=" + answerId +
                 ", answerText='" + answerText + '\'' +
                 ", isRightAnswer=" + isRightAnswer +
                 '}';

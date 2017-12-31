@@ -9,21 +9,19 @@ import java.io.Serializable;
  * @version 1.0 28 Dec 2017
  */
 public class Question implements Serializable {
-    private long id;
+    private int questionId;
     private String questionText;
-    private String explanation;
-    private int timeLimit;
-    private int weightCoefficient;
+    private int subjectId;
 
     public Question() {
     }
 
-    public long getId() {
-        return id;
+    public int getQuestionId() {
+        return questionId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setQuestionId(int questionId) {
+        this.questionId = questionId;
     }
 
     public String getQuestionText() {
@@ -34,28 +32,12 @@ public class Question implements Serializable {
         this.questionText = questionText;
     }
 
-    public String getExplanation() {
-        return explanation;
+    public int getSubjectId() {
+        return subjectId;
     }
 
-    public void setExplanation(String explanation) {
-        this.explanation = explanation;
-    }
-
-    public int getTimeLimit() {
-        return timeLimit;
-    }
-
-    public void setTimeLimit(int timeLimit) {
-        this.timeLimit = timeLimit;
-    }
-
-    public int getWeightCoefficient() {
-        return weightCoefficient;
-    }
-
-    public void setWeightCoefficient(int weightCoefficient) {
-        this.weightCoefficient = weightCoefficient;
+    public void setSubjectId(int subjectId) {
+        this.subjectId = subjectId;
     }
 
     @Override
@@ -65,23 +47,20 @@ public class Question implements Serializable {
 
         Question question = (Question) o;
 
-        return id == question.id;
+        return questionId == question.questionId;
 
     }
 
     @Override
     public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+        return (int) (questionId ^ (questionId >>> 32));
     }
 
     @Override
     public String toString() {
         return "Question{" +
-                "id=" + id +
+                "id=" + questionId +
                 ", questionText='" + questionText + '\'' +
-                ", explanation='" + explanation + '\'' +
-                ", timeLimit=" + timeLimit +
-                ", weightCoefficient=" + weightCoefficient +
                 '}';
     }
 }
