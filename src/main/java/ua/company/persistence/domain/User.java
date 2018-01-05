@@ -17,7 +17,7 @@ public class User implements Serializable{
     private String country;
     private String gender;
     private boolean access;
-    private UserType userType;
+    private int usertypeId;
 
     public User() {
     }
@@ -86,12 +86,12 @@ public class User implements Serializable{
         this.access = access;
     }
 
-    public UserType getUserType() {
-        return userType;
+    public int getUsertypeId() {
+        return usertypeId;
     }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
+    public void setUsertypeId(int usertypeId) {
+        this.usertypeId = usertypeId;
     }
 
     @Override

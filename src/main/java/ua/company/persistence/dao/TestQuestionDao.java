@@ -25,11 +25,6 @@ public class TestQuestionDao implements ITestQuestion {
             " WHERE testId=?";
     private List<Question> questions;
 
-//    private Connection connection = null;
-//    public TestQuestionDao(Connection connection){
-//        this.connection=connection;
-//    }
-
     public List<Question> getQuestionByTestId(int testId) {
         ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
         Connection connection = connectionWithoutPool.connect_to_database();

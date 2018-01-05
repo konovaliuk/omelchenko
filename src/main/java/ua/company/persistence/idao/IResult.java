@@ -1,5 +1,9 @@
 package ua.company.persistence.idao;
 
+import ua.company.persistence.domain.Result;
+import ua.company.persistence.domain.Test;
+import ua.company.persistence.domain.User;
+
 import java.util.List;
 
 /**
@@ -9,8 +13,6 @@ import java.util.List;
  * @version 1.0 15.12.2017
  */
 public interface IResult {
-    void  insertResult();
-    List<IResult> getResultByUser();
-    List<IResult> getResultByTopic();
-    List<IResult> getResultByTest();
+    boolean  insertResult(User user, Test test, double score);
+    List<Result> getResults();
 }

@@ -41,6 +41,7 @@ public class TestCommand implements ICommand {
             quiz = authService.getQuestionAndAnswer(test);
             request.getSession().setAttribute("test", test);
             request.getSession().setAttribute("quiz", quiz);
+
             page = ConfigManager.getInstance().getProperty(ConfigManager.getTEST());
         } else{
             LOGGER.info("User is not authorized.");

@@ -16,7 +16,7 @@ public class DaoFactory {
 
 //       ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
 //       return new UserDao(connectionPool.getConnection());
-       return new UserDao(new ConnectionWithoutPool().connect_to_database());
+       return new UserDao();
     }
 
     public static IUserType getIUserType() {

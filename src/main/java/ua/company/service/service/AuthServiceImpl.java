@@ -1,6 +1,8 @@
 package ua.company.service.service;
 
 import org.apache.log4j.Logger;
+import ua.company.persistence.dao.ResultDao;
+import ua.company.persistence.dao.UserDao;
 import ua.company.persistence.daofactory.DaoFactory;
 import ua.company.persistence.domain.*;
 import ua.company.persistence.idao.*;
@@ -16,8 +18,9 @@ import java.util.*;
  */
 public class AuthServiceImpl implements AuthService {
     private static final Logger LOGGER = MyLogger.getLOGGER(AuthServiceImpl.class);
-    private static final int RIGHT = 1;
+    private static final int ADMIN_TYPE_ID = 1;
     private static final int STUDENT_TYPE_ID = 2;
+    private static final int RIGHT = 1;
     private int maxTestNumber;
     private int testId;
     private Test test;
@@ -28,13 +31,15 @@ public class AuthServiceImpl implements AuthService {
     private boolean flagRightAnswer=false;
     private int countMistakes=0;
     private int countQuestions = 0;
+    private List <Result> results;
+    private HashMap<String, Double> resultByLogin;
 
     @Override
     public User registration(String login, String email, String password, String country, String gender) {
         IUser iUser = DaoFactory.getIUser();
-        IUserType iUserType = DaoFactory.getIUserType();
-        UserType userType = iUserType.getUserTypeById(STUDENT_TYPE_ID);
-        User user = iUser.insertUser(login, email, password, country, gender, userType);
+        //IUserType iUserType = DaoFactory.getIUserType();
+        //UserType userType = iUserType.getUserTypeById(STUDENT_TYPE_ID);
+        User user = iUser.insertUser(login, email, password, country, gender, STUDENT_TYPE_ID);
         user.setAccess(true);
         return user;
     }
@@ -116,6 +121,29 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void writeResult(User user, Test test, double score) {
+        IResult iResult = DaoFactory.getIResult();
+        iResult.insertResult(user, test, score);
+    }
 
+    @Override
+    public boolean getUserTypeId(String login) {
+        IUser iUser = new UserDao();
+        return (iUser.getUserTypeIdByLogin(login)==ADMIN_TYPE_ID);
+    }
+
+    @Override
+    public HashMap getResults() {
+        IResult iResult = new ResultDao();
+        results = iResult.getResults();
+        resultByLogin = new HashMap<>();
+        for (Result result: results){
+            if (resultByLogin.containsKey(result.getLogin())){
+                double avScore = (result.getScore()+resultByLogin.get(result.getLogin()))/2;
+                resultByLogin.put(result.getLogin(), avScore);
+            } else {
+                resultByLogin.put(result.getLogin(), result.getScore());
+            }
+        }
+        return resultByLogin;
     }
 }

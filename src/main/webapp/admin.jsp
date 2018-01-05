@@ -8,32 +8,43 @@
 			<div id="main">
 
 				<form action="Testing" method="post">
-					<button type="submit" name="command" value="result">Start Quiz</button>
+					<button type="submit" name="command" value="admin">Get report</button>
 				</form>
-				
+			<br/>
+			<br/>
 			<c:choose>
-				<c:when test="${result eq null}">
+				<c:when test="${resultByLogin eq null}">
 				</c:when>
 			<c:otherwise>
 			<!--<form action="Testing" method="post">!-->
-				<c:forEach items="${result}" var="test" >
-				<table border='1'>
-					<tr>
+				
+				<style>
+				table {
+				table-layout: fixed;
+				width: 100%;
+				}</style>
+				<table border='1' >
+				<tr>
 					<td>
-						<b><p>${result.login}</p></b>
+						<h2>Student</h2>
 					</td>
 					<td>
-						<b>${result.testName}</b>
+						<h2>Score</h2>
+					</td>
+				</tr>
+				
+				<c:forEach items="${resultByLogin}" var="test" >
+				<tr>
+					<td>
+						<p>${test.key}</p>
 					</td>
 					<td>
-						<b>${result.subjectName}</b>
+						${test.value}
 					</td>
-					<td>
-						<b>${result.score}</b>
-					</td>
-					</tr>
-				</table>
+				</tr>
 				</c:forEach>		
+				</table>
+				
 				<tr>
 					<c:if test="${not empty errorPassMessage}">
 						<c:out value="${errorPassMessage}"/>
@@ -41,7 +52,7 @@
 				</tr>
 			<!--</form>!-->
 			</c:otherwise>
-		
+			</c:choose>
 	</div>
 		</div>
 		<div id="sidebar">

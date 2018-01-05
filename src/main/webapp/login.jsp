@@ -23,9 +23,9 @@
 				</c:otherwise>	
 			</c:choose>
 	
-	hi ${user.login}
+	<!--hi ${user.login}
 	access is ${user.access}
-	<c:out value="Form eq ${form}" />
+	<c:out value="Form eq ${form}" />!-->
 		
 			<c:choose>
 				<c:when test="${form eq 'true'}">

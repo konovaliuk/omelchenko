@@ -23,5 +23,6 @@ public interface AuthService {
     List findWrongAnswers(HashMap<Question, List<Answer>> quiz, String[] userAnswers);
     double getScore();
     void writeResult(User user, Test test, double score);
-
+    boolean getUserTypeId(String login);
+    HashMap getResults();
 }

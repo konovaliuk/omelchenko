@@ -1,7 +1,7 @@
 package ua.company.persistence.dao;
 
+import ua.company.persistence.datasource.ConnectionWithoutPool;
 import ua.company.persistence.domain.User;
-import ua.company.persistence.domain.UserType;
 import ua.company.persistence.idao.IUser;
 
 import java.sql.Connection;
@@ -31,34 +31,40 @@ public class UserDao implements IUser {
             " WHERE login=? and password=?";
     private static final String FIND_ID_BY_lOGIN = "SELECT * FROM " + NAME_TABLE +
             " WHERE login=?";
-    private Connection connection;
+    private static final String FIND_USERTYPEID_BY_lOGIN = "SELECT * FROM " + NAME_TABLE +
+            " WHERE login=?";
 
-    public UserDao(Connection connection) {
-        this.connection = connection;
-    }
+//    private Connection connection;
+
+//    public UserDao(Connection connection) {
+//        this.connection = connection;
+//    }
 
 //    private static final String FIND_BY_ID = "SELECT * FROM " + NAME_TABLE + " WHERE id=?";
 
     /**
      * Write to database new User.
      *
-     * @param login    - login of user.
-     * @param password - password of user.
-     * @param email    - email of user.
-     * @param country  - country of user inhabitance.
-     * @param gender   - user gender.
-     * @param userType   - user type.
+     * @param login      - login of user.
+     * @param password   - password of user.
+     * @param email      - email of user.
+     * @param country    - country of user inhabitance.
+     * @param gender     - user gender.
+     * @param usertypeId - user type Id.
      */
+    @Override
     public User insertUser(String login, String email, String password, String country,
-                              String gender, UserType userType) {
+                           String gender, int usertypeId) {
 
+        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
+        Connection connection = connectionWithoutPool.connect_to_database();
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, password);
             preparedStatement.setString(4, country);
             preparedStatement.setString(5, gender);
-            preparedStatement.setInt(6, userType.getUsertypeId());
+            preparedStatement.setInt(6, usertypeId);
             preparedStatement.executeUpdate();
 
             User user = new User();
@@ -68,14 +74,13 @@ public class UserDao implements IUser {
             user.setEmail(email);
             user.setCountry(country);
             user.setGender(gender);
-
-//убрать этот close когда пул получится
-            connection.close();
-//---------------
+            user.setUsertypeId(usertypeId);
 
             return user;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            connectionWithoutPool.close(connection);
         }
         return null;
     }
@@ -83,8 +88,11 @@ public class UserDao implements IUser {
     /**
      * Get user from database by Login and Password.
      */
+    @Override
     public User getUserByLoginAndPass(String login, String password) {
 
+        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
+        Connection connection = connectionWithoutPool.connect_to_database();
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_lOGIN_AND_PASS)) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
@@ -97,16 +105,21 @@ public class UserDao implements IUser {
                     user.setEmail(rs.getString("email"));
                     user.setCountry(rs.getString("country"));
                     user.setGender(rs.getString("gender"));
+                    user.setUsertypeId(rs.getInt("usertypeId"));
                     return user;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            connectionWithoutPool.close(connection);
         }
         return null;
     }
 
-    public int getIdByLogin(String login){
+    public int getIdByLogin(String login) {
+        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
+        Connection connection = connectionWithoutPool.connect_to_database();
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ID_BY_lOGIN)) {
             preparedStatement.setString(1, login);
             try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -114,12 +127,32 @@ public class UserDao implements IUser {
                     return rs.getInt("userId");
                 }
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            connectionWithoutPool.close(connection);
         }
         return 0;
     }
 
+    @Override
+    public int getUserTypeIdByLogin(String login) {
+        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
+        Connection connection = connectionWithoutPool.connect_to_database();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_USERTYPEID_BY_lOGIN)) {
+            preparedStatement.setString(1, login);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("usertypeId");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            connectionWithoutPool.close(connection);
+        }
+        return 0;
+    }
 
 
     public boolean deleteUser() {

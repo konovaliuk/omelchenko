@@ -54,11 +54,9 @@ public class AnswerCommand implements ICommand {
             LOGGER.info("Writing to database...");
             authService.writeResult(user, test, score);
 
-
-            // записать результат в базу
-            // оборвать сессии quiz и test
-            // спрятать кнопку finish - сама должна
-
+            LOGGER.info("Delete quiz and test attributes.");
+            request.getSession().removeAttribute("quiz");
+            request.getSession().removeAttribute("test");
 
             page = ConfigManager.getInstance().getProperty(ConfigManager.getTEST());
 

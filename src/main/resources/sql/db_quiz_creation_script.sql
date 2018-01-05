@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS result (
   resultId INT NOT NULL AUTO_INCREMENT,
   login VARCHAR(50) NOT NULL,
   testName VARCHAR(50) NOT NULL,
-  subjectName VARCHAR(50) NOT NULL UNIQUE,
+  subjectName VARCHAR(50) NOT NULL,
   score DOUBLE NOT NULL,
   PRIMARY KEY (resultId),
   FOREIGN KEY (testName) REFERENCES test(testName),

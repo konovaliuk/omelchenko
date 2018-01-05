@@ -213,31 +213,31 @@ VALUES (3, 7);
 -- -----------------------------------------------------
 
 INSERT INTO result (login, testName, subjectName, score)
-VALUES ('einstein', 'test #1', 'All subjects',1.0);
+VALUES ('einstein', 'test #1', 'All subjects',100.0);
 
 INSERT INTO result (login, testName, subjectName, score)
-VALUES ('geits', 'test #2', 'All subjects', 0.9);
+VALUES ('geits', 'test #2', 'All subjects', 90.0);
 
 INSERT INTO result (login, testName, subjectName, score)
-VALUES ('geits', 'test #1', 'All subjects', 0.7);
+VALUES ('geits', 'test #1', 'All subjects', 70.0);
 
 INSERT INTO result (login, testName, subjectName, score)
-VALUES ('lovelace', 'test #1', 'All subjects', 0.7);
+VALUES ('lovelace', 'test #1', 'All subjects', 70.0);
 
 INSERT INTO result (login, testName, subjectName, score)
-VALUES ('geits', 'test #1', 'All subjects', 1.0);
+VALUES ('geits', 'test #1', 'All subjects', 70.0);
 
 INSERT INTO result (login, testName, subjectName, score)
-VALUES ('lovelace', 'test #3', 'All subjects', 0.8);
+VALUES ('lovelace', 'test #3', 'All subjects', 80.0);
 
 INSERT INTO result (login, testName, subjectName, score)
-VALUES ('einstein', 'test #3', 'All subjects', 0.9);
+VALUES ('einstein', 'test #3', 'All subjects', 90.0);
 
 INSERT INTO result (login, testName, subjectName, score)
-VALUES ('einstein', 'test #1', 'All subjects', 0.8);
+VALUES ('einstein', 'test #1', 'All subjects', 80.0);
 
 INSERT INTO result (login, testName, subjectName, score)
-VALUES ('geits', 'test #2', 'All subjects', 1.0);
+VALUES ('geits', 'test #2', 'All subjects', 100.0);
 
 INSERT INTO result (login, testName, subjectName, score)
-VALUES ('geits', 'test #2', 'All subjects', 0.8);
+VALUES ('geits', 'test #2', 'All subjects', 80.0);

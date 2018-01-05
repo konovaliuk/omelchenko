@@ -4,7 +4,7 @@
 	<div id="page">
 		<div id="content">
 		  <div class="post">
-				<h2 class="title"><a href="#">Welcome to JavaQuiz </a></h2>
+				<h2 class="title"><a href="#">Welcome to JavaQuiz! ${user.login}!</a></h2>
 				
 				<div class="entry">
 					<p><strong>JavaQuiz </strong> is a free quiz for Java developers. The aim of site is to provide service which not only checks the level of urrecnt  knowledge, but also helps to receive new knowledge.</p>

@@ -9,6 +9,13 @@
 		<div id="content">
 			<div id="main">
 
+		<tr>
+			<c:if test="${not empty errorPassMessage}">
+				<c:out value="${errorPassMessage}"/>
+			</c:if>
+		</tr>
+
+		
 		<c:choose>
 		<c:when test="${not empty score}" >
 			<h2>The result is ${score} %</h2>
@@ -24,6 +31,8 @@
 				${wrongAnswer.questionText}
 			<p></p>
 			</c:forEach>	
+			<br/>
+			<br/>
 		</c:when>
 		</c:choose>
 			
@@ -64,11 +73,7 @@
 		</c:choose>
 		
 		<br/>
-		<tr>
-			<c:if test="${not empty errorPassMessage}">
-				<c:out value="${errorPassMessage}"/>
-			</c:if>
-		</tr>
+		
 		
 		
 			</div>

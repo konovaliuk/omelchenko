@@ -1,7 +1,18 @@
 package ua.company.persistence.dao;
 
+import ua.company.persistence.daofactory.DaoFactory;
+import ua.company.persistence.datasource.ConnectionWithoutPool;
+import ua.company.persistence.domain.Result;
+import ua.company.persistence.domain.Test;
+import ua.company.persistence.domain.User;
 import ua.company.persistence.idao.IResult;
+import ua.company.persistence.idao.ISubject;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,20 +22,65 @@ import java.util.List;
  * @version 1.0 15.12.2017
  */
 public class ResultDao implements IResult {
+    private static final String NAME_TABLE = "result";
+    private static final String INSERT = "INSERT INTO " + NAME_TABLE
+            + " (login,"
+            + " testName,"
+            + " subjectName,"
+            + " score)"
+            + " VALUES (?, ?, ?, ?)";
+    private static final String FIND_RESULT = "SELECT * FROM " + NAME_TABLE;
+    private String subjectName;
+    private List <Result> results;
 
-    public void insertResult() {
+    @Override
+    public boolean insertResult(User user, Test test, double score) {
+        ISubject iSubject = DaoFactory.getISubject();
+        subjectName = iSubject.getSubjectNameById(test.getSubjectId());
 
+        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
+        Connection connection = connectionWithoutPool.connect_to_database();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, test.getTestName());
+            preparedStatement.setString(3, subjectName);
+            preparedStatement.setDouble(4, score);
+            preparedStatement.executeUpdate();
+            return true;
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            connectionWithoutPool.close(connection);
+        }
+        return false;
     }
 
-    public List<IResult> getResultByUser() {
-        return null;
-    }
+    @Override
+    public List<Result> getResults() {
+        results = new ArrayList<>();
+        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
+        Connection connection = connectionWithoutPool.connect_to_database();
 
-    public List<IResult> getResultByTopic() {
-        return null;
-    }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_RESULT);
+             ResultSet rs = preparedStatement.executeQuery()) {
 
-    public List<IResult> getResultByTest() {
+            while (rs.next()) {
+                Result result = new Result();
+                result.setId(rs.getInt(1));
+                result.setLogin(rs.getString(2));
+                result.setTestName(rs.getString(3));
+                result.setSubjectName(rs.getString(4));
+                result.setScore(rs.getInt(5));
+                results.add(result);
+            }
+            return results;
+
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            connectionWithoutPool.close(connection);
+        }
         return null;
     }
 }

@@ -1,7 +1,6 @@
 package ua.company.persistence.idao;
 
 import ua.company.persistence.domain.User;
-import ua.company.persistence.domain.UserType;
 
 import java.util.Collection;
 
@@ -13,9 +12,10 @@ import java.util.Collection;
  */
 public interface IUser {
     User insertUser(String login, String email, String password, String country,
-                    String gender, UserType userType);
+                    String gender, int usertypeId);
     User getUserByLoginAndPass(String login, String password);
     boolean deleteUser();
     boolean updateUser();
     Collection selectCustomersTO();
+    int getUserTypeIdByLogin(String login);
 }
