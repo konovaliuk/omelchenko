@@ -1,20 +1,19 @@
-package ua.company.web.command;
+package ua.company.controller.command;
 
 import org.apache.log4j.Logger;
-import ua.company.persistence.domain.Answer;
-import ua.company.persistence.domain.Question;
-import ua.company.persistence.domain.Test;
-import ua.company.persistence.domain.User;
+import ua.company.controller.config.AppManager;
+import ua.company.persistence.domain.*;
 import ua.company.service.logger.MyLogger;
 import ua.company.service.service.AuthService;
 import ua.company.service.service.AuthServiceImpl;
-import ua.company.web.config.ConfigManager;
-import ua.company.web.config.MessageManager;
+import ua.company.controller.config.ConfigManager;
+import ua.company.controller.config.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * StartTestCommand.java - receive request from user, manage actions deal with quiz start
@@ -23,25 +22,39 @@ import java.util.List;
  * @author Ruslan Omelchenko
  * @version 1.0 22.12.2017
  */
-public class TestCommand implements ICommand {
-    private static final Logger LOGGER = MyLogger.getLOGGER(LoginCommand.class);
+public class QuizCommand implements ICommand {
+    private static final Logger LOGGER = MyLogger.getLOGGER(QuizCommand.class);
     private Test test;
-    private HashMap<Question, List<Answer>> quiz;
+    private HashMap<QuestionTranslate, List<AnswerTranslate>> showQuiz;
     private String page;
+    private String language;
+    private Locale locale;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        LOGGER.info("Test command was chosen.");
+        LOGGER.info("Quiz command was chosen.");
         User user = (User) request.getSession().getAttribute("user");
+
+        language = (String) request.getSession().getAttribute("language");
+        LOGGER.info("Current language: " + language);
+        if (language!=null){
+            locale = new Locale(language);
+        }else {
+            locale = new Locale(AppManager.getInstance().getProperty(AppManager.getDefaultLanguage()));
+        }
+        LOGGER.info("Current locale: " + locale);
+
         if (user!=null){
             AuthService authService = new AuthServiceImpl();
             LOGGER.info("Generating random test.");
             test = authService.generateTest();
             LOGGER.info("Create questions and answers for test.");
-            quiz = authService.getQuestionAndAnswer(test);
+            showQuiz = authService.getQuestionAndAnswer(test, locale);
             request.getSession().setAttribute("test", test);
-            request.getSession().setAttribute("quiz", quiz);
-
+//            request.setAttribute("test", test);
+//            request.setAttribute("showQuiz", showQuiz);
+            request.getSession().setAttribute("showQuiz", showQuiz);
+            request.setAttribute("start", true);
             page = ConfigManager.getInstance().getProperty(ConfigManager.getTEST());
         } else{
             LOGGER.info("User is not authorized.");

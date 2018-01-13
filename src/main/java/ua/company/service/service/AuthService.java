@@ -1,12 +1,11 @@
 package ua.company.service.service;
 
-import ua.company.persistence.domain.Answer;
-import ua.company.persistence.domain.Question;
-import ua.company.persistence.domain.Test;
-import ua.company.persistence.domain.User;
+import ua.company.persistence.domain.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.TreeMap;
 
 /**
  * AuthService.java -
@@ -19,10 +18,10 @@ public interface AuthService {
     User login(String login, String password);
     boolean getAccess(String login, String password);
     Test generateTest();
-    HashMap<Question,List<Answer>> getQuestionAndAnswer(Test test);
-    List findWrongAnswers(HashMap<Question, List<Answer>> quiz, String[] userAnswers);
+    HashMap<QuestionTranslate,List<AnswerTranslate>> getQuestionAndAnswer(Test test, Locale locale);
+    List findWrongAnswers(HashMap<QuestionTranslate, List<AnswerTranslate>> showQuiz, String[] userAnswers);
     double getScore();
     void writeResult(User user, Test test, double score);
     boolean getUserTypeId(String login);
-    HashMap getResults();
+    TreeMap getResults();
 }

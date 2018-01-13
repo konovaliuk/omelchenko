@@ -24,15 +24,19 @@ public class AuthServiceImpl implements AuthService {
     private int maxTestNumber;
     private int testId;
     private Test test;
-    private List<Question> questions;
+    private List<QuestionTranslate> questionsTranslate;
     private List<Answer> answers;
-    private HashMap<Question, List<Answer>> quiz;
-    private List<Question> wrongAnswers;
-    private boolean flagRightAnswer=false;
-    private int countMistakes=0;
+    private List<AnswerTranslate> answersTranslate;
+    private HashMap<QuestionTranslate, List<AnswerTranslate>> showQuiz;
+    private HashMap<QuestionTranslate, List<Answer>> calculationResult;
+    private List<QuestionTranslate> wrongAnswers;
+    private List<QuestionTranslate> wrongQuestion;
+    private boolean flagRightAnswer = false;
+    private int countMistakes = 0;
     private int countQuestions = 0;
-    private List <Result> results;
-    private HashMap<String, Double> resultByLogin;
+    private List<Result> results;
+    private TreeMap<String, Double> resultByLogin;
+    private int languageId;
 
     @Override
     public User registration(String login, String email, String password, String country, String gender) {
@@ -74,23 +78,50 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public HashMap<Question, List<Answer>> getQuestionAndAnswer(Test test) {
+    public HashMap<QuestionTranslate, List<AnswerTranslate>> getQuestionAndAnswer(Test test, Locale locale) {
+
+        ILanguage iLanguage = DaoFactory.getILanguage();
         ITestQuestion iTestQuestion = DaoFactory.getITestQuestion();
-        questions = iTestQuestion.getQuestionByTestId(test.getTestId());
+
+        LOGGER.info("Get id of Locale: " + String.valueOf(locale));
+        languageId = iLanguage.getIdByName(String.valueOf(locale));
+        LOGGER.info("LanguageId: " + languageId);
+        LOGGER.info("Get questions from database by testId: " + test.getTestId());
+
+        questionsTranslate = iTestQuestion.getQuestionByTestId(test.getTestId(), languageId);
+
         IAnswer iAnswer = DaoFactory.getIAnswer();
-        quiz = new HashMap<>();
-        for (Question question : questions) {
-            answers = iAnswer.getAnswerByQuestionId(question.getQuestionId());
-            quiz.put(question, answers);
+        IAnswerTranslate iAnswerTranslate = DaoFactory.getIAnswerTranslate();
+
+//        calculationResult = new HashMap<>();
+        showQuiz = new HashMap<>();
+        for (QuestionTranslate questionTranslate : questionsTranslate) {
+            answers = iAnswer.getAnswerByQuestionId(questionTranslate.getQuestionId());
+            answersTranslate = iAnswerTranslate.getAnswerTranslateByAnswerIdAndLanguageId
+                    (answers, languageId);
+
+            showQuiz.put(questionTranslate, answersTranslate);
+//            calculationResult.put(questionTranslate, answers);
         }
-        return quiz;
+        return showQuiz;
     }
 
     @Override
-    public List findWrongAnswers(HashMap<Question, List<Answer>> quiz, String[] userAnswers) {
+    public List findWrongAnswers(HashMap<QuestionTranslate, List<AnswerTranslate>> showQuiz, String[] userAnswers) {
+        IAnswer iAnswer = DaoFactory.getIAnswer();
+        calculationResult = new HashMap<>();
+        for (Map.Entry<QuestionTranslate, List<AnswerTranslate>> entry : showQuiz.entrySet()){
+            ArrayList <Answer> ans = new ArrayList();
+            for (AnswerTranslate answerTranslate: entry.getValue()) {
+                ans.add(iAnswer.getAnswerById(answerTranslate.getAnswerId()));
+            }
+            calculationResult.put(entry.getKey(), ans);
+        }
         wrongAnswers = new ArrayList<>();
+
+        LOGGER.info("Get answers from Loop for all questions");
         LOGGER.info("Loop for all questions");
-        for (Map.Entry<Question, List<Answer>> entry : quiz.entrySet()) {
+        for (Map.Entry<QuestionTranslate, List<Answer>> entry : calculationResult.entrySet()) {
             countQuestions++;
             LOGGER.info("Loop for all answers");
             for (Answer answer : entry.getValue()) {
@@ -101,7 +132,7 @@ public class AuthServiceImpl implements AuthService {
                             flagRightAnswer = true;
                         }
                     }
-                    if (!flagRightAnswer){
+                    if (!flagRightAnswer) {
                         countMistakes++;
                         wrongAnswers.add(entry.getKey());
                         break;
@@ -115,7 +146,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public double getScore() {
         double result;
-        result = ((double)countQuestions-(double)countMistakes)/(double)countQuestions*100;
+        result = ((double) countQuestions - (double) countMistakes) / (double) countQuestions * 100;
         return result;
     }
 
@@ -128,17 +159,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean getUserTypeId(String login) {
         IUser iUser = new UserDao();
-        return (iUser.getUserTypeIdByLogin(login)==ADMIN_TYPE_ID);
+        return (iUser.getUserTypeIdByLogin(login) == ADMIN_TYPE_ID);
     }
 
     @Override
-    public HashMap getResults() {
+    public TreeMap getResults() {
         IResult iResult = new ResultDao();
         results = iResult.getResults();
-        resultByLogin = new HashMap<>();
-        for (Result result: results){
-            if (resultByLogin.containsKey(result.getLogin())){
-                double avScore = (result.getScore()+resultByLogin.get(result.getLogin()))/2;
+        resultByLogin = new TreeMap<>();
+        for (Result result : results) {
+            if (resultByLogin.containsKey(result.getLogin())) {
+                double avScore = (result.getScore() + resultByLogin.get(result.getLogin())) / 2;
                 resultByLogin.put(result.getLogin(), avScore);
             } else {
                 resultByLogin.put(result.getLogin(), result.getScore());

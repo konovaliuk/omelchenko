@@ -27,8 +27,7 @@ public class QuestionDao implements IQuestion {
                 while (rs.next()) {
                     Question question = new Question();
                     question.setQuestionId(rs.getInt(1));
-                    question.setQuestionText(rs.getString(2));
-                    question.setSubjectId(rs.getInt(3));
+                    question.setSubjectId(rs.getInt(2));
                     return question;
                 }
             }

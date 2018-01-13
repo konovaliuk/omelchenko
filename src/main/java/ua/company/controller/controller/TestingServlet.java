@@ -1,9 +1,9 @@
-package ua.company.web.controller;
+package ua.company.controller.controller;
 
 
 import org.apache.log4j.Logger;
 import ua.company.service.logger.MyLogger;
-import ua.company.web.command.ICommand;
+import ua.company.controller.command.ICommand;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,14 +44,10 @@ public class TestingServlet extends HttpServlet {
 
         ICommand command = controllerHelper.getCommand(request);
         page = command.execute(request, response);
-        LOGGER.info("Servlet forward to page" + page);
+        LOGGER.info("Servlet forward to page " + page);
 
-//        IUser iUser = DaoFactory.getIUser();
-//        User user = iUser.getUserByLoginAndPass("admin", "rosronaldo");
-//        System.out.println(user);
-
+        //RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-//        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("index.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException e) {
@@ -62,4 +58,5 @@ public class TestingServlet extends HttpServlet {
             //e.printStackTrace();
         }
     }
+
 }

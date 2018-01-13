@@ -12,4 +12,5 @@ import java.util.List;
  */
 public interface IAnswer {
     List<Answer> getAnswerByQuestionId(int questionId);
+    Answer getAnswerById(int answerId);
 }

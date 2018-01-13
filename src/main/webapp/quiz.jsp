@@ -1,11 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix = "fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@page import="ua.company.web.controller.*" %>
 <%@page import="java.util.HashMap,java.util.Iterator,java.util.Set,java.util.Map"%> 
+
 
 <jsp:include page="header.jsp"/>
 
 	<div id="page">
+	
+		<c:if test="${language eq null}">
+		<fmt:setLocale value="en"/>
+		</c:if>
+		<c:if test="${language!=null}">
+		<fmt:setLocale value="${language}"/>
+		</c:if>
+	
+		<fmt:setBundle basename="locale" var="lang"/>
+	
+	
 		<div id="content">
 			<div id="main">
 
@@ -15,17 +28,23 @@
 			</c:if>
 		</tr>
 
+		<br/>
+		<br/>
 		
 		<c:choose>
 		<c:when test="${not empty score}" >
-			<h2>The result is ${score} %</h2>
+			<h2>
+				<fmt:message key="quiz.result" bundle="${lang}"/> ${score} %
+			</h2>
 		</c:when>
 		</c:choose>
 		
 		<c:choose>
 		<c:when test="${not empty wrongAnswers}" >
 			<p></p>
-			<b>Wrong answers were received for following questions:</b>
+			<b>
+				<fmt:message key="quiz.wronganswer" bundle="${lang}"/>
+			</b>
 			<p></p>
 			<c:forEach items="${wrongAnswers}" var="wrongAnswer" >
 				${wrongAnswer.questionText}
@@ -35,24 +54,25 @@
 			<br/>
 		</c:when>
 		</c:choose>
-			
+		
 		<c:choose>
-		<c:when test="${test eq null}" >
-				
+		<c:when test="${start eq null}" >	
 				<form action="Testing" method="post">
-					<button type="submit" name="command" value="quiz">Start Quiz</button>
+					<button type="submit" name="command" value="quiz">
+						<fmt:message key="quiz.start" bundle="${lang}"/>
+					</button>
 				</form>
 		</c:when>
+		
 		<c:otherwise>
 				<form action="Testing" method="post">					
-				<c:forEach items="${quiz}" var="test" >
+				<c:forEach items="${showQuiz}" var="test" >
 				<table border='0'>
 					<tr>
 					<td>
 						<b><p class="question">${test.key.questionText}</p></b>
 					</td>
 					</tr>
-						<!--<table border='0'>!-->
 						<c:forEach items="${test.value}" var="answ" >
 								<tr>
 								<td>
@@ -60,13 +80,14 @@
 								</td>
 								</tr>
 						</c:forEach>
-						<!--</table>!-->
 				</table>
 				<br/>
 				<br/>
 				</c:forEach>					
 					
-					<button type="submit" name="command" value="answer">Finish Quiz</button>
+					<button type="submit" name="command" value="answer">
+						<fmt:message key="quiz.finish" bundle="${lang}"/>
+					</button>
 				</form>
 				<br/>
 		</c:otherwise>
@@ -74,24 +95,11 @@
 		
 		<br/>
 		
-		
-		
-			</div>
 		</div>
-		<div id="sidebar">
-			<ul>
-				<li>
-					<h2>Subject </h2>
-					<ul>
-						<li><a href="quiz.jsp?subject_id=1">Classes, methods, types </a></li>
-						<li><a href="quiz.jsp?subject_id=2">Collections </a></li>
-						<li><a href="quiz.jsp?subject_id=3">Nested/Inner classes </a></li>
-						<li><a href="quiz.jsp?subject_id=4">Exceptions </a></li>
-					</ul>
-				</li>
-			</ul>
 		</div>
-		<div style="clear: both;">&nbsp;</div>
+		
+		<jsp:include page="sidebar.jsp"/>
+		
 	</div>
 	
 <jsp:include page="footer.jsp"/>

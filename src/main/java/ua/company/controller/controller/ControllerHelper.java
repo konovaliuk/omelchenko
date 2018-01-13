@@ -1,8 +1,8 @@
-package ua.company.web.controller;
+package ua.company.controller.controller;
 
 import org.apache.log4j.Logger;
 import ua.company.service.logger.MyLogger;
-import ua.company.web.command.*;
+import ua.company.controller.command.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -25,14 +25,15 @@ public class ControllerHelper {
     private ControllerHelper(){
         commands.put("login", new LoginCommand());
         commands.put("registration", new RegistrationCommand());
-        commands.put("quiz", new TestCommand());
+        commands.put("quiz", new QuizCommand());
         commands.put("answer", new AnswerCommand());
         commands.put("admin", new AdminCommand());
         commands.put("logout", new LogoutCommand());
+        commands.put("changeLocale", new ChangeLocaleCommand());
     }
 
     public ICommand getCommand(HttpServletRequest request){
-        LOGGER.info("Controller look for necessary command.");
+        LOGGER.info("Controller looks for necessary command.");
         //to receive command from request
         String action = request.getParameter("command");
         //to get object which respond to command

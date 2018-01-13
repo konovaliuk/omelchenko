@@ -1,8 +1,8 @@
-package ua.company.web.command;
+package ua.company.controller.command;
 
 import org.apache.log4j.Logger;
 import ua.company.service.logger.MyLogger;
-import ua.company.web.config.ConfigManager;
+import ua.company.controller.config.ConfigManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,8 +18,7 @@ public class LogoutCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().invalidate();
-        request.removeAttribute("user");
+        request.getSession().removeAttribute("user");
         page = ConfigManager.getInstance().getProperty(ConfigManager.getLOGIN());
         return page;
     }

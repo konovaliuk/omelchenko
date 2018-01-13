@@ -1,7 +1,12 @@
 package ua.company.service.validator;
 
+import org.apache.log4j.Logger;
+import ua.company.controller.config.MessageManager;
+import ua.company.service.logger.MyLogger;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Validator.java -
@@ -10,6 +15,7 @@ import java.util.List;
  * @version 1.0 22.12.2017
  */
 public class Validator {
+    private static final Logger LOGGER = MyLogger.getLOGGER(Validator.class);
     private String login;
     private String email;
     private String password;
@@ -23,20 +29,13 @@ public class Validator {
     private List<String> retypepswMessage;
     private List<String> genderMessage;
 
+    private Locale locale;
+
     private String regexMail = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2," +
             "})$";
     private String regexPassword = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
 
     public Validator() {
-    }
-
-    public Validator(String login, String email, String password, String retypepsw, String country, String gender) {
-        this.login = login;
-        this.email = email;
-        this.password = password;
-        this.retypepsw = retypepsw;
-        this.country = country;
-        this.gender = gender;
     }
 
     public String getLogin() {
@@ -107,13 +106,25 @@ public class Validator {
         this.genderMessage = genderMessage;
     }
 
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
     public List<String> getEmailMessage() {
         emailMessage = new ArrayList();
+        LOGGER.info("Current locale: " + locale);
         if (email.equals("")) {
-            emailMessage.add("Empty e-mail");
-        }
-        if (!email.matches(regexMail)) {
-            emailMessage.add("E-mail is not valid");
+            if(locale!=null){
+                emailMessage.add(MessageManager.getInstance(locale).getProperty(MessageManager.getEmptyEmail()));
+            }else {
+                emailMessage.add(MessageManager.getInstance().getProperty(MessageManager.getEmptyEmail()));
+            }
+        }else if (!email.matches(regexMail)) {
+            if(locale!=null){
+                emailMessage.add(MessageManager.getInstance(locale).getProperty(MessageManager.getInvalidEmail()));
+            }else {
+                emailMessage.add(MessageManager.getInstance().getProperty(MessageManager.getInvalidEmail()));
+            }
         }
         return emailMessage;
     }
@@ -121,9 +132,11 @@ public class Validator {
     public List<String> getPasswordMessage() {
         passwordMessage = new ArrayList();
         if (!password.matches(regexPassword)) {
-            passwordMessage.add("Password must start of string, contain at least one digit, lower case and " +
-                    "upper case letter, " +
-                    "at least 8 symbols and no whitespace allowed");
+            if (locale != null) {
+                passwordMessage.add(MessageManager.getInstance(locale).getProperty(MessageManager.getInvalidPassword()));
+            } else {
+                passwordMessage.add(MessageManager.getInstance().getProperty(MessageManager.getInvalidPassword()));
+            }
         }
         return passwordMessage;
     }
@@ -131,7 +144,11 @@ public class Validator {
     public List<String> getLoginMessage() {
         loginMessage = new ArrayList();
         if (login.equals("")) {
-            loginMessage.add("Empty login");
+            if (locale != null) {
+                loginMessage.add(MessageManager.getInstance(locale).getProperty(MessageManager.getEmptylogin()));
+            } else {
+                loginMessage.add(MessageManager.getInstance().getProperty(MessageManager.getEmptylogin()));
+            }
         }
         return loginMessage;
     }
@@ -139,7 +156,11 @@ public class Validator {
     public List<String> getGenderMessage() {
         genderMessage = new ArrayList();
         if (gender == null) {
-            genderMessage.add("Please, indicate your sex");
+            if (locale != null) {
+                genderMessage.add(MessageManager.getInstance(locale).getProperty(MessageManager.getInvalidGender()));
+            } else {
+                genderMessage.add(MessageManager.getInstance().getProperty(MessageManager.getInvalidGender()));
+            }
         }
         return genderMessage;
     }
@@ -147,13 +168,18 @@ public class Validator {
     public List<String> getRetypepswMessage() {
         retypepswMessage = new ArrayList<String>();
         if (!password.equals(retypepsw)) {
-            retypepswMessage.add("Passwords do not match");
+            if (locale != null) {
+                retypepswMessage.add(MessageManager.getInstance(locale).
+                        getProperty(MessageManager.getInvalidRetypepsw()));
+            } else {
+                retypepswMessage.add(MessageManager.getInstance().getProperty(MessageManager.getInvalidRetypepsw()));
+            }
         }
         return retypepswMessage;
     }
 
     public boolean isValidLogin() {
-        return getLoginMessage().isEmpty();
+        return getLoginMessage().isEmpty()&& getPasswordMessage().isEmpty();
     }
 
     public boolean isValid() {

@@ -1,15 +1,11 @@
-package ua.company.web.command;
+package ua.company.controller.command;
 
 import org.apache.log4j.Logger;
-import ua.company.persistence.domain.Answer;
-import ua.company.persistence.domain.Question;
-import ua.company.persistence.domain.Test;
-import ua.company.persistence.domain.User;
+import ua.company.controller.config.ConfigManager;
+import ua.company.persistence.domain.*;
 import ua.company.service.logger.MyLogger;
 import ua.company.service.service.AuthService;
 import ua.company.service.service.AuthServiceImpl;
-import ua.company.web.config.ConfigManager;
-import ua.company.web.config.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,8 +19,8 @@ import java.util.List;
  * @version 1.0 22.12.2017
  */
 public class AnswerCommand implements ICommand {
-    private static final Logger LOGGER = MyLogger.getLOGGER(LoginCommand.class);
-    private HashMap<Question, List<Answer>> quiz;
+    private static final Logger LOGGER = MyLogger.getLOGGER(AnswerCommand.class);
+    private HashMap<QuestionTranslate, List<AnswerTranslate>> showQuiz;
     private List<Answer> wrongAnswers;
     private String page;
     private double score;
@@ -38,10 +34,12 @@ public class AnswerCommand implements ICommand {
             AuthService authService = new AuthServiceImpl();
             LOGGER.info("Answer command was chosen.");
             LOGGER.info("Users answers are received.");
-            quiz = (HashMap<Question, List<Answer>>) request.getSession().getAttribute("quiz");
+            //quiz = (HashMap<Question, List<Answer>>) request.getSession().getAttribute("showQuiz");
+            showQuiz = (HashMap<QuestionTranslate, List<AnswerTranslate>>) request.getSession().
+                    getAttribute("showQuiz");
 
             LOGGER.info("To get wrong answers.");
-            wrongAnswers = authService.findWrongAnswers(quiz, userAnswerId);
+            wrongAnswers = authService.findWrongAnswers(showQuiz, userAnswerId);
             score = authService.getScore();
 
             request.setAttribute("wrongAnswers", wrongAnswers);
@@ -50,8 +48,9 @@ public class AnswerCommand implements ICommand {
             LOGGER.info("Get user and test from session in order to write in database results.");
             User user = (User) request.getSession().getAttribute("user");
             Test test = (Test) request.getSession().getAttribute("test");
+//            Test test = (Test) request.getAttribute("testResult");
 
-            LOGGER.info("Writing to database...");
+            LOGGER.info("Writing to database..." + test);
             authService.writeResult(user, test, score);
 
             LOGGER.info("Delete quiz and test attributes.");
@@ -62,8 +61,10 @@ public class AnswerCommand implements ICommand {
 
         }else{
             LOGGER.info("User did not start to answer.");
-            request.setAttribute("errorPassMessage", MessageManager.getInstance().
-                    getProperty(MessageManager.getFinishQuizError()));
+//            request.setAttribute("errorPassMessage", MessageManager.getInstance().
+//                    getProperty(MessageManager.getFinishQuizError()));
+            request.getSession().removeAttribute("quiz");
+            request.getSession().removeAttribute("test");
             page = ConfigManager.getInstance().getProperty(ConfigManager.getTEST());
         }
         return page;

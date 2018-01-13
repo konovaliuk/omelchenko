@@ -1,6 +1,6 @@
 package ua.company.persistence.idao;
 
-import ua.company.persistence.domain.Question;
+import ua.company.persistence.domain.QuestionTranslate;
 
 import java.util.List;
 
@@ -11,5 +11,5 @@ import java.util.List;
  * @version 1.0 15.12.2017
  */
 public interface ITestQuestion {
-    List<Question> getQuestionByTestId(int testId);
+    List<QuestionTranslate> getQuestionByTestId(int testId, int languageId);
 }

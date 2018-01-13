@@ -10,7 +10,6 @@ import java.io.Serializable;
  */
 public class Question implements Serializable {
     private int questionId;
-    private String questionText;
     private int subjectId;
 
     public Question() {
@@ -22,14 +21,6 @@ public class Question implements Serializable {
 
     public void setQuestionId(int questionId) {
         this.questionId = questionId;
-    }
-
-    public String getQuestionText() {
-        return questionText;
-    }
-
-    public void setQuestionText(String questionText) {
-        this.questionText = questionText;
     }
 
     public int getSubjectId() {
@@ -60,7 +51,6 @@ public class Question implements Serializable {
     public String toString() {
         return "Question{" +
                 "id=" + questionId +
-                ", questionText='" + questionText + '\'' +
                 '}';
     }
 }

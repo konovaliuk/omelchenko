@@ -13,15 +13,10 @@ import ua.company.persistence.idao.*;
 public class DaoFactory {
 
    public static IUser getIUser() {
-
-//       ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-//       return new UserDao(connectionPool.getConnection());
        return new UserDao();
     }
 
     public static IUserType getIUserType() {
-//        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-//        return new UserTypeDao(connectionPool.getConnection());
         return new UserTypeDao(new ConnectionWithoutPool().connect_to_database());
     }
 
@@ -51,6 +46,14 @@ public class DaoFactory {
 
     public static ISubject getISubject() {
         return new SubjectDao();
+    }
+
+    public static IQuestionTranslate getIQuestionTranslate() {
+        return new QuestionTranslateDao();
+    }
+
+    public static IAnswerTranslate getIAnswerTranslate() {
+        return new AnswerTranslateDao();
     }
 
 //    public static void closeConnection(Connection connection){

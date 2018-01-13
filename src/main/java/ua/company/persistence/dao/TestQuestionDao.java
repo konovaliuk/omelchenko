@@ -2,8 +2,8 @@ package ua.company.persistence.dao;
 
 import ua.company.persistence.daofactory.DaoFactory;
 import ua.company.persistence.datasource.ConnectionWithoutPool;
-import ua.company.persistence.domain.Question;
-import ua.company.persistence.idao.IQuestion;
+import ua.company.persistence.domain.QuestionTranslate;
+import ua.company.persistence.idao.IQuestionTranslate;
 import ua.company.persistence.idao.ITestQuestion;
 
 import java.sql.Connection;
@@ -23,22 +23,23 @@ public class TestQuestionDao implements ITestQuestion {
     private static final String NAME_TABLE = "testquestion";
     private static final String FIND_BY_TEST_ID = "SELECT * FROM " + NAME_TABLE +
             " WHERE testId=?";
-    private List<Question> questions;
+    private List<QuestionTranslate> questionsTranslate;
 
-    public List<Question> getQuestionByTestId(int testId) {
+    public List<QuestionTranslate> getQuestionByTestId(int testId, int languageId) {
         ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
         Connection connection = connectionWithoutPool.connect_to_database();
-        questions = new ArrayList<>();
-        //use autocommit?
+        questionsTranslate = new ArrayList<>();
+
         try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_TEST_ID))
         {
             preparedStatement.setInt(1, testId);
             try(ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    IQuestion iQuestion = DaoFactory.getIQuestion();
-                    questions.add(iQuestion.getQuestionById(rs.getInt(3)));
+                    IQuestionTranslate iQuestionTranslate = DaoFactory.getIQuestionTranslate();
+                    questionsTranslate.add(iQuestionTranslate.
+                            getQuestionTranslateByQuestionIdAndLanguageId(rs.getInt(3), languageId));
                 }
-                return questions;
+                return questionsTranslate;
             }
         } catch (SQLException e) {
             e.printStackTrace();

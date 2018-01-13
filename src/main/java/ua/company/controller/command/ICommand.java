@@ -1,4 +1,4 @@
-package ua.company.web.command;
+package ua.company.controller.command;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

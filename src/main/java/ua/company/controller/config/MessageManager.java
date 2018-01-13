@@ -1,5 +1,6 @@
-package ua.company.web.config;
+package ua.company.controller.config;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -17,7 +18,13 @@ public class MessageManager {
     private static final String STARTQUIZ_ERROR = "STARTQUIZ_ERROR";
     private static final String FINISHQUIZ_ERROR = "FINISHQUIZ_ERROR";
     private static final String SERVLET_EXCEPTION_ERROR_MESSAGE = "SERVLET_EXCEPTION_ERROR_MESSAGE";
-    private static final String IO_EXCEPTION_ERROR_MESSAGE="IO_EXCEPTION_ERROR_MESSAGE";
+    private static final String IO_EXCEPTION_ERROR_MESSAGE = "IO_EXCEPTION_ERROR_MESSAGE";
+    private static final String EMPTY_EMAIL = "EMPTY_EMAIL";
+    private static final String INVALID_EMAIL = "INVALID_EMAIL";
+    private static final String INVALID_PASSWORD = "INVALID_PASSWORD";
+    private static final String EMPTY_lOGIN = "EMPTY_lOGIN";
+    private static final String INVALID_GENDER = "INVALID_GENDER";
+    private static final String INVALID_RETYPEPSW = "INVALID_RETYPEPSW";
 
     public static String getLoginError() {
         return LOGIN_ERROR;
@@ -43,11 +50,42 @@ public class MessageManager {
         return IO_EXCEPTION_ERROR_MESSAGE;
     }
 
+    public static String getEmptyEmail() {
+        return EMPTY_EMAIL;
+    }
+
+    public static String getInvalidEmail() {
+        return INVALID_EMAIL;
+    }
+
+    public static String getInvalidPassword() {
+        return INVALID_PASSWORD;
+    }
+
+    public static String getEmptylogin() {
+        return EMPTY_lOGIN;
+    }
+
+    public static String getInvalidGender() {
+        return INVALID_GENDER;
+    }
+
+    public static String getInvalidRetypepsw() {
+        return INVALID_RETYPEPSW;
+    }
+
     public static MessageManager getInstance(){
         if (instance==null){
             instance = new MessageManager();
             instance.resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME);
         }
+        return instance;
+    }
+    public static MessageManager getInstance(Locale locale){
+        if (instance==null){
+            instance = new MessageManager();
+        }
+        instance.resourceBundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);
         return instance;
     }
 

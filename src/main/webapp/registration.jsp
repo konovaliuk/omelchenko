@@ -1,9 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix = "fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@page import="ua.company.web.controller.*" %>
 <jsp:include page="header.jsp"/>
 
 	<div id="page">
+	
+		<c:if test="${language eq null}">
+		<fmt:setLocale value="en"/>
+		</c:if>
+		<c:if test="${language!=null}">
+		<fmt:setLocale value="${language}"/>
+		</c:if>
+	
+		<fmt:setBundle basename="locale" var="lang"/>
+	
+	
 		<div id="content">
 			<div id="main">
 
@@ -14,7 +26,7 @@
 		</tr>
 		<tr>
 			<td> 
-				Login
+				<fmt:message key="reg.login" bundle="${lang}"/>
 			</td> 
 			<td> 
 				<div class="input"><input type="text" name="login" value="${param.login eq 'null'?'':param.login}" ></div>
@@ -31,7 +43,7 @@
 		
 		<tr>
 			<td> 
-				Password
+				<fmt:message key="reg.password" bundle="${lang}"/>
 			</td>
 			<td> 
 				<c:choose>
@@ -54,7 +66,7 @@
 		
 		<tr>
 			<td> 
-				Retype password
+				<fmt:message key="reg.retypepassword" bundle="${lang}"/>
 			</td>
 			<td>
 				<input type='password' name='retypepsw'/>
@@ -69,7 +81,7 @@
 		</tr>
 		<tr>
 			<td width='200' height='30'> 
-				E-mail
+				<fmt:message key="reg.email" bundle="${lang}"/>
 			</td> 
 			<td> 
 				<div class="email"><input type="text" name="email" value="${param.email eq 'null'?'':param.email}" ></div>
@@ -84,17 +96,17 @@
 		</tr>
 		<tr>
 			<td width='200' height='30'> 
-				Country
+				<fmt:message key="reg.country" bundle="${lang}"/>
 			</td>
 			<td> 			
 				<select name='country'>
-					<option selected value="Ukraine">Ukraine</option>
-					<option value="France">France</option>
-					<option value="Germany">Germany</option>
-					<option value="Great Britain">Great Britain</option>
-					<option value="Poland">Poland</option>
-					<option value="USA">USA</option>
-					<option value="Other">Other country</option>
+					<option selected value="Ukraine"><fmt:message key="reg.ukraine" bundle="${lang}"/></option>
+					<option value="France"><fmt:message key="reg.france" bundle="${lang}"/></option>
+					<option value="Germany"><fmt:message key="reg.germany" bundle="${lang}"/></option>
+					<option value="Great Britain"><fmt:message key="reg.greatbritain" bundle="${lang}"/></option>
+					<option value="Poland"><fmt:message key="reg.poland" bundle="${lang}"/></option>
+					<option value="USA"><fmt:message key="reg.usa" bundle="${lang}"/></option>
+					<option value="Other"><fmt:message key="reg.othercountry" bundle="${lang}"/></option>
 					<value=${(user.country eq null)?'':user.country}/>
 				</select>
 			</td>
@@ -102,17 +114,17 @@
 				
 		<tr>
 			<td width='200' height='30'> 
-				Gender
+				<fmt:message key="reg.gender" bundle="${lang}"/>
 			</td>
 			<td>
 				<c:choose>
 					<c:when test="${!(gender eq 'null')}">
-								<input type='radio' name='gender' value='mail' ${(param.gender eq 'mail')?'checked':'_'}/> mail
-								<input type='radio' name='gender' value='femail' ${(param.gender eq 'femail')?'checked':'_'}/> femail				
+								<input type='radio' name='gender' value='mail' ${(param.gender eq 'mail')?'checked':'_'}/> <fmt:message key="reg.male" bundle="${lang}"/>
+								<input type='radio' name='gender' value='femail' ${(param.gender eq 'femail')?'checked':'_'}/> <fmt:message key="reg.female" bundle="${lang}"/>				
 					</c:when>
 					<c:otherwise>
-						<input type='radio' name='gender' value='mail' 'checked'/> mail
-						<input type='radio' name='gender' value='femail' /> femail				
+						<input type='radio' name='gender' value='mail' 'checked'/> <fmt:message key="reg.male" bundle="${lang}"/>
+						<input type='radio' name='gender' value='femail' /> <fmt:message key="reg.female" bundle="${lang}"/>								
 				
 					</c:otherwise>
 				</c:choose>
@@ -128,7 +140,13 @@
 		
 		<tr>
 			<td width='200' height='30' align="center">
-			<input type='submit' name="command" value="registration"/>		
+			<!--<input type='submit' name="command" value="registration"/>!-->
+			
+			<button type="submit" name="command" value="registration">
+				<fmt:message key="reg.registration" bundle="${lang}"/>
+			</button>
+						
+			
 			</td>
 		</tr>
 		
@@ -143,20 +161,10 @@
 	
 	</div>
 		</div>
-		<div id="sidebar">
-			<ul>
-				<li>
-					<h2>Subject </h2>
-					<ul>
-						<li><a href="quiz.jsp?subject_id=1">Classes, methods, types </a></li>
-						<li><a href="quiz.jsp?subject_id=2">Collections </a></li>
-						<li><a href="quiz.jsp?subject_id=3">Nested/Inner classes </a></li>
-						<li><a href="quiz.jsp?subject_id=4">Exceptions </a></li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-		<div style="clear: both;">&nbsp;</div>
+		
+		<jsp:include page="sidebar.jsp"/>
+		
+		
 	</div>
 	
 <jsp:include page="footer.jsp"/>

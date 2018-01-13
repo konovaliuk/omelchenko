@@ -10,7 +10,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
 
     <servlet>
         <servlet-name>TestingServlet</servlet-name>
-        <servlet-class>ua.company.web.controller.TestingServlet</servlet-class>
+        <servlet-class>ua.company.controller.controller.TestingServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -35,12 +35,20 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
     <!--<location>error.htm</location>-->
     <!--</error-page>-->
 
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>ua.company.controller.filter.CharFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <resource-ref>
         <description>DB Connection</description>
         <res-ref-name>jdbc/QuizSystem</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
-
 
 </web-app>

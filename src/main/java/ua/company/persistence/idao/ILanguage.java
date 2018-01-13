@@ -1,7 +1,5 @@
 package ua.company.persistence.idao;
 
-import ua.company.persistence.domain.Language;
-
 /**
  * ILanguage.java - interface for class LanguageDao.
  *
@@ -9,5 +7,5 @@ import ua.company.persistence.domain.Language;
  * @version 1.0 15.12.2017
  */
 public interface ILanguage {
-    Language getLanguageById();
+    int getIdByName(String locale);
 }

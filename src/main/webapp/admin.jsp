@@ -8,7 +8,7 @@
 			<div id="main">
 
 				<form action="Testing" method="post">
-					<button type="submit" name="command" value="admin">Get report</button>
+					<button type="submit" name="command" value="admin">Report "Students Score"</button>
 				</form>
 			<br/>
 			<br/>
@@ -18,17 +18,17 @@
 			<c:otherwise>
 			<!--<form action="Testing" method="post">!-->
 				
-				<style>
+				<!--<style>
 				table {
 				table-layout: fixed;
 				width: 100%;
-				}</style>
+				}</style>!-->
 				<table border='1' >
 				<tr>
-					<td>
+					<td width="80%">
 						<h2>Student</h2>
 					</td>
-					<td>
+					<td width="20%">
 						<h2>Score</h2>
 					</td>
 				</tr>
@@ -43,7 +43,46 @@
 					</td>
 				</tr>
 				</c:forEach>		
+				
 				</table>
+				
+				<table>
+				 <tr>
+					<td>
+						<form method="get" action="Testing">
+						<table>
+							<tr>
+							<!--<div class="input"><input type="hidden" name="command" value="admin"></div>!-->
+							<c:forEach items="${pages}" var="pageNumber" >
+								<!--<td><a href="Testing">${pageNumber}</a></td>
+								<c:set var="pageNumber" value="${pageNumber}"/>!-->
+								<td><a href="Testing?command=admin&pageNumber=${pageNumber}">${pageNumber}</a></td>
+								<!--<input type="hidden" name="command" value="admin">!-->
+							</c:forEach>		
+							</tr>
+						</table>
+						</form>
+					</td>
+				</tr>
+				</table>
+				
+				
+				
+				<!--<c:forEach items="${pages}" var="pageNumber" >
+				<form action="Testing" method="post">
+					<table>
+						<td>
+							
+							<td><a href="admin.jsp?pageNumber=${s}" action="Testing" type="submit" name="command" value="admin"> ${s}</a></td>
+							
+							<button type="submit" name="command" value="admin">${pageNumber}</button>
+						
+						</td>
+					</table>
+				</form>
+				</c:forEach>!-->
+				
+				
 				
 				<tr>
 					<c:if test="${not empty errorPassMessage}">

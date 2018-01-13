@@ -1,4 +1,4 @@
--- -----------------------------------------------------
+﻿-- -----------------------------------------------------
 -- Database QuizSystem
 -- -----------------------------------------------------
 CREATE DATABASE IF NOT EXISTS QuizSystem DEFAULT CHARACTER SET utf8;
@@ -37,29 +37,6 @@ CREATE TABLE IF NOT EXISTS subject (
   PRIMARY KEY (subjectId));
 
 -- -----------------------------------------------------
--- Table question
--- -----------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS question(
-  questionId INT NOT NULL AUTO_INCREMENT,
-  questionText VARCHAR(200) NOT NULL UNIQUE,
-  subjectId INT(10) NOT NULL,
-  PRIMARY KEY (questionId),
-  FOREIGN KEY (subjectId) REFERENCES subject(subjectId));
-
--- -----------------------------------------------------
--- Table answer
--- -----------------------------------------------------
-
-CREATE TABLE IF NOT EXISTS answer(
-  answerId INT NOT NULL AUTO_INCREMENT,
-  answerText VARCHAR(200) NOT NULL,
-  isRight INT(1) NOT NULL,
-  questionId INT NOT NULL,
-  PRIMARY KEY (answerId),
-  FOREIGN KEY (questionId) REFERENCES question(questionId));
-
--- -----------------------------------------------------
 -- Table test
 -- -----------------------------------------------------
 
@@ -70,6 +47,66 @@ CREATE TABLE IF NOT EXISTS test (
   subjectId INT(10) NOT NULL,
   PRIMARY KEY (testId),
   FOREIGN KEY (subjectId) REFERENCES subject(subjectId));
+
+
+-- -----------------------------------------------------
+-- Table language
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS language(
+  languageId INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(20) NOT NULL,
+  PRIMARY KEY (languageId));
+
+
+-- -----------------------------------------------------
+-- Table question
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS question(
+  questionId INT NOT NULL AUTO_INCREMENT,
+  subjectId INT(10) NOT NULL,
+  PRIMARY KEY (questionId),
+  FOREIGN KEY (subjectId) REFERENCES subject(subjectId));
+
+-- -----------------------------------------------------
+-- Table questiontranslate
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS questiontranslate(
+  questiontranslateId INT NOT NULL AUTO_INCREMENT,
+  questionId INT NOT NULL,
+  questionText VARCHAR(200) NOT NULL UNIQUE,
+  languageId INT NOT NULL,
+  PRIMARY KEY (questiontranslateId),
+  FOREIGN KEY (languageId) REFERENCES language(languageId),
+  FOREIGN KEY (questionId) REFERENCES question(questionId));
+
+-- -----------------------------------------------------
+-- Table answer
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS answer(
+  answerId INT NOT NULL AUTO_INCREMENT,
+  isRight INT(1) NOT NULL,
+  questionId INT NOT NULL,
+  PRIMARY KEY (answerId),
+  FOREIGN KEY (questionId) REFERENCES question(questionId));
+
+
+-- -----------------------------------------------------
+-- Table answertranslate
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS answertranslate(
+  answertranslateId INT NOT NULL AUTO_INCREMENT,
+  answerId INT NOT NULL,
+  answerText VARCHAR(200) NOT NULL,
+  languageId INT NOT NULL,
+  PRIMARY KEY (answertranslateId),
+  FOREIGN KEY (languageId) REFERENCES language(languageId),
+  FOREIGN KEY (answerId) REFERENCES answer(answerId));
+
 
 -- -----------------------------------------------------
 -- Table testquestion
@@ -97,3 +134,4 @@ CREATE TABLE IF NOT EXISTS result (
   FOREIGN KEY (testName) REFERENCES test(testName),
   FOREIGN KEY (subjectName) REFERENCES subject(subjectName),
   FOREIGN KEY (login) REFERENCES user(login));
+

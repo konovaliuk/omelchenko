@@ -1,16 +1,17 @@
-package ua.company.web.command;
+package ua.company.controller.command;
 
 import org.apache.log4j.Logger;
+import ua.company.controller.config.ConfigManager;
+import ua.company.controller.config.MessageManager;
 import ua.company.persistence.domain.User;
 import ua.company.service.logger.MyLogger;
 import ua.company.service.service.AuthService;
 import ua.company.service.service.AuthServiceImpl;
 import ua.company.service.validator.Validator;
-import ua.company.web.config.ConfigManager;
-import ua.company.web.config.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
 
 /**
  * RegistrationCommand.java - receive request from user, manage actions deal with user registration
@@ -40,13 +41,21 @@ public class RegistrationCommand implements ICommand {
         String country = request.getParameter(COUNTRY);
         String gender = request.getParameter(GENDER);
 
-        Validator validator = new Validator();
         AuthService authService = new AuthServiceImpl();
+
+        Validator validator = new Validator();
         validator.setLogin(login);
         validator.setEmail(email);
         validator.setPassword(password);
         validator.setRetypepsw(retypepassword);
         validator.setGender(gender);
+
+        String language = (String) request.getSession().getAttribute("language");
+        LOGGER.info("Current language: " + language);
+        if (language!=null){
+            Locale locale = new Locale(language);
+            validator.setLocale(locale);
+        }
 
         if (validator.isValid()){
             LOGGER.info("Data entered by User are valid.");

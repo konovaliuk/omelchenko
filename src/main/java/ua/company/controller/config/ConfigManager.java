@@ -1,4 +1,4 @@
-package ua.company.web.config;
+package ua.company.controller.config;
 
 import java.util.ResourceBundle;
 
@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
  * @version 1.0 22.12.2017
  */
 public class ConfigManager {
-    private static ConfigManager instance;
     private static final String MAIN = "MAIN";
     private static final String ERROR = "ERROR";
     private static final String LOGIN = "LOGIN";
@@ -19,6 +18,7 @@ public class ConfigManager {
     private static final String ADMIN = "ADMIN";
     private static final String LOGOUT = "LOGOUT";
     private static final String BUNDLE_NAME = "config.config";
+    private static ConfigManager instance;
     private ResourceBundle resourceBundle;
 
     public static String getMAIN() {
@@ -54,7 +54,7 @@ public class ConfigManager {
     }
 
     /**
-     * Create object of config class.
+     * Create object of ConfigManager class.
      *
      */
     public static ConfigManager getInstance(){
@@ -71,6 +71,5 @@ public class ConfigManager {
      */
     public String getProperty(String key){
         return (String) resourceBundle.getObject(key);
-//        return "index.jsp";
     }
 }
