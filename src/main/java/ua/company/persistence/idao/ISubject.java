@@ -1,5 +1,7 @@
 package ua.company.persistence.idao;
 
+import ua.company.persistence.domain.Subject;
+
 /**
  * ITopic.java - interface for class TopicDao.
  *
@@ -8,4 +10,6 @@ package ua.company.persistence.idao;
  */
 public interface ISubject {
     String getSubjectNameById(int subjectId);
+    Subject getSubjectById(int subjectId);
+    int getSubjectIdByName(String subjectName);
 }

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context crossContext="true">
     <!-- Specify a JDBC datasource -->
-    <Resource name="jdbc/QuizSystem"
+    <Resource name="jdbc/quizsystem"
     auth="Container"
     type="javax.sql.DataSource" maxActive="15"
     maxIdle="5" maxWait="10000"
     username="root"
     password="rosronaldo"
     driverClassName="com.mysql.cj.jdbc.Driver"
-    url="jdbc:mysql://localhost:3306/QuizSystem?serverTimezone=UTC"/>
+    url="jdbc:mysql://localhost:3306/quizsystem?serverTimezone=UTC"/>
 </Context>

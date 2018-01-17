@@ -1,4 +1,4 @@
--- -----------------------------------------------------
+п»ї-- -----------------------------------------------------
 -- Database QuizSystem
 -- -----------------------------------------------------
 
@@ -152,102 +152,102 @@ VALUES (1);
 -- -----------------------------------------------------
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (1, 'Виберіть правильне твердження:', 1);
+VALUES (1, 'Р’РёР±РµСЂС–С‚СЊ РїСЂР°РІРёР»СЊРЅРµ С‚РІРµСЂРґР¶РµРЅРЅСЏ:', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (1, 'Choose right statement:', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (2, 'Чи можна наслідуватись від класу java.lang.Math?', 1);
+VALUES (2, 'Р§Рё РјРѕР¶РЅР° РЅР°СЃР»С–РґСѓРІР°С‚РёСЃСЊ РІС–Рґ РєР»Р°СЃСѓ java.lang.Math?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (2, 'Is it possible to extends java.lang.Math class?', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (3, 'Чи можна в конструкторі оператором return повернути значення?', 1);
+VALUES (3, 'Р§Рё РјРѕР¶РЅР° РІ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС– РѕРїРµСЂР°С‚РѕСЂРѕРј return РїРѕРІРµСЂРЅСѓС‚Рё Р·РЅР°С‡РµРЅРЅСЏ?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (3, 'Is it possible to return value in constructor?', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (4, 'В яку колекцію можна додавати елементы будь-якого типу?', 1);
+VALUES (4, 'Р’ СЏРєСѓ РєРѕР»РµРєС†С–СЋ РјРѕР¶РЅР° РґРѕРґР°РІР°С‚Рё РµР»РµРјРµРЅС‚С‹ Р±СѓРґСЊ-СЏРєРѕРіРѕ С‚РёРїСѓ?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (4, 'In what collection can you add items of any type?', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (5, 'Чи може динамічно розширюватись ArrayList при визначеному у конструкторі розмірі?', 1);
+VALUES (5, 'Р§Рё РјРѕР¶Рµ РґРёРЅР°РјС–С‡РЅРѕ СЂРѕР·С€РёСЂСЋРІР°С‚РёСЃСЊ ArrayList РїСЂРё РІРёР·РЅР°С‡РµРЅРѕРјСѓ Сѓ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС– СЂРѕР·РјС–СЂС–?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (5, 'Can ArrayList dynamically expand if the size is determined in the constructor?', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (6, 'Що перевіряє метод contains в класі Hashtable?', 1);
+VALUES (6, 'Р©Рѕ РїРµСЂРµРІС–СЂСЏС” РјРµС‚РѕРґ contains РІ РєР»Р°СЃС– Hashtable?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (6, 'What checks method contains in Hashtable class?', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (7, 'Виберіть найбільш підходяще твердження:', 1);
+VALUES (7, 'Р’РёР±РµСЂС–С‚СЊ РЅР°Р№Р±С–Р»СЊС€ РїС–РґС…РѕРґСЏС‰Рµ С‚РІРµСЂРґР¶РµРЅРЅСЏ:', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (7, 'Choose the most appropriate statement:', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (8, 'Що виконує метод insert(int offset, boolean b) класса String?', 1);
+VALUES (8, 'Р©Рѕ РІРёРєРѕРЅСѓС” РјРµС‚РѕРґ insert(int offset, boolean b) РєР»Р°СЃСЃР° String?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (8, 'What does the insert(int offset, boolean b) method from class String do?', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (9, 'Виберіть методи, які містить ArrayList', 1);
+VALUES (9, 'Р’РёР±РµСЂС–С‚СЊ РјРµС‚РѕРґРё, СЏРєС– РјС–СЃС‚РёС‚СЊ ArrayList', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (9, 'Choose the methods which are available in ArraList', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (10, 'Який метод вираховує хеш-коди ключів в класі IdentityHashMap?', 1);
+VALUES (10, 'РЇРєРёР№ РјРµС‚РѕРґ РІРёСЂР°С…РѕРІСѓС” С…РµС€-РєРѕРґРё РєР»СЋС‡С–РІ РІ РєР»Р°СЃС– IdentityHashMap?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (10, 'Which method calculates the key hash codes in the IdentityHashMap class?', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (11, 'Виключення якого типу викидають методи wait та sleep?', 1);
+VALUES (11, 'Р’РёРєР»СЋС‡РµРЅРЅСЏ СЏРєРѕРіРѕ С‚РёРїСѓ РІРёРєРёРґР°СЋС‚СЊ РјРµС‚РѕРґРё wait С‚Р° sleep?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (11, 'What type of exception is thrown by methods wait and sleep?', 2);
 
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (12, 'Виключення якого типу викидає метод read?', 1);
+VALUES (12, 'Р’РёРєР»СЋС‡РµРЅРЅСЏ СЏРєРѕРіРѕ С‚РёРїСѓ РІРёРєРёРґР°С” РјРµС‚РѕРґ read?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (12, 'What type of exception is thrown by method read?', 2);
 
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (13, 'Чи викидають виключення InterruptedException методи yield та notify?', 1);
+VALUES (13, 'Р§Рё РІРёРєРёРґР°СЋС‚СЊ РІРёРєР»СЋС‡РµРЅРЅСЏ InterruptedException РјРµС‚РѕРґРё yield С‚Р° notify?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (13, 'Do methods yield та notify throws InterruptedException?', 2);
+VALUES (13, 'Do methods yield С‚Р° notify throws InterruptedException?', 2);
 
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (14, 'Чи є виключення MyException1 checked, якщо воно наслідується від Exception?', 1);
+VALUES (14, 'Р§Рё С” РІРёРєР»СЋС‡РµРЅРЅСЏ MyException1 checked, СЏРєС‰Рѕ РІРѕРЅРѕ РЅР°СЃР»С–РґСѓС”С‚СЊСЃСЏ РІС–Рґ Exception?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (14, 'Is MyException1 checked if it is inherited from Exception?', 2);
 
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (15, 'Чи дасть ділення float на нуль ArithmeticException?', 1);
+VALUES (15, 'Р§Рё РґР°СЃС‚СЊ РґС–Р»РµРЅРЅСЏ float РЅР° РЅСѓР»СЊ ArithmeticException?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (15, 'Will division float by 0 lead to ArithmeticException?', 2);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (16, 'Якщо змінна оголошена в методі, чи повинна вона бути проініціалізована
-до свого використання, щоб компілятор не видав повідомлення про помилку?', 1);
+VALUES (16, 'РЇРєС‰Рѕ Р·РјС–РЅРЅР° РѕРіРѕР»РѕС€РµРЅР° РІ РјРµС‚РѕРґС–, С‡Рё РїРѕРІРёРЅРЅР° РІРѕРЅР° Р±СѓС‚Рё РїСЂРѕС–РЅС–С†С–Р°Р»С–Р·РѕРІР°РЅР°
+РґРѕ СЃРІРѕРіРѕ РІРёРєРѕСЂРёСЃС‚Р°РЅРЅСЏ, С‰РѕР± РєРѕРјРїС–Р»СЏС‚РѕСЂ РЅРµ РІРёРґР°РІ РїРѕРІС–РґРѕРјР»РµРЅРЅСЏ РїСЂРѕ РїРѕРјРёР»РєСѓ?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (16, 'If variable is declared in method, sould this variable be initialized before using
@@ -255,21 +255,21 @@ in order compiller will not throw message about error?', 2);
 
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (17, 'Чи може оператор логічного зсуву бути застосована до змінної типу float?', 1);
+VALUES (17, 'Р§Рё РјРѕР¶Рµ РѕРїРµСЂР°С‚РѕСЂ Р»РѕРіС–С‡РЅРѕРіРѕ Р·СЃСѓРІСѓ Р±СѓС‚Рё Р·Р°СЃС‚РѕСЃРѕРІР°РЅР° РґРѕ Р·РјС–РЅРЅРѕС— С‚РёРїСѓ float?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (17, 'Could operator >> be applied to float variable?', 2);
 
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (18, 'Яка максимальна довжина змінної в Java?', 1);
+VALUES (18, 'РЇРєР° РјР°РєСЃРёРјР°Р»СЊРЅР° РґРѕРІР¶РёРЅР° Р·РјС–РЅРЅРѕС— РІ Java?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (18, 'What maximum length of variable in Java?', 2);
 
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
-VALUES (19, 'Який модифікатор доступу метода Clone класу Object?', 1);
+VALUES (19, 'РЇРєРёР№ РјРѕРґРёС„С–РєР°С‚РѕСЂ РґРѕСЃС‚СѓРїСѓ РјРµС‚РѕРґР° Clone РєР»Р°СЃСѓ Object?', 1);
 
 INSERT INTO questiontranslate(questionId, questionText, languageId)
 VALUES (19, 'What access modifier of method Clone in Object class?', 2);
@@ -457,49 +457,49 @@ VALUES (1, 19);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (1, 'Метод intern () в разі, якщо рядку немає в пулі рядків, додає його туди і повертає посилання на цей рядок.', 1);
+VALUES (1, 'РњРµС‚РѕРґ intern () РІ СЂР°Р·С–, СЏРєС‰Рѕ СЂСЏРґРєСѓ РЅРµРјР°С” РІ РїСѓР»С– СЂСЏРґРєС–РІ, РґРѕРґР°С” Р№РѕРіРѕ С‚СѓРґРё С– РїРѕРІРµСЂС‚Р°С” РїРѕСЃРёР»Р°РЅРЅСЏ РЅР° С†РµР№ СЂСЏРґРѕРє.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (1, 'When the intern method is invoked, if the pool do not contain a string equal to this String object, this String object is added to the pool and a reference to this String object is returned.', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (2, 'Повертає true тоді, і тільки тоді, коли length() дорівнює 0.', 1);
+VALUES (2, 'РџРѕРІРµСЂС‚Р°С” true С‚РѕРґС–, С– С‚С–Р»СЊРєРё С‚РѕРґС–, РєРѕР»Рё length() РґРѕСЂС–РІРЅСЋС” 0.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (2, 'Returns true if, and only if, length() is 0.', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (3, 'Кодує рядок в послідовність байтів за допомогою charset платформи за замовчуванням, зберігаючи результат у новий масив байтів.', 1);
+VALUES (3, 'РљРѕРґСѓС” СЂСЏРґРѕРє РІ РїРѕСЃР»С–РґРѕРІРЅС–СЃС‚СЊ Р±Р°Р№С‚С–РІ Р·Р° РґРѕРїРѕРјРѕРіРѕСЋ charset РїР»Р°С‚С„РѕСЂРјРё Р·Р° Р·Р°РјРѕРІС‡СѓРІР°РЅРЅСЏРј, Р·Р±РµСЂС–РіР°СЋС‡Рё СЂРµР·СѓР»СЊС‚Р°С‚ Сѓ РЅРѕРІРёР№ РјР°СЃРёРІ Р±Р°Р№С‚С–РІ.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (3, 'Encodes this String into a sequence of bytes using the platforms default charset, storing the result into a new byte array.', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (4, 'Так, можна.', 1);
+VALUES (4, 'РўР°Рє, РјРѕР¶РЅР°.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (4, 'Yes, it is possible', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (5, 'Клас java.lang.Math оголошений як final, тобто наслідуватись від нього неможна.', 1);
+VALUES (5, 'РљР»Р°СЃ java.lang.Math РѕРіРѕР»РѕС€РµРЅРёР№ СЏРє final, С‚РѕР±С‚Рѕ РЅР°СЃР»С–РґСѓРІР°С‚РёСЃСЊ РІС–Рґ РЅСЊРѕРіРѕ РЅРµРјРѕР¶РЅР°.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (5, 'The class java.lang.Math is declared as final, that is, it can not be inherited from it.', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (6, 'В конструкторі в операторі return не допускається вказувати значення, що повертається.', 1);
+VALUES (6, 'Р’ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС– РІ РѕРїРµСЂР°С‚РѕСЂС– return РЅРµ РґРѕРїСѓСЃРєР°С”С‚СЊСЃСЏ РІРєР°Р·СѓРІР°С‚Рё Р·РЅР°С‡РµРЅРЅСЏ, С‰Рѕ РїРѕРІРµСЂС‚Р°С”С‚СЊСЃСЏ.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (6, 'In the constructor it is not allowed to specify a return value in the return statement.', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (7, 'В конструкторі класа оператором return можна повернути значення.', 1);
+VALUES (7, 'Р’ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС– РєР»Р°СЃР° РѕРїРµСЂР°С‚РѕСЂРѕРј return РјРѕР¶РЅР° РїРѕРІРµСЂРЅСѓС‚Рё Р·РЅР°С‡РµРЅРЅСЏ.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (7, 'In the class constructor, the return operator can return the value.', 2);
@@ -519,77 +519,77 @@ VALUES (9, 'a = new ArrayList<Double>()', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (10, 'Жоден з варіантів не вірний.', 1);
+VALUES (10, 'Р–РѕРґРµРЅ Р· РІР°СЂС–Р°РЅС‚С–РІ РЅРµ РІС–СЂРЅРёР№.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (10, 'None of the options is correct.', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (11, 'Ні.', 1);
+VALUES (11, 'РќС–.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (11, 'No', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (12, 'Так', 1);
+VALUES (12, 'РўР°Рє', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (12, 'Yes', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (13, 'Перевіряє наявність значень в списку keys', 1);
+VALUES (13, 'РџРµСЂРµРІС–СЂСЏС” РЅР°СЏРІРЅС–СЃС‚СЊ Р·РЅР°С‡РµРЅСЊ РІ СЃРїРёСЃРєСѓ keys', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (13, 'Check the presence of values in the keys list', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (14, 'Перевіряє наявність значень в класі Hashtable', 1);
+VALUES (14, 'РџРµСЂРµРІС–СЂСЏС” РЅР°СЏРІРЅС–СЃС‚СЊ Р·РЅР°С‡РµРЅСЊ РІ РєР»Р°СЃС– Hashtable', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (14, 'Check the presence of values in Hashtable class', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (15, 'Перевіряє наявність значень в списку values', 1);
+VALUES (15, 'РџРµСЂРµРІС–СЂСЏС” РЅР°СЏРІРЅС–СЃС‚СЊ Р·РЅР°С‡РµРЅСЊ РІ СЃРїРёСЃРєСѓ values', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (15, 'Check the presence of values in the values list', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (16, 'WeakHashMap зберігає пари "слабке посилання на ключ - значення"', 1);
+VALUES (16, 'WeakHashMap Р·Р±РµСЂС–РіР°С” РїР°СЂРё "СЃР»Р°Р±РєРµ РїРѕСЃРёР»Р°РЅРЅСЏ РЅР° РєР»СЋС‡ - Р·РЅР°С‡РµРЅРЅСЏ"', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (16, 'WeakHashMap contain "week reference on key - value" pairs', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (17, 'WeakHashMap зберігає пари "ключ - значення"', 1);
+VALUES (17, 'WeakHashMap Р·Р±РµСЂС–РіР°С” РїР°СЂРё "РєР»СЋС‡ - Р·РЅР°С‡РµРЅРЅСЏ"', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (17, 'WeakHashMap contain "key-value" pairs', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (18, 'Вставляє строкове представлення булевого аргументу в цю послідовність', 1);
+VALUES (18, 'Р’СЃС‚Р°РІР»СЏС” СЃС‚СЂРѕРєРѕРІРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРЅСЏ Р±СѓР»РµРІРѕРіРѕ Р°СЂРіСѓРјРµРЅС‚Сѓ РІ С†СЋ РїРѕСЃР»С–РґРѕРІРЅС–СЃС‚СЊ', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (18, 'Inserts the string representation of the boolean argument into this sequence.', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (19, 'Класс String є immutable та не містить метод insert()', 1);
+VALUES (19, 'РљР»Р°СЃСЃ String С” immutable С‚Р° РЅРµ РјС–СЃС‚РёС‚СЊ РјРµС‚РѕРґ insert()', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (19, 'The String class is immutable and does not contain method insert()', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (20, 'Вставляє строкове представлення char аргументу в цю послідовність.', 1);
+VALUES (20, 'Р’СЃС‚Р°РІР»СЏС” СЃС‚СЂРѕРєРѕРІРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРЅСЏ char Р°СЂРіСѓРјРµРЅС‚Сѓ РІ С†СЋ РїРѕСЃР»С–РґРѕРІРЅС–СЃС‚СЊ.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (20, 'Inserts the string representation of the char argument into this sequence.', 2);
@@ -675,13 +675,13 @@ VALUES (31, 'InterruptedException', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (32, 'Ні.', 1);
+VALUES (32, 'РќС–.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (32, 'No', 2);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (33, 'Так', 1);
+VALUES (33, 'РўР°Рє', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (33, 'Yes', 2);
@@ -689,19 +689,19 @@ VALUES (33, 'Yes', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (34, 'Ні.', 1);
+VALUES (34, 'РќС–.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (34, 'No', 2);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (35, 'Так', 1);
+VALUES (35, 'РўР°Рє', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (35, 'Yes', 2);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (35, 'MyException1 не може наслідуватись від Exception', 1);
+VALUES (35, 'MyException1 РЅРµ РјРѕР¶Рµ РЅР°СЃР»С–РґСѓРІР°С‚РёСЃСЊ РІС–Рґ Exception', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (35, 'MyException1 can not be inherited from Exception', 2);
@@ -709,33 +709,33 @@ VALUES (35, 'MyException1 can not be inherited from Exception', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (36, 'Так', 1);
+VALUES (36, 'РўР°Рє', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (36, 'Yes', 2);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (37, 'Ні.', 1);
+VALUES (37, 'РќС–.', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (37, 'No', 2);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (38, 'Так', 1);
+VALUES (38, 'РўР°Рє', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (38, 'Yes', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (39, 'Ні', 1);
+VALUES (39, 'РќС–', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (39, 'No', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (40, 'Не обовязкого', 1);
+VALUES (40, 'РќРµ РѕР±РѕРІСЏР·РєРѕРіРѕ', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (40, 'Not necessarily', 2);
@@ -743,14 +743,14 @@ VALUES (40, 'Not necessarily', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (41, 'Так', 1);
+VALUES (41, 'РўР°Рє', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (41, 'Yes', 2);
 
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (42, 'Ні', 1);
+VALUES (42, 'РќС–', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (42, 'No', 2);
@@ -770,19 +770,19 @@ INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (44, '1 GB', 2);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (45, '24 символа', 1);
+VALUES (45, '24 СЃРёРјРІРѕР»Р°', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (45, '24 symbols', 2);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (46, '256 символів', 1);
+VALUES (46, '256 СЃРёРјРІРѕР»С–РІ', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (46, '256 symbols', 2);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
-VALUES (47, 'Не обмежена', 1);
+VALUES (47, 'РќРµ РѕР±РјРµР¶РµРЅР°', 1);
 
 INSERT INTO answertranslate(answerId, answerText, languageId)
 VALUES (47, 'Not limited', 2);

@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class ControllerHelper {
     private static final Logger LOGGER = MyLogger.getLOGGER(ControllerHelper.class);
     private static ControllerHelper instance = null;
-    private HashMap<String, ICommand> commands = new HashMap<String, ICommand>();
+    private HashMap<String, ICommand> commands = new HashMap<>();
 
     /**
      * Fill in HashMap by commands in Constructor.
@@ -30,6 +30,9 @@ public class ControllerHelper {
         commands.put("admin", new AdminCommand());
         commands.put("logout", new LogoutCommand());
         commands.put("changeLocale", new ChangeLocaleCommand());
+        commands.put("subject", new SubjectCommand());
+        commands.put("startCreateTest", new StartCreateTestCommand());
+        commands.put("constructor", new ConstructorCommand());
     }
 
     public ICommand getCommand(HttpServletRequest request){

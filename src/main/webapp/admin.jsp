@@ -7,22 +7,37 @@
 		<div id="content">
 			<div id="main">
 
+			<table border='0' >
+				<tr>
+					<td width="60%">
+				
 				<form action="Testing" method="post">
 					<button type="submit" name="command" value="admin">Report "Students Score"</button>
 				</form>
+			
+				<br/>
+				<br/>
+					</td>
+					<td width="60%">
+				<form action="Testing" method="post">
+					<button type="submit" name="command" value="startCreateTest">Create new test</button>
+				</form>
+				
 			<br/>
 			<br/>
+					</td>
+				</tr>
+			</table>
+			
 			<c:choose>
 				<c:when test="${resultByLogin eq null}">
 				</c:when>
 			<c:otherwise>
-			<!--<form action="Testing" method="post">!-->
 				
-				<!--<style>
-				table {
-				table-layout: fixed;
-				width: 100%;
-				}</style>!-->
+				Report "Students Score"
+			<br/>
+			<br/>
+				
 				<table border='1' >
 				<tr>
 					<td width="80%">
@@ -52,12 +67,8 @@
 						<form method="get" action="Testing">
 						<table>
 							<tr>
-							<!--<div class="input"><input type="hidden" name="command" value="admin"></div>!-->
 							<c:forEach items="${pages}" var="pageNumber" >
-								<!--<td><a href="Testing">${pageNumber}</a></td>
-								<c:set var="pageNumber" value="${pageNumber}"/>!-->
 								<td><a href="Testing?command=admin&pageNumber=${pageNumber}">${pageNumber}</a></td>
-								<!--<input type="hidden" name="command" value="admin">!-->
 							</c:forEach>		
 							</tr>
 						</table>
@@ -68,46 +79,19 @@
 				
 				
 				
-				<!--<c:forEach items="${pages}" var="pageNumber" >
-				<form action="Testing" method="post">
-					<table>
-						<td>
-							
-							<td><a href="admin.jsp?pageNumber=${s}" action="Testing" type="submit" name="command" value="admin"> ${s}</a></td>
-							
-							<button type="submit" name="command" value="admin">${pageNumber}</button>
-						
-						</td>
-					</table>
-				</form>
-				</c:forEach>!-->
-				
-				
-				
 				<tr>
 					<c:if test="${not empty errorPassMessage}">
 						<c:out value="${errorPassMessage}"/>
 					</c:if>
 				</tr>
-			<!--</form>!-->
+			
 			</c:otherwise>
 			</c:choose>
 	</div>
 		</div>
-		<div id="sidebar">
-			<ul>
-				<li>
-					<h2>Subject </h2>
-					<ul>
-						<li><a href="quiz.jsp?subject_id=1">Classes, methods, types </a></li>
-						<li><a href="quiz.jsp?subject_id=2">Collections </a></li>
-						<li><a href="quiz.jsp?subject_id=3">Nested/Inner classes </a></li>
-						<li><a href="quiz.jsp?subject_id=4">Exceptions </a></li>
-					</ul>
-				</li>
-			</ul>
-		</div>
-		<div style="clear: both;">&nbsp;</div>
+		
+		<jsp:include page="sidebar.jsp"/>
+		
 	</div>
 	
 <jsp:include page="footer.jsp"/>

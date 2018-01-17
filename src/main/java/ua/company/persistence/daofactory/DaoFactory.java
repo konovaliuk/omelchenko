@@ -1,7 +1,6 @@
 package ua.company.persistence.daofactory;
 
 import ua.company.persistence.dao.*;
-import ua.company.persistence.datasource.ConnectionWithoutPool;
 import ua.company.persistence.idao.*;
 
 /**
@@ -17,7 +16,7 @@ public class DaoFactory {
     }
 
     public static IUserType getIUserType() {
-        return new UserTypeDao(new ConnectionWithoutPool().connect_to_database());
+        return new UserTypeDao();
     }
 
     public static ITest getITest() {
@@ -55,9 +54,4 @@ public class DaoFactory {
     public static IAnswerTranslate getIAnswerTranslate() {
         return new AnswerTranslateDao();
     }
-
-//    public static void closeConnection(Connection connection){
-//        new ConnectionWithoutPool().close(connection);
-//    }
-
 }

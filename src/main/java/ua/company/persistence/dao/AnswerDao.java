@@ -1,6 +1,6 @@
 package ua.company.persistence.dao;
 
-import ua.company.persistence.datasource.ConnectionWithoutPool;
+import ua.company.persistence.datasource.ConnectionPool;
 import ua.company.persistence.domain.Answer;
 import ua.company.persistence.idao.IAnswer;
 
@@ -20,11 +20,21 @@ public class AnswerDao implements IAnswer{
             " WHERE questionId=?";
     private static final String FIND_BY_ID = "SELECT * FROM " + NAME_TABLE +
             " WHERE answerId=?";
-    List <Answer> answers;
+    private static final String INSERT = "INSERT INTO " + NAME_TABLE
+            + " (isRight, questionId) VALUES (?, ?)";
+
+    private List <Answer> answers;
 
     public List<Answer> getAnswerByQuestionId(int questionId) {
-        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-        Connection connection = connectionWithoutPool.connect_to_database();
+
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         answers = new ArrayList<>();
         try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_QUESTIONID))
         {
@@ -42,15 +52,22 @@ public class AnswerDao implements IAnswer{
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connectionWithoutPool.close(connection);
+            connectionPool.close();
         }
         return null;
     }
 
     @Override
     public Answer getAnswerById(int answerId) {
-        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-        Connection connection = connectionWithoutPool.connect_to_database();
+
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         Answer answer = new Answer();
         try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID))
         {
@@ -66,8 +83,36 @@ public class AnswerDao implements IAnswer{
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connectionWithoutPool.close(connection);
+            connectionPool.close();
         }
         return null;
+    }
+
+    @Override
+    public int insertAnswer(int isRightAnswer, int questionId) {
+
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+            preparedStatement.setInt(1, isRightAnswer);
+            preparedStatement.setInt(2, questionId);
+            preparedStatement.executeUpdate();
+            try(ResultSet rs = preparedStatement.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.close();
+        }
+        return 0;
     }
 }

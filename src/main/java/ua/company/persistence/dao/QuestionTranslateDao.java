@@ -1,6 +1,6 @@
 package ua.company.persistence.dao;
 
-import ua.company.persistence.datasource.ConnectionWithoutPool;
+import ua.company.persistence.datasource.ConnectionPool;
 import ua.company.persistence.domain.QuestionTranslate;
 import ua.company.persistence.idao.IQuestionTranslate;
 
@@ -19,12 +19,22 @@ public class QuestionTranslateDao implements IQuestionTranslate {
     private static final String NAME_TABLE = "questiontranslate";
     private static final String FIND_BY_QUESTIONID_AND_LANGUAGEID = "SELECT * FROM " + NAME_TABLE +
             " WHERE questionId=? AND languageId=?";
+    private static final String INSERT = "INSERT INTO " + NAME_TABLE
+            + " (questionId,"
+            + " questionText,"
+            + " languageId)"
+            + " VALUES (?, ?, ?)";
 
     @Override
     public QuestionTranslate getQuestionTranslateByQuestionIdAndLanguageId(int questionId, int languageId) {
 
-        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-        Connection connection = connectionWithoutPool.connect_to_database();
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_QUESTIONID_AND_LANGUAGEID)) {
             preparedStatement.setInt(1, questionId);
             preparedStatement.setInt(2, languageId);
@@ -41,8 +51,36 @@ public class QuestionTranslateDao implements IQuestionTranslate {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connectionWithoutPool.close(connection);
+            connectionPool.close();
         }
         return null;
+    }
+
+    @Override
+    public boolean insertQuestionTranslate(int questionId, String questionText, int languageId) {
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+            preparedStatement.setInt(1, questionId);
+            preparedStatement.setString(2, questionText);
+            preparedStatement.setInt(3, languageId);
+            preparedStatement.executeUpdate();
+            try(ResultSet rs = preparedStatement.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            connectionPool.close();
+        }
+        return false;
     }
 }

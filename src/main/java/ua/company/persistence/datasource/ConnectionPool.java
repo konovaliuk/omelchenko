@@ -6,8 +6,6 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * DataSource.java - class which implements connection to Database.
@@ -17,21 +15,27 @@ import java.util.List;
  */
 public class ConnectionPool {
 
-    //private static final Logger logger = Logger.getLogger(DataSource.class);
+    private static final String RES_NAME = "java:comp/env/jdbc/quizsystem";
+    private static DataSource dataSource;
     private static ConnectionPool connectionPool = null;
-    private static Connection connection;
-    private List <Connection> availableConnections = new ArrayList();
+    private Connection connection;
 
     private ConnectionPool() {
-        initializeConnectionPool();
     }
 
-    private void initializeConnectionPool()
-    {
+    static {
         try {
-            availableConnections.add(createNewConnection().getConnection());
-        } catch (SQLException e) {
+            Context context = new InitialContext();
+            dataSource = (DataSource) context.lookup(RES_NAME);
+        } catch (NamingException e) {
             e.printStackTrace();
+        }
+        if (dataSource==null){
+            try {
+                throw new Exception("Datasource not found");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -42,55 +46,34 @@ public class ConnectionPool {
         return connectionPool;
     }
 
-    public static DataSource createNewConnection() {
-        DataSource ds=null;
-        try {
-//            Hashtable env = new Hashtable();
-//            env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-//            env.put(Context.PROVIDER_URL, "ldap://localhost:389/o=jnditutorial");
-
-                Context ctx = new InitialContext();
-            if (ctx == null)
-            {
-                throw new Exception("No context!");
-            }
-//            Context envContext = (Context) ctx.lookup("java:comp/env");
-//            ds = (DataSource) envContext.lookup("jdbc/QuizSystem");
-
-            ds = (DataSource) ctx.lookup("java:global/env/jdbc/QuizSystem");
-
-                if (ds == null) {
-                    throw new Exception("Data source not found!");
-                }
-        } catch (NamingException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ds;
+    public synchronized Connection getConnection() throws SQLException {
+        connection = dataSource.getConnection();
+        return connection;
     }
 
-    public Connection getConnection()
-    {
-        if(availableConnections.size() > 0)
-        {
-            connection = availableConnections.get(0);
-            availableConnections.remove(0);
-        }else {
-            initializeConnectionPool();
-            connection = availableConnections.get(0);
-            availableConnections.remove(0);
+    public void beginTransaction() {
+        try {
+            getConnection();
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-//        System.out.println(connection);
-        return connection;
-        //может вернуть null???
+    }
+
+    public void commit() {
+        try {
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void close() {
-        if (connection != null) {
-            availableConnections.add(connection);
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

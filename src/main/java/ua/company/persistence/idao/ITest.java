@@ -10,5 +10,8 @@ import ua.company.persistence.domain.Test;
  */
 public interface ITest {
     Test getTestById(int testId);
+    Test getTestBySubjectId(int subjectId, int testNumber);
     int getTestQuantity();
+    int getTestQuantity(int subjectId);
+    int insertTest (String testName, int timeLimit, int subjectId);
 }

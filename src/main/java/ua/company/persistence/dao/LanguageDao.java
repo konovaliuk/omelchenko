@@ -1,7 +1,7 @@
 package ua.company.persistence.dao;
 
 import org.apache.log4j.Logger;
-import ua.company.persistence.datasource.ConnectionWithoutPool;
+import ua.company.persistence.datasource.ConnectionPool;
 import ua.company.persistence.domain.Language;
 import ua.company.persistence.idao.ILanguage;
 import ua.company.service.logger.MyLogger;
@@ -26,8 +26,13 @@ public class LanguageDao implements ILanguage {
 
     @Override
     public int getIdByName(String locale) {
-        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-        Connection connection = connectionWithoutPool.connect_to_database();
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(FIND_ID_BY_NAME))
         {
@@ -42,7 +47,7 @@ public class LanguageDao implements ILanguage {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connectionWithoutPool.close(connection);
+            connectionPool.close();
         }
         return 0;
     }

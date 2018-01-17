@@ -12,4 +12,5 @@ import java.util.List;
  */
 public interface ITestQuestion {
     List<QuestionTranslate> getQuestionByTestId(int testId, int languageId);
+    boolean insertTestQuestion (int testId, int questionId);
 }

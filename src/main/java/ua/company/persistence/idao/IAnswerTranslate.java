@@ -13,4 +13,5 @@ import java.util.List;
  */
 public interface IAnswerTranslate {
     List<AnswerTranslate> getAnswerTranslateByAnswerIdAndLanguageId (List<Answer> answers, int languageId);
+    boolean insertQuestionTranslate (int answerId, String answerText, int languageId);
 }

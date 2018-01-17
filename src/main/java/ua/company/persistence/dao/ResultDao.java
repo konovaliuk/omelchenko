@@ -1,7 +1,7 @@
 package ua.company.persistence.dao;
 
 import ua.company.persistence.daofactory.DaoFactory;
-import ua.company.persistence.datasource.ConnectionWithoutPool;
+import ua.company.persistence.datasource.ConnectionPool;
 import ua.company.persistence.domain.Result;
 import ua.company.persistence.domain.Test;
 import ua.company.persistence.domain.User;
@@ -38,8 +38,13 @@ public class ResultDao implements IResult {
         ISubject iSubject = DaoFactory.getISubject();
         subjectName = iSubject.getSubjectNameById(test.getSubjectId());
 
-        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-        Connection connection = connectionWithoutPool.connect_to_database();
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
             preparedStatement.setString(1, user.getLogin());
@@ -51,7 +56,7 @@ public class ResultDao implements IResult {
         }catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connectionWithoutPool.close(connection);
+            connectionPool.close();
         }
         return false;
     }
@@ -59,8 +64,14 @@ public class ResultDao implements IResult {
     @Override
     public List<Result> getResults() {
         results = new ArrayList<>();
-        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-        Connection connection = connectionWithoutPool.connect_to_database();
+
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_RESULT);
              ResultSet rs = preparedStatement.executeQuery()) {
@@ -79,7 +90,7 @@ public class ResultDao implements IResult {
         }catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connectionWithoutPool.close(connection);
+            connectionPool.close();
         }
         return null;
     }

@@ -16,11 +16,6 @@ public class MyLogger extends Logger {
 
     public static Logger getLOGGER(Class cl) {
         Logger LOGGER = Logger.getLogger(cl);
-//        try {
-//            LOGGER.addAppender(new FileAppender(new SimpleLayout(), "log.txt"));
-//        } catch (IOException e) {
-//            LOGGER.log(Level.ERROR, "Не удалось создать файл лога из-за ошибки ввода-вывода.", e);
-//        }
         return LOGGER;
     }
 }

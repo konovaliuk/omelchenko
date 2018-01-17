@@ -17,6 +17,7 @@ public class ConfigManager {
     private static final String ANSWER = "ANSWER";
     private static final String ADMIN = "ADMIN";
     private static final String LOGOUT = "LOGOUT";
+    private static final String CONSTRUCTOR = "CONSTRUCTOR";
     private static final String BUNDLE_NAME = "config.config";
     private static ConfigManager instance;
     private ResourceBundle resourceBundle;
@@ -51,6 +52,10 @@ public class ConfigManager {
 
     public static String getLOGOUT() {
         return LOGOUT;
+    }
+
+    public static String getCONSTRUCTOR() {
+        return CONSTRUCTOR;
     }
 
     /**

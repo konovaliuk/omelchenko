@@ -1,6 +1,6 @@
 package ua.company.persistence.dao;
 
-import ua.company.persistence.datasource.ConnectionWithoutPool;
+import ua.company.persistence.datasource.ConnectionPool;
 import ua.company.persistence.domain.User;
 import ua.company.persistence.idao.IUser;
 
@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 
 /**
  * UserDao.java -
@@ -34,14 +33,6 @@ public class UserDao implements IUser {
     private static final String FIND_USERTYPEID_BY_lOGIN = "SELECT * FROM " + NAME_TABLE +
             " WHERE login=?";
 
-//    private Connection connection;
-
-//    public UserDao(Connection connection) {
-//        this.connection = connection;
-//    }
-
-//    private static final String FIND_BY_ID = "SELECT * FROM " + NAME_TABLE + " WHERE id=?";
-
     /**
      * Write to database new User.
      *
@@ -56,8 +47,14 @@ public class UserDao implements IUser {
     public User insertUser(String login, String email, String password, String country,
                            String gender, int usertypeId) {
 
-        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-        Connection connection = connectionWithoutPool.connect_to_database();
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, email);
@@ -80,7 +77,8 @@ public class UserDao implements IUser {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connectionWithoutPool.close(connection);
+            //connectionWithoutPool.close(connection);
+            connectionPool.close();
         }
         return null;
     }
@@ -91,8 +89,18 @@ public class UserDao implements IUser {
     @Override
     public User getUserByLoginAndPass(String login, String password) {
 
-        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-        Connection connection = connectionWithoutPool.connect_to_database();
+//        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
+//        Connection connection = connectionWithoutPool.connect_to_database();
+
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_lOGIN_AND_PASS)) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
@@ -112,14 +120,24 @@ public class UserDao implements IUser {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connectionWithoutPool.close(connection);
+            //connectionWithoutPool.close(connection);
+            connectionPool.close();
         }
         return null;
     }
 
     public int getIdByLogin(String login) {
-        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-        Connection connection = connectionWithoutPool.connect_to_database();
+
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+//        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
+//        Connection connection = connectionWithoutPool.connect_to_database();
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ID_BY_lOGIN)) {
             preparedStatement.setString(1, login);
             try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -130,15 +148,25 @@ public class UserDao implements IUser {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connectionWithoutPool.close(connection);
+            connectionPool.close();
+//            connectionWithoutPool.close(connection);
         }
         return 0;
     }
 
     @Override
     public int getUserTypeIdByLogin(String login) {
-        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-        Connection connection = connectionWithoutPool.connect_to_database();
+
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        Connection connection = null;
+        try {
+            connection = connectionPool.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+//        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
+//        Connection connection = connectionWithoutPool.connect_to_database();
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_USERTYPEID_BY_lOGIN)) {
             preparedStatement.setString(1, login);
             try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -149,21 +177,9 @@ public class UserDao implements IUser {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            connectionWithoutPool.close(connection);
+            connectionPool.close();
+//            connectionWithoutPool.close(connection);
         }
         return 0;
-    }
-
-
-    public boolean deleteUser() {
-        return false;
-    }
-
-    public boolean updateUser() {
-        return false;
-    }
-
-    public Collection selectCustomersTO() {
-        return null;
     }
 }

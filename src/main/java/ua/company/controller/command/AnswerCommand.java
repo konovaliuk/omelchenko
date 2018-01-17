@@ -3,10 +3,13 @@ package ua.company.controller.command;
 import org.apache.log4j.Logger;
 import ua.company.controller.config.ConfigManager;
 import ua.company.persistence.domain.*;
+import ua.company.service.emailgenerator.EmailSender;
+import ua.company.service.emailgenerator.EmailSenderImpl;
 import ua.company.service.logger.MyLogger;
 import ua.company.service.service.AuthService;
 import ua.company.service.service.AuthServiceImpl;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -27,6 +30,7 @@ public class AnswerCommand implements ICommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        LOGGER.info("Answer command.");
         String[] userAnswerId = request.getParameterValues("userAnswer");
         LOGGER.info("Receive right answers.");
 
@@ -34,7 +38,7 @@ public class AnswerCommand implements ICommand {
             AuthService authService = new AuthServiceImpl();
             LOGGER.info("Answer command was chosen.");
             LOGGER.info("Users answers are received.");
-            //quiz = (HashMap<Question, List<Answer>>) request.getSession().getAttribute("showQuiz");
+
             showQuiz = (HashMap<QuestionTranslate, List<AnswerTranslate>>) request.getSession().
                     getAttribute("showQuiz");
 
@@ -52,6 +56,14 @@ public class AnswerCommand implements ICommand {
 
             LOGGER.info("Writing to database..." + test);
             authService.writeResult(user, test, score);
+
+
+            EmailSender emailSender = new EmailSenderImpl(user.getEmail());
+            try {
+                emailSender.sendEmail(user.getLogin(), score);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
 
             LOGGER.info("Delete quiz and test attributes.");
             request.getSession().removeAttribute("quiz");

@@ -23,12 +23,14 @@ public class AdminCommand implements ICommand {
     private TreeMap<String, Double> resultByLogin;
     private String page;
     private int numberRecords;
+    private String requestedPage;
 
 
-    AuthService authService = new AuthServiceImpl();
+//    AuthService authService = new AuthServiceImpl();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        AuthService authService = new AuthServiceImpl();
         LOGGER.info("Admin command.");
         LOGGER.info("Check in database if this is really admin.");
         User user = (User) request.getSession().getAttribute("user");
@@ -36,7 +38,7 @@ public class AdminCommand implements ICommand {
             resultByLogin = authService.getResults();
 
             LOGGER.info("Pagination.");
-            String requestedPage = request.getParameter("pageNumber");
+            requestedPage = request.getParameter("pageNumber");
             LOGGER.info("Requested page is " + requestedPage);
             numberRecords = resultByLogin.size();
             PaginationHelper paginationHelper = new PaginationHelper(numberRecords, requestedPage);

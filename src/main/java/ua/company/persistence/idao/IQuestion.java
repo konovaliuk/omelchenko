@@ -9,5 +9,6 @@ import ua.company.persistence.domain.Question;
  * @version 1.0 15.12.2017
  */
 public interface IQuestion {
+    int insertQuestion(int subjectId);
     Question getQuestionById(int questionId);
 }

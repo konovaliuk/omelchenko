@@ -15,11 +15,11 @@
 				<li>
 					<h2><fmt:message key="sidebar.subject" bundle="${lang}"/> </h2>
 					<ul>
-						<li><a href="quiz.jsp?subject_id=1"><fmt:message key="sidebar.s1" bundle="${lang}"/> </a></li>
-						<li><a href="quiz.jsp?subject_id=2"><fmt:message key="sidebar.s2" bundle="${lang}"/> </a></li>
-						<li><a href="quiz.jsp?subject_id=3"><fmt:message key="sidebar.s3" bundle="${lang}"/> </a></li>
-						<li><a href="quiz.jsp?subject_id=4"><fmt:message key="sidebar.s4" bundle="${lang}"/> </a></li>
-						<li><a href="quiz.jsp?subject_id=4"><fmt:message key="sidebar.s5" bundle="${lang}"/> </a></li>
+						<li><a href="Testing?command=subject&subject_id=1"><fmt:message key="sidebar.s1" bundle="${lang}"/> </a></li>
+						<li><a href="Testing?command=subject&subject_id=2"><fmt:message key="sidebar.s2" bundle="${lang}"/> </a></li>
+						<li><a href="Testing?command=subject&subject_id=3"><fmt:message key="sidebar.s3" bundle="${lang}"/> </a></li>
+						<li><a href="Testing?command=subject&subject_id=4"><fmt:message key="sidebar.s4" bundle="${lang}"/> </a></li>
+						<li><a href="Testing?command=subject&subject_id=5"><fmt:message key="sidebar.s5" bundle="${lang}"/> </a></li>
 					</ul>
 				</li>
 			</ul>

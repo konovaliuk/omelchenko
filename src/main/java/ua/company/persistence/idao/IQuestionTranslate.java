@@ -10,4 +10,5 @@ import ua.company.persistence.domain.QuestionTranslate;
  */
 public interface IQuestionTranslate {
     QuestionTranslate getQuestionTranslateByQuestionIdAndLanguageId(int questionId, int languageId);
+    boolean insertQuestionTranslate (int questionId, String questionText, int languageId);
 }

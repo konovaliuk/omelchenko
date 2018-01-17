@@ -2,8 +2,6 @@ package ua.company.persistence.idao;
 
 import ua.company.persistence.domain.User;
 
-import java.util.Collection;
-
 /**
  * IUser.java - interface for class UserDao.
  *
@@ -14,8 +12,5 @@ public interface IUser {
     User insertUser(String login, String email, String password, String country,
                     String gender, int usertypeId);
     User getUserByLoginAndPass(String login, String password);
-    boolean deleteUser();
-    boolean updateUser();
-    Collection selectCustomersTO();
     int getUserTypeIdByLogin(String login);
 }

@@ -25,6 +25,8 @@ public class MessageManager {
     private static final String EMPTY_lOGIN = "EMPTY_lOGIN";
     private static final String INVALID_GENDER = "INVALID_GENDER";
     private static final String INVALID_RETYPEPSW = "INVALID_RETYPEPSW";
+    private static final String EMPTY_SUBJECT = "EMPTY_SUBJECT";
+    private static final String CONSTRUCTOR_ERROR = "CONSTRUCTOR_ERROR";
 
     public static String getLoginError() {
         return LOGIN_ERROR;
@@ -72,6 +74,14 @@ public class MessageManager {
 
     public static String getInvalidRetypepsw() {
         return INVALID_RETYPEPSW;
+    }
+
+    public static String getEmptySubjectError(){
+        return EMPTY_SUBJECT;
+    }
+
+    public static String getConstructorError() {
+        return CONSTRUCTOR_ERROR;
     }
 
     public static MessageManager getInstance(){

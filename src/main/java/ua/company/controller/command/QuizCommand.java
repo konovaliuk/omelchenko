@@ -29,39 +29,44 @@ public class QuizCommand implements ICommand {
     private String page;
     private String language;
     private Locale locale;
+    private User user;
+    private Subject subject;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Quiz command was chosen.");
-        User user = (User) request.getSession().getAttribute("user");
-
+        user = (User) request.getSession().getAttribute("user");
+        subject = (Subject) request.getSession().getAttribute("subject");
         language = (String) request.getSession().getAttribute("language");
         LOGGER.info("Current language: " + language);
-        if (language!=null){
+        if (language != null) {
             locale = new Locale(language);
-        }else {
+        } else {
             locale = new Locale(AppManager.getInstance().getProperty(AppManager.getDefaultLanguage()));
         }
         LOGGER.info("Current locale: " + locale);
 
-        if (user!=null){
+        if (user != null) {
             AuthService authService = new AuthServiceImpl();
             LOGGER.info("Generating random test.");
-            test = authService.generateTest();
-            LOGGER.info("Create questions and answers for test.");
-            showQuiz = authService.getQuestionAndAnswer(test, locale);
-            request.getSession().setAttribute("test", test);
-//            request.setAttribute("test", test);
-//            request.setAttribute("showQuiz", showQuiz);
-            request.getSession().setAttribute("showQuiz", showQuiz);
-            request.setAttribute("start", true);
-            page = ConfigManager.getInstance().getProperty(ConfigManager.getTEST());
-        } else{
+            test = authService.generateTest(subject);
+
+            if (test != null) {
+                LOGGER.info("Create questions and answers for test.");
+                showQuiz = authService.getQuestionAndAnswer(test, locale);
+                request.getSession().setAttribute("test", test);
+                request.getSession().setAttribute("showQuiz", showQuiz);
+                request.setAttribute("start", true);
+            } else {
+                request.setAttribute("errorPassMessage", MessageManager.getInstance(locale).
+                        getProperty(MessageManager.getEmptySubjectError()));
+            }
+        } else {
             LOGGER.info("User is not authorized.");
-            request.setAttribute("errorPassMessage", MessageManager.getInstance().
+            request.setAttribute("errorPassMessage", MessageManager.getInstance(locale).
                     getProperty(MessageManager.getStartQuizError()));
-            page = ConfigManager.getInstance().getProperty(ConfigManager.getTEST());
         }
+        page = ConfigManager.getInstance().getProperty(ConfigManager.getTEST());
         return page;
     }
 }

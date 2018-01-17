@@ -25,11 +25,19 @@
 		<tr>
 			<c:if test="${not empty errorPassMessage}">
 				<c:out value="${errorPassMessage}"/>
+				<br/>
+				<br/>
 			</c:if>
 		</tr>
 
-		<br/>
-		<br/>
+		<tr>
+			<c:if test="${not empty subject}">
+				<fmt:message key="quiz.subject" bundle="${lang}"/>${subject.subjectName}
+				<br/>
+				<br/>
+			</c:if>
+		</tr>
+
 		
 		<c:choose>
 		<c:when test="${not empty score}" >
@@ -76,7 +84,7 @@
 						<c:forEach items="${test.value}" var="answ" >
 								<tr>
 								<td>
-									<input type="checkbox" name="userAnswer" value="${answ.answerId}"  ${(param.userAnswer eq "null")?'checked':'_'}/> ${answ.answerText}
+									<input type="checkbox" name="userAnswer" value="${answ.answerId}"  ${(param.userAnswer eq "on")?'checked':'_'}/> ${answ.answerText}
 								</td>
 								</tr>
 						</c:forEach>

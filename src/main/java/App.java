@@ -10,9 +10,9 @@ public class App {
 //        Logger LOGGER = MyLogger.getLOGGER(App.class);
 //        LOGGER.info("Page was updated.");
 
-        //Checking connection pool - failed
+//        Checking connection pool - failed
 //        IUser iUser = DaoFactory.getIUser();
-//        User user = iUser.getUserByLoginAndPass("admin", "rosronaldo");
+//        User user = iUser.getUserByLoginAndPass("admin", "Rosronaldo1");
 //        System.out.println(user);
 
         //Checking registration - success
