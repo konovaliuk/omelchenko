@@ -1,8 +1,10 @@
 package ua.company.persistence.dao;
 
+import org.apache.log4j.Logger;
 import ua.company.persistence.datasource.ConnectionPool;
 import ua.company.persistence.domain.User;
 import ua.company.persistence.idao.IUser;
+import ua.company.service.logger.MyLogger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +12,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * UserDao.java -
+ * UserDao.java - process requests to table user in database.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 15.12.2017
  */
 public class UserDao implements IUser {
-
+    private static final Logger LOGGER = MyLogger.getLOGGER(UserDao.class);
     private static final String NAME_TABLE = "user";
     private static final String INSERT = "INSERT INTO " + NAME_TABLE
             + " (login,"
@@ -34,14 +36,16 @@ public class UserDao implements IUser {
             " WHERE login=?";
 
     /**
-     * Write to database new User.
+     * Write to database new registered User.
      *
      * @param login      - login of user.
-     * @param password   - password of user.
+     * @param password   - password of user. Password must start of string, contain at least one digit, lower case and upper case letter, at \
+     * least 8 symbols and no whitespace allowed.
      * @param email      - email of user.
      * @param country    - country of user inhabitance.
      * @param gender     - user gender.
      * @param usertypeId - user type Id.
+     * @return inserted user in case of successful insertion and null vice versa
      */
     @Override
     public User insertUser(String login, String email, String password, String country,
@@ -52,7 +56,7 @@ public class UserDao implements IUser {
         try {
             connection = connectionPool.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("There is no connection with database: ", e);
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
@@ -75,31 +79,29 @@ public class UserDao implements IUser {
 
             return user;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("User was not inserted in database: ", e);
         } finally {
-            //connectionWithoutPool.close(connection);
             connectionPool.close();
         }
         return null;
     }
 
     /**
-     * Get user from database by Login and Password.
+     * Find user in database by Login and Password.
+     *
+     * @param login login of user.
+     * @param password password of user.
+     * @return user in case of successful search and null vice versa
      */
     @Override
     public User getUserByLoginAndPass(String login, String password) {
-
-//        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-//        Connection connection = connectionWithoutPool.connect_to_database();
-
         ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
         Connection connection = null;
         try {
             connection = connectionPool.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("There is no connection with database: ", e);
         }
-
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_lOGIN_AND_PASS)) {
             preparedStatement.setString(1, login);
@@ -118,14 +120,19 @@ public class UserDao implements IUser {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Can not get user by login and password: ", e);
         } finally {
-            //connectionWithoutPool.close(connection);
             connectionPool.close();
         }
         return null;
     }
 
+    /**
+     * Find user Id in database by Login.
+     *
+     * @param login login of user.
+     * @return Id of user in case of successful search and 0 vice versa
+     */
     public int getIdByLogin(String login) {
 
         ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
@@ -133,11 +140,8 @@ public class UserDao implements IUser {
         try {
             connection = connectionPool.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("There is no connection with database: ", e);
         }
-
-//        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-//        Connection connection = connectionWithoutPool.connect_to_database();
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ID_BY_lOGIN)) {
             preparedStatement.setString(1, login);
             try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -146,14 +150,19 @@ public class UserDao implements IUser {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Can not get Id by login: ", e);
         } finally {
             connectionPool.close();
-//            connectionWithoutPool.close(connection);
         }
         return 0;
     }
 
+    /**
+     * Find user type Id in database by Login.
+     *
+     * @param login login of user.
+     * @return Id of user type in case of successful search and 0 vice versa
+     */
     @Override
     public int getUserTypeIdByLogin(String login) {
 
@@ -162,11 +171,8 @@ public class UserDao implements IUser {
         try {
             connection = connectionPool.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("There is no connection with database: ", e);
         }
-
-//        ConnectionWithoutPool connectionWithoutPool = new ConnectionWithoutPool();
-//        Connection connection = connectionWithoutPool.connect_to_database();
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_USERTYPEID_BY_lOGIN)) {
             preparedStatement.setString(1, login);
             try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -175,10 +181,9 @@ public class UserDao implements IUser {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Can not get User type Id by login: ", e);
         } finally {
             connectionPool.close();
-//            connectionWithoutPool.close(connection);
         }
         return 0;
     }

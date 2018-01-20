@@ -10,10 +10,21 @@ import org.apache.log4j.Logger;
  */
 public class MyLogger extends Logger {
 
+    /**
+     * Constructor - creating new object of class {@link MyLogger} with parameter
+     *
+     * @param name - name
+     */
     protected MyLogger(String name) {
         super(name);
     }
 
+    /**
+     * Create log4j logger
+     *
+     * @param cl name of Class
+     * @return logger
+     */
     public static Logger getLOGGER(Class cl) {
         Logger LOGGER = Logger.getLogger(cl);
         return LOGGER;

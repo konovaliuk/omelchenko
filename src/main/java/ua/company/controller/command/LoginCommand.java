@@ -1,6 +1,7 @@
 package ua.company.controller.command;
 
 import org.apache.log4j.Logger;
+import ua.company.service.exception.NoSuchUserException;
 import ua.company.service.logger.MyLogger;
 import ua.company.service.service.AuthService;
 import ua.company.service.service.AuthServiceImpl;
@@ -28,6 +29,14 @@ public class LoginCommand implements ICommand {
     private boolean access;
     private Locale locale;
 
+    /**
+     * Receive from user login and password and send to classes {@link Validator} for
+     * validation and {@link AuthService} for login.
+     *
+     * @param request data received from servlet
+     * @param response data received from servlet
+     * @return path to user login page
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Login command was chosen.");
@@ -48,10 +57,14 @@ public class LoginCommand implements ICommand {
 
         if (validator.isValidLogin()) {
             access=authService.getAccess(login, password);
-            //if such login and password is present in database
+            LOGGER.info("If such login and password is present in database.");
             if (access) {
                 LOGGER.info("Login and password are present in database.");
-                request.getSession().setAttribute("user", authService.login(login, password));
+                try {
+                    request.getSession().setAttribute("user", authService.login(login, password));
+                } catch (NoSuchUserException e) {
+                    LOGGER.error("There is no such User in database. ", e);
+                }
                 page = ConfigManager.getInstance().getProperty(ConfigManager.getMAIN());
             } else {
                 LOGGER.info("Login and password are not present in database.");

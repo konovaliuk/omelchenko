@@ -27,13 +27,6 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!--<login-config>-->
-        <!--<auth-method>BASIC</auth-method>-->
-    <!--</login-config>-->
-
-    <!--<error-page>-->
-    <!--<location>error.htm</location>-->
-    <!--</error-page>-->
 
     <filter>
         <filter-name>EncodingFilter</filter-name>

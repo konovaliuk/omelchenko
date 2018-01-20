@@ -27,10 +27,27 @@ INSERT INTO user(login, email, password, country, gender, usertypeId)
 VALUES ('lovelace', 'ada.lovelace@gmail.com', 'Firstprogram1', 'Great Britain', 'female', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('Stepanenko O.', 'stepanenko@gmail.com', 'Stepanenko1', 'Ukraine', 'male', 2);
+VALUES ('Piotrowski', 'Piotrowski@gmail.com', 'Piotrowski1', 'France', 'male', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('Petrenko.V', 'petrenko@gmail.com', 'Petrenko1', 'Ukraine', 'female', 2);
+VALUES ('Stepanenko', 'Stepanenko@gmail.com', 'Stepanenko1', 'Ukraine', 'female', 2);
+
+INSERT INTO user(login, email, password, country, gender, usertypeId)
+VALUES ('Myronenko', 'Myronenko@gmail.com', 'Myronenko1', 'Ukraine', 'male', 2);
+
+INSERT INTO user(login, email, password, country, gender, usertypeId)
+VALUES ('Ivanenko', 'Ivanenko@gmail.com', 'Ivanenko1', 'Ukraine', 'female', 2);
+
+INSERT INTO user(login, email, password, country, gender, usertypeId)
+VALUES ('Petrenko', 'Petrenko@gmail.com', 'Petrenko1', 'Ukraine', 'male', 2);
+
+INSERT INTO user(login, email, password, country, gender, usertypeId)
+VALUES ('Sydorenko', 'Sydorenko@gmail.com', 'Sydorenko', 'Ukraine', 'female', 2);
+
+INSERT INTO user(login, email, password, country, gender, usertypeId)
+VALUES ('Oleksandrenko', 'Oleksandrenko@gmail.com', 'Oleksandrenko1', 'Ukraine', 'male', 2);
+
+
 -- -----------------------------------------------------
 -- Table subject
 -- -----------------------------------------------------
@@ -966,4 +983,34 @@ VALUES ('admin', 'test #1', 'All subjects', 60.0);
 
 INSERT INTO result (login, testName, subjectName, score)
 VALUES ('admin', 'test #3', 'All subjects', 80.0);
+
+INSERT INTO result (login, testName, subjectName, score)
+VALUES ('Piotrowski', 'test #1', 'All subjects',100.0);
+
+INSERT INTO result (login, testName, subjectName, score)
+VALUES ('Stepanenko', 'test #2', 'All subjects', 90.0);
+
+INSERT INTO result (login, testName, subjectName, score)
+VALUES ('Stepanenko', 'test #1', 'All subjects', 70.0);
+
+INSERT INTO result (login, testName, subjectName, score)
+VALUES ('Myronenko', 'test #1', 'All subjects', 70.0);
+
+INSERT INTO result (login, testName, subjectName, score)
+VALUES ('Myronenko', 'test #1', 'All subjects', 70.0);
+
+INSERT INTO result (login, testName, subjectName, score)
+VALUES ('Myronenko', 'test #3', 'All subjects', 80.0);
+
+INSERT INTO result (login, testName, subjectName, score)
+VALUES ('Ivanenko', 'test #3', 'All subjects', 90.0);
+
+INSERT INTO result (login, testName, subjectName, score)
+VALUES ('Petrenko', 'test #1', 'All subjects', 80.0);
+
+INSERT INTO result (login, testName, subjectName, score)
+VALUES ('Sydorenko', 'test #2', 'All subjects', 100.0);
+
+INSERT INTO result (login, testName, subjectName, score)
+VALUES ('Oleksandrenko', 'test #2', 'All subjects', 80.0);
 

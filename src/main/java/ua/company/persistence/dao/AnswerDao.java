@@ -1,8 +1,10 @@
 package ua.company.persistence.dao;
 
+import org.apache.log4j.Logger;
 import ua.company.persistence.datasource.ConnectionPool;
 import ua.company.persistence.domain.Answer;
 import ua.company.persistence.idao.IAnswer;
+import ua.company.service.logger.MyLogger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,19 +14,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Администратор on 13.12.2017.
+ * AnswerDao.java - process requests to table answer in database.
+ *
+ * @author Ruslan Omelchenko
+ * @version 1.0 13.12.2017
  */
-public class AnswerDao implements IAnswer{
+public class AnswerDao implements IAnswer {
+
+    /**
+     * Field class {@Link MyLogger}
+     */
+    private static final Logger LOGGER = MyLogger.getLOGGER(AnswerDao.class);
+    /**
+     * Field name of table
+     */
     private static final String NAME_TABLE = "answer";
+    /**
+     * SQL query to find answer by question Id
+     */
     private static final String FIND_BY_QUESTIONID = "SELECT * FROM " + NAME_TABLE +
             " WHERE questionId=?";
+    /**
+     * SQL query to find answer by Id
+     */
     private static final String FIND_BY_ID = "SELECT * FROM " + NAME_TABLE +
             " WHERE answerId=?";
+    /**
+     * SQL query to insert answer in table
+     */
     private static final String INSERT = "INSERT INTO " + NAME_TABLE
             + " (isRight, questionId) VALUES (?, ?)";
-
+    /**
+     * field list of answers
+     */
     private List <Answer> answers;
 
+    /**
+     * Find answers in database for question received.
+     *
+     * @param questionId Id of question
+     * @return list of answers in case of successful search and null vice versa
+     */
     public List<Answer> getAnswerByQuestionId(int questionId) {
 
         ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
@@ -32,7 +62,7 @@ public class AnswerDao implements IAnswer{
         try {
             connection = connectionPool.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("There is no connection with database: ", e);
         }
 
         answers = new ArrayList<>();
@@ -50,13 +80,19 @@ public class AnswerDao implements IAnswer{
                 return answers;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Can not get answer by questionId from database: ", e);
         } finally {
             connectionPool.close();
         }
         return null;
     }
 
+    /**
+     * Find answer in database according to answer Id.
+     *
+     * @param answerId Id of answer
+     * @return Answer in case of successful search and null vice versa
+     */
     @Override
     public Answer getAnswerById(int answerId) {
 
@@ -65,7 +101,7 @@ public class AnswerDao implements IAnswer{
         try {
             connection = connectionPool.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("There is no connection with database: ", e);
         }
 
         Answer answer = new Answer();
@@ -81,13 +117,20 @@ public class AnswerDao implements IAnswer{
                 return answer;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Can not get answer by questionId from database: ", e);
         } finally {
             connectionPool.close();
         }
         return null;
     }
 
+    /**
+     * Insert parameters of answer for question in table answer.
+     *
+     * @param isRightAnswer indicate if this answer is right
+     * @param questionId Id of question for which answer was inserted
+     * @return Id of inserted Answer in case of successful insertion and 0 vice versa
+     */
     @Override
     public int insertAnswer(int isRightAnswer, int questionId) {
 
@@ -96,7 +139,7 @@ public class AnswerDao implements IAnswer{
         try {
             connection = connectionPool.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("There is no connection with database: ", e);
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
@@ -109,7 +152,7 @@ public class AnswerDao implements IAnswer{
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Answer was not inserted in database: ", e);
         } finally {
             connectionPool.close();
         }

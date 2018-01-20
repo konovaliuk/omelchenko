@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Answer.java -
+ * AnswerCommand.java - process answers for quiz questions from students.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 22.12.2017
@@ -28,6 +28,14 @@ public class AnswerCommand implements ICommand {
     private String page;
     private double score;
 
+    /**
+     * Send to the class {@link AuthService} answers from user and receive wrong answer and score
+     * of passed quiz. Pass to the class {@link EmailSender} score.
+     *
+     * @param request data received from servlet
+     * @param response data received from servlet
+     * @return path to quiz page
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Answer command.");
@@ -52,29 +60,24 @@ public class AnswerCommand implements ICommand {
             LOGGER.info("Get user and test from session in order to write in database results.");
             User user = (User) request.getSession().getAttribute("user");
             Test test = (Test) request.getSession().getAttribute("test");
-//            Test test = (Test) request.getAttribute("testResult");
 
             LOGGER.info("Writing to database..." + test);
             authService.writeResult(user, test, score);
-
 
             EmailSender emailSender = new EmailSenderImpl(user.getEmail());
             try {
                 emailSender.sendEmail(user.getLogin(), score);
             } catch (MessagingException e) {
-                e.printStackTrace();
+                LOGGER.error("Email can not be sent: ", e);
             }
 
             LOGGER.info("Delete quiz and test attributes.");
             request.getSession().removeAttribute("quiz");
             request.getSession().removeAttribute("test");
-
             page = ConfigManager.getInstance().getProperty(ConfigManager.getTEST());
 
         }else{
             LOGGER.info("User did not start to answer.");
-//            request.setAttribute("errorPassMessage", MessageManager.getInstance().
-//                    getProperty(MessageManager.getFinishQuizError()));
             request.getSession().removeAttribute("quiz");
             request.getSession().removeAttribute("test");
             page = ConfigManager.getInstance().getProperty(ConfigManager.getTEST());

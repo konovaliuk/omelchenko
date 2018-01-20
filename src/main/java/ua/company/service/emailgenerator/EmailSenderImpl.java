@@ -10,7 +10,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 /**
- * EmailSenderImpl.java -
+ * EmailSenderImpl.java - class for sending e-mail to users about their result.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 14.01.2018
@@ -21,10 +21,21 @@ public class EmailSenderImpl implements EmailSender{
     private String emailTo;
     private String message;
 
+    /**
+     * Constructor - creation new object of class {@link EmailSender} with parameters
+     *
+     * @param emailTo e-mail of user where e-mail will be sent
+     */
     public EmailSenderImpl(String emailTo) {
         this.emailTo = emailTo;
     }
 
+    /**
+     * Send e-mail to user who finished quiz
+     *
+     * @param name login of user
+     * @param score the result of passed quiz
+     */
     @Override
     public void sendEmail(String name, double score) throws MessagingException {
         LOGGER.info("Sending email to " + name +"...");
@@ -53,18 +64,35 @@ public class EmailSenderImpl implements EmailSender{
 
         msg.setContent(message, "text/html; charset=UTF-8");
         Transport.send(msg);
-
     }
 
+    /**
+     * MyAuthenticator.java - class for authentication during sending e-mail to users
+     * about their result.
+     *
+     * @author Ruslan Omelchenko
+     * @version 1.0 14.01.2018
+     */
     class MyAuthenticator extends Authenticator {
         private String user;
         private String password;
 
+        /**
+         * Constructor - creation new object of class {@link MyAuthenticator} with parameters
+         *
+         * @param user - login for access to mail
+         * @param password - password of access to mail
+         */
         MyAuthenticator(String user, String password) {
             this.user = user;
             this.password = password;
         }
 
+        /**
+         * Get PasswordAuthentication class
+         *
+         * @return PasswordAuthentication class
+         */
         public PasswordAuthentication getPasswordAuthentication() {
             String user = this.user;
             String password = this.password;

@@ -1,9 +1,9 @@
 package ua.company.controller.controller;
 
-
 import org.apache.log4j.Logger;
-import ua.company.service.logger.MyLogger;
 import ua.company.controller.command.ICommand;
+import ua.company.controller.config.ConfigManager;
+import ua.company.service.logger.MyLogger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,42 +21,58 @@ import java.io.IOException;
  */
 public class TestingServlet extends HttpServlet {
     private static final Logger LOGGER = MyLogger.getLOGGER(TestingServlet.class);
-
     private String page;
     private ControllerHelper controllerHelper = ControllerHelper.getInstance();
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-        process(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    /**
+     * Pass parameters to method process.
+     *
+     * @param request  servlet request
+     * @param response servlet response
+     * @throws IOException      if stream cannot be written to or closed.
+     * @throws ServletException if errors are occurred in servlet.
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         process(request, response);
     }
 
     /**
-     * Processes requests for both HTTP GET and POST methods.
+     * Pass parameters to method process.
      *
      * @param request  servlet request
      * @param response servlet response
+     * @throws IOException if stream cannot be written to or closed.
+     * @throws ServletException if errors are occurred in servlet.
      */
-    private void process(HttpServletRequest request, HttpServletResponse response) {
-        LOGGER.info("Servlet received info from page.");
-
-        ICommand command = controllerHelper.getCommand(request);
-        page = command.execute(request, response);
-        LOGGER.info("Servlet forward to page " + page);
-
-        //RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-        RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-        try {
-            dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            //Fixme
-            //e.printStackTrace();
-        } catch (IOException e) {
-            //Fixme
-            //e.printStackTrace();
-        }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        process(request, response);
     }
 
+    /**
+     * Processes requests for both HTTP GET and POST methods and forward to required page.
+     *
+     * @param request  servlet request
+     * @param response servlet response
+     * @throws IOException if stream cannot be written to or closed.
+     * @throws ServletException if errors are occurred in servlet.
+     */
+    private void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        LOGGER.info("Servlet received info from page.");
+        try {
+
+            ICommand command = controllerHelper.getCommand(request);
+            page = command.execute(request, response);
+            LOGGER.info("Servlet forward to page " + page);
+        } catch (ServletException e) {
+            LOGGER.error("Exception was occurred in Servlet: ", e);
+            page = ConfigManager.getInstance().getProperty(ConfigManager.getERROR());
+        } catch (IOException e) {
+            LOGGER.error("IOException was occurred: ", e);
+            page = ConfigManager.getInstance().getProperty(ConfigManager.getERROR());
+        }
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+        dispatcher.forward(request, response);
+    }
 }

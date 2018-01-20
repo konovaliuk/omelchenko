@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * StartTestCommand.java - receive request from user, manage actions deal with quiz start
+ * QuizCommand.java - receive request from user, manage actions deal with quiz start
  * and return appropriate page.
  *
  * @author Ruslan Omelchenko
@@ -32,6 +32,13 @@ public class QuizCommand implements ICommand {
     private User user;
     private Subject subject;
 
+    /**
+     * Receive from {@link AuthService} class quiz and pass for display to user.
+     *
+     * @param request data received from servlet
+     * @param response data received from servlet
+     * @return path to quiz page
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Quiz command was chosen.");

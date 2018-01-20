@@ -4,12 +4,13 @@ import org.apache.log4j.Logger;
 import ua.company.persistence.daofactory.DaoFactory;
 import ua.company.persistence.domain.*;
 import ua.company.persistence.idao.*;
+import ua.company.service.exception.NoSuchUserException;
 import ua.company.service.logger.MyLogger;
 
 import java.util.*;
 
 /**
- * AuthServiceImpl.java -
+ * AuthServiceImpl.java - class of business logic. Connect dao layer and commands classes.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 22.12.2017
@@ -41,27 +42,56 @@ public class AuthServiceImpl implements AuthService {
     private TreeMap<String, Double> resultByLogin;
     private int languageId;
 
+    /**
+     * Pass to dao layer parameters of user for registration.
+     * Set {@Link User#access} field to true.
+     *
+     * @param login      - login of user.
+     * @param email      - email of user.
+     * @param password   - password of user. Password must start of string, contain at least one digit, lower case and upper case letter, at \
+     * least 8 symbols and no whitespace allowed.
+     * @param country    - country of user inhabitance.
+     * @param gender     - user gender.
+     * @return inserted user in case of successful insertion and null vice versa
+     */
     @Override
     public User registration(String login, String email, String password, String country, String gender) {
         IUser iUser = DaoFactory.getIUser();
-        //IUserType iUserType = DaoFactory.getIUserType();
-        //UserType userType = iUserType.getUserTypeById(STUDENT_TYPE_ID);
         User user = iUser.insertUser(login, email, password, country, gender, STUDENT_TYPE_ID);
-        user.setAccess(true);
+        if (user!=null){
+            user.setAccess(true);
+        }
         return user;
     }
 
+    /**
+     * Pass to dao layer parameters of user for login.
+     * Set {@Link User#access} field to true.
+     *
+     * @param login login of user.
+     * @param password password of user.
+     * @throws NoSuchUserException if there is no such user in database
+     * @return user in case of successful search
+     */
     @Override
-    public User login(String login, String password) {
+    public User login(String login, String password) throws NoSuchUserException {
         IUser iUser = DaoFactory.getIUser();
         User user = iUser.getUserByLoginAndPass(login, password);
-        user.setAccess(true);
         if (Objects.nonNull(user)) {
+            user.setAccess(true);
             return user;
+        } else {
+            throw new NoSuchUserException("There is no such User in database");
         }
-        return null;
     }
 
+    /**
+     * Pass to dao layer parameters of user for login to check of presence this user in database.
+     *
+     * @param login login of user.
+     * @param password password of user.
+     * @return true if user with such login and password is registered and false vice versa
+     */
     @Override
     public boolean getAccess(String login, String password) {
         if (DaoFactory.getIUser().getUserByLoginAndPass(login, password) == null) {
@@ -70,6 +100,12 @@ public class AuthServiceImpl implements AuthService {
         return true;
     }
 
+    /**
+     * Generate by random id of quiz and pass to dao layer to find quiz in database
+     *
+     * @param subject - required subject of quiz.
+     * @return created quiz in case of successful search and null vice versa
+     */
     @Override
     public Test generateTest(Subject subject) {
         ITest iTest = DaoFactory.getITest();
@@ -88,12 +124,19 @@ public class AuthServiceImpl implements AuthService {
                 return null;
             }
             testNumber = random.nextInt(maxTestNumber);
-            LOGGER.info("Number of test which was choosen: " + testNumber);
+            LOGGER.info("Number of test which was chosen: " + testNumber);
             test = iTest.getTestBySubjectId(subject.getSubjectId(), testNumber);
         }
         return test;
     }
 
+    /**
+     * Get questions and answers of given test taking into account required language
+     *
+     * @param test - required quiz.
+     * @param locale - required language.
+     * @return map of questions and answers for display to user
+     */
     @Override
     public HashMap<QuestionTranslate, List<AnswerTranslate>> getQuestionAndAnswer(Test test, Locale locale) {
 
@@ -110,7 +153,6 @@ public class AuthServiceImpl implements AuthService {
         IAnswer iAnswer = DaoFactory.getIAnswer();
         IAnswerTranslate iAnswerTranslate = DaoFactory.getIAnswerTranslate();
 
-//        calculationResult = new HashMap<>();
         showQuiz = new HashMap<>();
         for (QuestionTranslate questionTranslate : questionsTranslate) {
             answers = iAnswer.getAnswerByQuestionId(questionTranslate.getQuestionId());
@@ -118,11 +160,17 @@ public class AuthServiceImpl implements AuthService {
                     (answers, languageId);
 
             showQuiz.put(questionTranslate, answersTranslate);
-//            calculationResult.put(questionTranslate, answers);
         }
         return showQuiz;
     }
 
+    /**
+     * Identify wrong answers of user
+     *
+     * @param showQuiz - map of questions and answers
+     * @param userAnswers - array of user answers for questions
+     * @return list of wrong answers
+     */
     @Override
     public List findWrongAnswers(HashMap<QuestionTranslate, List<AnswerTranslate>> showQuiz, String[] userAnswers) {
         IAnswer iAnswer = DaoFactory.getIAnswer();
@@ -160,6 +208,11 @@ public class AuthServiceImpl implements AuthService {
         return wrongAnswers;
     }
 
+    /**
+     * Calculate score of passed quiz
+     *
+     * @return results of passed quiz
+     */
     @Override
     public double getScore() {
         double result;
@@ -167,40 +220,83 @@ public class AuthServiceImpl implements AuthService {
         return result;
     }
 
+    /**
+     * Pass to dao layer results of tests for writing to database
+     *
+     * @param user - user who passed the quiz
+     * @param test - passed quiz
+     * @param score - result of passed quiz
+     */
     @Override
     public void writeResult(User user, Test test, double score) {
         IResult iResult = DaoFactory.getIResult();
         iResult.insertResult(user, test, score);
     }
 
+    /**
+     * Pass to dao layer login of user to get his type and check if type is admin
+     *
+     * @param login - login of user
+     * @return true if type is admin and false vice versa
+     */
     @Override
     public boolean getUserTypeId(String login) {
         IUser iUser = DaoFactory.getIUser();
         return (iUser.getUserTypeIdByLogin(login) == ADMIN_TYPE_ID);
     }
 
+    /**
+     * Calculate average score of passed tests by students
+     *
+     * @return results of passed tests by students
+     */
     @Override
     public TreeMap getResults() {
+        double totalPoints;
+        double avScore;
+        int totalTestNumber;
         IResult iResult = DaoFactory.getIResult();
         results = iResult.getResults();
         resultByLogin = new TreeMap<>();
         for (Result result : results) {
-            if (resultByLogin.containsKey(result.getLogin())) {
-                double avScore = (result.getScore() + resultByLogin.get(result.getLogin())) / 2;
-                resultByLogin.put(result.getLogin(), avScore);
-            } else {
-                resultByLogin.put(result.getLogin(), result.getScore());
+            if (!resultByLogin.containsKey(result.getLogin())) {
+            String student = result.getLogin();
+            totalPoints = 0;
+            totalTestNumber = 0;
+            for (Result resultStudent : results) {
+                if (student.equals(resultStudent.getLogin())){
+                    totalPoints = totalPoints + resultStudent.getScore();
+                    totalTestNumber++;
+                }
+            }
+            avScore = Math.round(totalPoints / (double)totalTestNumber);
+            resultByLogin.put(result.getLogin(), avScore);
             }
         }
         return resultByLogin;
     }
 
+    /**
+     * Pass to dao layer subject Id in order to get Subject entity
+     *
+     * @param subjectId - subject Id
+     * @return subject
+     */
     @Override
     public Subject getSubject(int subjectId) {
         ISubject iSubject = DaoFactory.getISubject();
         return iSubject.getSubjectById(subjectId);
     }
 
+    /**
+     * Process writing to database new test
+     *
+     * @param questionsArr - list of questions
+     * @param subjectsArr - list of subjects
+     * @param answersEngArr - list of answers in English
+     * @param answersUkrArr - list of answers in Ukrainian
+     * @param isRightArr - list of sign which answer is right
+     */
     @Override
     public void writeTest(List<List<String>> questionsArr, List<String> subjectsArr, List<List<String>> answersEngArr,
                           List<List<String>> answersUkrArr, List<List<String>> isRightArr) {
@@ -220,6 +316,12 @@ public class AuthServiceImpl implements AuthService {
         writeTestQuestion(testId, questionsId);
     }
 
+    /**
+     * Process writing to database new question
+     *
+     * @param subjectName - name of subject
+     * @return Id of inserted question in case of successful insertion and 0 vice versa
+     */
     private int writeQuestion(String subjectName) {
         LOGGER.info("Write to question table.");
         ISubject iSubject = DaoFactory.getISubject();
@@ -227,6 +329,12 @@ public class AuthServiceImpl implements AuthService {
         return iQuestion.insertQuestion(iSubject.getSubjectIdByName(subjectName));
     }
 
+    /**
+     * Process writing to database new question in different languages
+     *
+     * @param questionId - question Id
+     * @param questions - questions which will be written
+     */
     private void writeQuestionTranslate(int questionId, List<String> questions) {
         LOGGER.info("Write to questiontranslate table.");
         IQuestionTranslate iQuestionTranslate = DaoFactory.getIQuestionTranslate();
@@ -235,6 +343,13 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    /**
+     * Process writing to database new answers
+     *
+     * @param isRightAnswer - sign whether the answer is right
+     * @param questionId - question Id
+     * @return list of answers Id
+     */
     private List<Integer> writeAnswer(List<String> isRightAnswer, int questionId) {
         LOGGER.info("Write to answer table.");
         List<Integer> answerId = new ArrayList<>();
@@ -251,15 +366,29 @@ public class AuthServiceImpl implements AuthService {
         return answerId;
     }
 
+    /**
+     * Process writing to database new answers in different languages
+     *
+     * @param answerId - answer Id
+     * @param answersEngArr - list of answers in English
+     * @param answersUkrArr - list of answers in Ukrainian
+     */
     private void writeAnswerTranslate(List<Integer> answerId, List<String> answersEngArr, List<String> answersUkrArr) {
         LOGGER.info("Write to answertranslate table.");
         IAnswerTranslate iAnswerTranslate = DaoFactory.getIAnswerTranslate();
         for (int i = 0; i < answerId.size(); i++) {
-            iAnswerTranslate.insertQuestionTranslate(answerId.get(0), answersUkrArr.get(0), UKRAINIAN_ID);
-            iAnswerTranslate.insertQuestionTranslate(answerId.get(0), answersEngArr.get(0), ENGLISH_ID);
+            iAnswerTranslate.insertAnswerTranslate(answerId.get(0), answersUkrArr.get(0), UKRAINIAN_ID);
+            iAnswerTranslate.insertAnswerTranslate(answerId.get(0), answersEngArr.get(0), ENGLISH_ID);
         }
     }
 
+    /**
+     * Process writing to database new test
+     *
+     * @param testName - name of test
+     * @param subjectsArr - list of tests subjects
+     * @return Id of test if test was inserted and 0 vice versa
+     */
     private int writeNewTest(String testName, List<String> subjectsArr) {
         LOGGER.info("Write to test table.");
         String subjectName="";
@@ -276,6 +405,12 @@ public class AuthServiceImpl implements AuthService {
         return iTest.insertTest(testName, TIME_LIMIT, iSubject.getSubjectIdByName(subjectName));
     }
 
+    /**
+     * Process writing to database questions of new test
+     *
+     * @param testId - test Id
+     * @param questionsId - questions Id
+     */
     private void writeTestQuestion(int testId, List<Integer> questionsId){
         LOGGER.info("Write to testquestion table.");
         ITestQuestion iTestQuestion = DaoFactory.getITestQuestion();

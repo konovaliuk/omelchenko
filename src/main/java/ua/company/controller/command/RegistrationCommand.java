@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Locale;
 
 /**
- * RegistrationCommand.java - receive request from user, manage actions deal with user registration
+ * RegistrationCommand.java - receive request and data from user, manage actions deal with user registration
  * and return appropriate page.
  *
  * @author Ruslan Omelchenko
@@ -31,6 +31,14 @@ public class RegistrationCommand implements ICommand {
     private String page;
     private boolean registration;
 
+    /**
+     * Receive from user data necessary for registration, send them to classes {@link Validator} for
+     * validation and {@link AuthService} for registration.
+     *
+     * @param request data received from servlet
+     * @param response data received from servlet
+     * @return path to user login page
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Registration command was chosen.");
@@ -59,7 +67,7 @@ public class RegistrationCommand implements ICommand {
 
         if (validator.isValid()){
             LOGGER.info("Data entered by User are valid.");
-            //whether user with such login and password is already present in database
+            LOGGER.info("Check whether user with such login and password is already present in database.");
             registration = !authService.getAccess(login, password);
             if(registration){
                 User user = authService.registration(login, email, password, country, gender);

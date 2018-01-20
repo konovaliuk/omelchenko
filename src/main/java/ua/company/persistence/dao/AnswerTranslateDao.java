@@ -1,9 +1,11 @@
 package ua.company.persistence.dao;
 
+import org.apache.log4j.Logger;
 import ua.company.persistence.datasource.ConnectionPool;
 import ua.company.persistence.domain.Answer;
 import ua.company.persistence.domain.AnswerTranslate;
 import ua.company.persistence.idao.IAnswerTranslate;
+import ua.company.service.logger.MyLogger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,22 +15,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * AnswerTranslateDao.java -
+ * AnswerTranslateDao.java - process requests to table answertranslate in database.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 11.01.2018
  */
 public class AnswerTranslateDao implements IAnswerTranslate {
+
+    /**
+     * Field class {@Link MyLogger}
+     */
+    private static final Logger LOGGER = MyLogger.getLOGGER(AnswerTranslateDao.class);
+    /**
+     * Field name of table
+     */
     private static final String NAME_TABLE = "answerTranslate";
-    private static final String FIND_BY_QUESTIONID = "SELECT * FROM " + NAME_TABLE +
+    /**
+     * SQL query to find answer by Id and language Id
+     */
+    private static final String FIND_BY_ANSWERID = "SELECT * FROM " + NAME_TABLE +
             " WHERE answerId=? AND languageId=?";
+    /**
+     * SQL query to insert answer in table
+     */
     private static final String INSERT = "INSERT INTO " + NAME_TABLE
             + " (answerId,"
             + " answerText,"
             + " languageId)"
             + " VALUES (?, ?, ?)";
+    /**
+     * List of answers in different languages
+     */
     private List<AnswerTranslate> answersTranslate;
 
+    /**
+     * Find answers in database by answer Id and required language.
+     *
+     * @param answers list of answers
+     * @param languageId Id of language
+     * @return list of answers of required language in case of successful search and null vice versa
+     */
     @Override
     public List<AnswerTranslate> getAnswerTranslateByAnswerIdAndLanguageId(List<Answer> answers, int languageId) {
 
@@ -37,11 +63,11 @@ public class AnswerTranslateDao implements IAnswerTranslate {
         try {
             connection = connectionPool.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("There is no connection with database: ", e);
         }
 
         answersTranslate = new ArrayList<>();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_QUESTIONID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ANSWERID)) {
             preparedStatement.setInt(2, languageId);
             for (Answer answer : answers) {
                 preparedStatement.setInt(1, answer.getAnswerId());
@@ -58,22 +84,30 @@ public class AnswerTranslateDao implements IAnswerTranslate {
             }
             return answersTranslate;
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Can not get answer by answerId and languageId from database: ", e);
         } finally {
             connectionPool.close();
         }
         return null;
     }
 
+    /**
+     * Insert answer for question in table answertranslate.
+     *
+     * @param answerId Id of answer which is inserted
+     * @param answerText text of answer
+     * @param languageId Id of language
+     * @return true if answer was inserted and false vice versa
+     */
     @Override
-    public boolean insertQuestionTranslate(int answerId, String answerText, int languageId) {
+    public boolean insertAnswerTranslate(int answerId, String answerText, int languageId) {
 
         ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
         Connection connection = null;
         try {
             connection = connectionPool.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("There is no connection with database: ", e);
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
@@ -87,7 +121,7 @@ public class AnswerTranslateDao implements IAnswerTranslate {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Answer was not inserted in table answertranslate: ", e);
         } finally {
             connectionPool.close();
         }

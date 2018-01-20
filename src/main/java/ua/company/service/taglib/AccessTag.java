@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.tagext.TagSupport;
 
 /**
- * AccessTag.java -
+ * AccessTag.java - class describe custom tag.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 08.01.2018
@@ -16,6 +16,11 @@ import javax.servlet.jsp.tagext.TagSupport;
 public class AccessTag extends TagSupport {
     private static final Logger LOGGER = MyLogger.getLOGGER(AccessTag.class);
 
+    /**
+     * Create custom tag for access to part of jsp page
+     *
+     * @return 0 or 1 which mean skip or include body of custom tag
+     */
     @Override
     public int doStartTag() {
         HttpSession session = pageContext.getSession();

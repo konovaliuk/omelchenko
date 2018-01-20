@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ConstructorCommand.java -
+ * ConstructorCommand.java - process new test, questions and answers which was inputted by admin.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 16.01.2018
@@ -23,27 +23,28 @@ public class ConstructorCommand implements ICommand {
     private static final Logger LOGGER = MyLogger.getLOGGER(ConstructorCommand.class);
     private String subject;
     private List<String> subjectsArr;
-
     private String question;
     private String questionUkr;
     private List<String> questions;
     private List<List<String>> questionsArr;
-
     private List<String> answersEng;
     private List<List<String>> answersEngArr;
-
     private List<String> answersUkr;
     private List<List<String>> answersUkrArr;
-
     private List<String> isRight;
     private List<List<String>> isRightArr;
-
-    //private TreeMap<String, List<String>> questionSubject;
-    //private TreeMap<List<String>, List<String>> answers;
-
     private String page;
     private Integer questionNumber = 0;
 
+    /**
+     * Receive from user questions and answers for creating new test and pass for
+     * processing to {@link AuthService}.
+     *
+     * @param request data received from servlet
+     * @param response data received from servlet
+     * @return path to admin page when quiz creation was finished and constructor page when
+     * quiz creating is in process or data entered by admin are invalid.
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Constructor command.");

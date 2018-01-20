@@ -76,7 +76,7 @@
 					<option value="3"><fmt:message key="sidebar.s3" bundle="${lang}"/></option>
 					<option value="4"><fmt:message key="sidebar.s4" bundle="${lang}"/></option>
 					<option value="5"><fmt:message key="sidebar.s5" bundle="${lang}"/></option>
-					<!--<value=${(param.subject eq null)?'':param.subject}/>!-->
+					<value=${(param.subject eq null)?'':param.subject}/>
 				</select>			
 			<br>
 			</br>
@@ -89,7 +89,7 @@
 				(mark the right answers)
 			</td>
 			<td> 
-				<input type='checkbox' name='isRight1' ${param.isRight1 eq 'on'?'checked':'_'} />
+				<input type='checkbox' name='isRight1' />
 			</td>
 			<td>
 				<textarea cols='25' rows='5' name='answer1'></textarea>
@@ -114,7 +114,7 @@
 				Answer #2
 			</td>
 			<td> 
-				<input type='checkbox' name='isRight2' ${param.isRight2 eq 'on'?'checked':'_'} />
+				<input type='checkbox' name='isRight2' />
 			</td>
 			<td>
 				<textarea cols='25' rows='5' name='answer2'></textarea>
@@ -140,7 +140,7 @@
 				Answer #3
 			</td>
 			<td> 
-				<input type='checkbox' name='isRight3' ${param.isRight3 eq 'on'?'checked':'_'} />
+				<input type='checkbox' name='isRight3' />
 			</td>
 			
 			<td>
@@ -167,7 +167,7 @@
 				Answer #4
 			</td>
 			<td> 
-				<input type='checkbox' name='isRight4' ${param.isRight4 eq 'on'?'checked':'_'} />
+				<input type='checkbox' name='isRight4' />
 			</td>
 			
 			
@@ -196,7 +196,7 @@
 				Answer #5
 			</td>
 			<td> 
-				<input type='checkbox' name='isRight5' ${param.isRight5 eq 'on'?'checked':'_'} />
+				<input type='checkbox' name='isRight5' />
 			</td>
 
 			<td>

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * SubjectCommand.java -
+ * SubjectCommand.java - process user choice of quiz subject.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 13.01.2018
@@ -22,6 +22,13 @@ public class SubjectCommand implements ICommand {
     private String page;
     private Subject subject;
 
+    /**
+     * Receive from user quiz subject and set it to session.
+     *
+     * @param request data received from servlet
+     * @param response data received from servlet
+     * @return path to quiz page
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("Subject command.");

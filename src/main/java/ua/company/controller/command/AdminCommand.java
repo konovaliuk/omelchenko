@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.TreeMap;
 
 /**
- * AdministratorCommand.java -
+ * AdminCommand.java - get from database results of quiz by every student and display report.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 22.12.2017
@@ -25,9 +25,13 @@ public class AdminCommand implements ICommand {
     private int numberRecords;
     private String requestedPage;
 
-
-//    AuthService authService = new AuthServiceImpl();
-
+    /**
+     * Receive from class {@link AuthService} result of students quiz and display them to admin.
+     *
+     * @param request data received from servlet
+     * @param response data received from servlet
+     * @return path to admin page
+     */
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         AuthService authService = new AuthServiceImpl();
@@ -36,7 +40,6 @@ public class AdminCommand implements ICommand {
         User user = (User) request.getSession().getAttribute("user");
         if (authService.getUserTypeId(user.getLogin())) {
             resultByLogin = authService.getResults();
-
             LOGGER.info("Pagination.");
             requestedPage = request.getParameter("pageNumber");
             LOGGER.info("Requested page is " + requestedPage);

@@ -8,7 +8,7 @@ import javax.servlet.*;
 import java.io.IOException;
 
 /**
- * CharFilter.java -
+ * CharFilter.java - filter which set up default encoding.
  *
  * @author Ruslan Omelchenko
  * @version 1.0 06.01.2018
@@ -22,6 +22,16 @@ public class CharFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
     }
 
+    /**
+     * Receive from current encoding and if it is differ from default set up
+     * default encoding.
+     *
+     * @param servletRequest data received from servlet
+     * @param servletResponse data received from servlet
+     * @param filterChain invoke the resource at the end of the chain.
+     * @throws IOException if stream cannot be written to or closed.
+     * @throws ServletException if errors are occurred in servlet.
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
