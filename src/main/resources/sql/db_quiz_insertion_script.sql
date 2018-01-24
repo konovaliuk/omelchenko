@@ -15,37 +15,37 @@ INSERT INTO usertype(usertype) VALUES('admin'), ('student');
 -- -----------------------------------------------------
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('admin', 'ruslan.omelchenko.irtcits@gmail.com', 'Rosronaldo1', 'Ukraine', 'male', 1);
+VALUES ('admin', 'ruslan.omelchenko.irtcits@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'Ukraine', 'male', 1);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('einstein', 'albert.einstein@gmail.com', 'Quantum1', 'Germany', 'male', 2);
+VALUES ('einstein', 'albert.einstein@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'Germany', 'male', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('geits', 'bill.gates@gmail.com', 'Microsoft1', 'USA', 'male', 2);
+VALUES ('geits', 'bill.gates@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'USA', 'male', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('lovelace', 'ada.lovelace@gmail.com', 'Firstprogram1', 'Great Britain', 'female', 2);
+VALUES ('lovelace', 'ada.lovelace@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'Great Britain', 'female', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('Piotrowski', 'Piotrowski@gmail.com', 'Piotrowski1', 'France', 'male', 2);
+VALUES ('Piotrowski', 'Piotrowski@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'France', 'male', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('Stepanenko', 'Stepanenko@gmail.com', 'Stepanenko1', 'Ukraine', 'female', 2);
+VALUES ('Stepanenko', 'Stepanenko@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'Ukraine', 'female', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('Myronenko', 'Myronenko@gmail.com', 'Myronenko1', 'Ukraine', 'male', 2);
+VALUES ('Myronenko', 'Myronenko@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'Ukraine', 'male', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('Ivanenko', 'Ivanenko@gmail.com', 'Ivanenko1', 'Ukraine', 'female', 2);
+VALUES ('Ivanenko', 'Ivanenko@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'Ukraine', 'female', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('Petrenko', 'Petrenko@gmail.com', 'Petrenko1', 'Ukraine', 'male', 2);
+VALUES ('Petrenko', 'Petrenko@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'Ukraine', 'male', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('Sydorenko', 'Sydorenko@gmail.com', 'Sydorenko', 'Ukraine', 'female', 2);
+VALUES ('Sydorenko', 'Sydorenko@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'Ukraine', 'female', 2);
 
 INSERT INTO user(login, email, password, country, gender, usertypeId)
-VALUES ('Oleksandrenko', 'Oleksandrenko@gmail.com', 'Oleksandrenko1', 'Ukraine', 'male', 2);
+VALUES ('Oleksandrenko', 'Oleksandrenko@gmail.com', 'd6dcfc985fc5ce1f00d2f60854856a22', 'Ukraine', 'male', 2);
 
 
 -- -----------------------------------------------------
