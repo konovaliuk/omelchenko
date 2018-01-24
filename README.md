@@ -20,7 +20,7 @@ The application requires:
 $ git clone https://github.com/rosrossito/QuizSystem.git
 
 ## Go into the repository
-$ cd .../RapidTesting
+$ cd .../QuizSystem
 
 ## Build war-archive with the application:
 $ mvn clean package

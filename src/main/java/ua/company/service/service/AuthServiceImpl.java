@@ -7,6 +7,7 @@ import ua.company.persistence.domain.*;
 import ua.company.persistence.idao.*;
 import ua.company.service.exception.NoSuchUserException;
 import ua.company.service.logger.MyLogger;
+import ua.company.service.passwordConverter.PasswordConverter;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -60,8 +61,9 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public User registration(String login, String email, String password, String country, String gender) {
+        String passwordConverted = PasswordConverter.passwordConverter(password);
         IUser iUser = DaoFactory.getIUser();
-        User user = iUser.insertUser(login, email, password, country, gender, STUDENT_TYPE_ID);
+        User user = iUser.insertUser(login, email, passwordConverted, country, gender, STUDENT_TYPE_ID);
         if (user != null) {
             user.setAccess(true);
         }
@@ -79,8 +81,9 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public User login(String login, String password) throws NoSuchUserException {
+        String passwordConverted = PasswordConverter.passwordConverter(password);
         IUser iUser = DaoFactory.getIUser();
-        User user = iUser.getUserByLoginAndPass(login, password);
+        User user = iUser.getUserByLoginAndPass(login, passwordConverted);
         if (Objects.nonNull(user)) {
             user.setAccess(true);
             return user;
@@ -98,7 +101,8 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public boolean getAccess(String login, String password) {
-        if (DaoFactory.getIUser().getUserByLoginAndPass(login, password) == null) {
+        String passwordConverted = PasswordConverter.passwordConverter(password);
+        if (DaoFactory.getIUser().getUserByLoginAndPass(login, passwordConverted) == null) {
             return false;
         }
         return true;
