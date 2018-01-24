@@ -10,6 +10,7 @@ import ua.company.service.service.AuthServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,13 +35,14 @@ public class ConstructorCommand implements ICommand {
     private List<String> isRight;
     private List<List<String>> isRightArr;
     private String page;
+    private String testName;
     private Integer questionNumber = 0;
 
     /**
      * Receive from user questions and answers for creating new test and pass for
      * processing to {@link AuthService}.
      *
-     * @param request data received from servlet
+     * @param request  data received from servlet
      * @param response data received from servlet
      * @return path to admin page when quiz creation was finished and constructor page when
      * quiz creating is in process or data entered by admin are invalid.
@@ -52,7 +54,6 @@ public class ConstructorCommand implements ICommand {
         question = request.getParameter("question");
         questionUkr = request.getParameter("questionUkr");
         subject = request.getParameter("subject");
-
         LOGGER.info("Parameters: subject - " + subject + "answer1 - " + request.getParameter("answer1") +
                 "answer2 - " + request.getParameter("answer2") +
                 "answerUkr1 - " + request.getParameter("answer1Ukr") +
@@ -61,7 +62,10 @@ public class ConstructorCommand implements ICommand {
         if (!question.equals("") && !questionUkr.equals("") && !request.getParameter("answer1").equals("") &&
                 !request.getParameter("answer2").equals("") && !request.getParameter("answer1Ukr").equals("") &&
                 !request.getParameter("answer2Ukr").equals("")) {
-
+            if (testName==null) {
+                testName = request.getParameter("nameoftest");
+            }
+            LOGGER.info("Getting from request name of test: " + testName);
             if (questionsArr == null) {
                 questionsArr = new ArrayList<>();
                 subjectsArr = new ArrayList<>();
@@ -85,21 +89,28 @@ public class ConstructorCommand implements ICommand {
 
             answersEng.add(request.getParameter("answer1"));
             answersEng.add(request.getParameter("answer2"));
-            answersEng.add(request.getParameter("answer3"));
-            answersEng.add(request.getParameter("answer4"));
-            answersEng.add(request.getParameter("answer5"));
-
             answersUkr.add(request.getParameter("answer1Ukr"));
             answersUkr.add(request.getParameter("answer2Ukr"));
-            answersUkr.add(request.getParameter("answer3Ukr"));
-            answersUkr.add(request.getParameter("answer4Ukr"));
-            answersUkr.add(request.getParameter("answer5Ukr"));
-
             isRight.add(request.getParameter("isRight1"));
             isRight.add(request.getParameter("isRight2"));
-            isRight.add(request.getParameter("isRight3"));
-            isRight.add(request.getParameter("isRight4"));
-            isRight.add(request.getParameter("isRight5"));
+
+            if(!request.getParameter("answer3").equals("") && !request.getParameter("answer3Ukr").equals("")){
+                answersEng.add(request.getParameter("answer3"));
+                answersUkr.add(request.getParameter("answer3Ukr"));
+                isRight.add(request.getParameter("isRight3"));
+            }
+
+            if(!request.getParameter("answer4").equals("") && !request.getParameter("answer4Ukr").equals("")){
+                answersEng.add(request.getParameter("answer4"));
+                answersUkr.add(request.getParameter("answer4Ukr"));
+                isRight.add(request.getParameter("isRight4"));
+            }
+
+            if(!request.getParameter("answer5").equals("") && !request.getParameter("answer5Ukr").equals("")){
+                answersEng.add(request.getParameter("answer5"));
+                answersUkr.add(request.getParameter("answer5Ukr"));
+                isRight.add(request.getParameter("isRight5"));
+            }
 
             answersEngArr.add(answersEng);
             answersUkrArr.add(answersUkr);
@@ -110,9 +121,24 @@ public class ConstructorCommand implements ICommand {
                     (AppManager.getNumberQuestionsInTest()))) {
                 AuthService authService = new AuthServiceImpl();
                 LOGGER.info("Test is writing to database.");
-                authService.writeTest(questionsArr, subjectsArr, answersEngArr, answersUkrArr, isRightArr);
+                try {
+                    authService.writeTest(questionsArr, subjectsArr, answersEngArr, answersUkrArr, isRightArr,
+                            testName);
+                } catch (SQLException e) {
+                    LOGGER.error("Test was not written to database: ", e);
+                }
+                request.getSession().removeAttribute("testName");
+                questionNumber=0;
+                testName = null;
+                questionsArr = null;
+                subjectsArr = null;
+                answersEngArr = null;
+                answersUkrArr = null;
+                isRightArr = null;
                 page = ConfigManager.getInstance().getProperty(ConfigManager.getADMIN());
             } else {
+                LOGGER.info("Name of test is: " + testName);
+                request.getSession().setAttribute("testName", testName);
                 page = ConfigManager.getInstance().getProperty(ConfigManager.getCONSTRUCTOR());
             }
         } else {

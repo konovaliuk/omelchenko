@@ -6,10 +6,7 @@ import ua.company.persistence.domain.Question;
 import ua.company.persistence.idao.IQuestion;
 import ua.company.service.logger.MyLogger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * QuestionDao.java - process requests to table question in database.
@@ -35,25 +32,23 @@ public class QuestionDao implements IQuestion {
      * SQL query to insert question in table
      */
     private static final String INSERT = "INSERT INTO " + NAME_TABLE
-            + " (subjectId) VALUES (?)";
+            + "(subjectId) VALUES (?)";
 
     /**
      * Insert parameters of question to table question.
      *
      * @param subjectId indicate the subject of question
+     * @param connection connection with database
+     * @throws SQLException - if exception deal with database is occurred
      * @return Id of inserted question in case of successful insertion and 0 vice versa
      */
     @Override
-    public int insertQuestion(int subjectId) {
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error("There is no connection with database: ", e);
-        }
-        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+    public int insertQuestion(int subjectId, Connection connection) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT,
+                Statement.RETURN_GENERATED_KEYS)) {
+            LOGGER.info(INSERT + " " + subjectId);
             preparedStatement.setInt(1, subjectId);
+            LOGGER.info(preparedStatement);
             preparedStatement.executeUpdate();
             try(ResultSet rs = preparedStatement.getGeneratedKeys()) {
                if (rs.next()) {
@@ -61,9 +56,7 @@ public class QuestionDao implements IQuestion {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("Question was not inserted in database: ", e);
-        } finally {
-            connectionPool.close();
+            throw e;
         }
         return 0;
     }

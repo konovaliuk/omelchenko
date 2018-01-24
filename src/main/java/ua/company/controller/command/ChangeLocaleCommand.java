@@ -1,7 +1,6 @@
 package ua.company.controller.command;
 
 import org.apache.log4j.Logger;
-import ua.company.controller.config.ConfigManager;
 import ua.company.service.logger.MyLogger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +31,7 @@ public class ChangeLocaleCommand implements ICommand {
         requestedLocale = request.getParameter("localelang");
         LOGGER.info("Requested locale: " + requestedLocale);
         request.getSession().setAttribute("language", requestedLocale);
-        page = ConfigManager.getInstance().getProperty(ConfigManager.getMAIN());
+        page = null;
         return page;
     }
 }

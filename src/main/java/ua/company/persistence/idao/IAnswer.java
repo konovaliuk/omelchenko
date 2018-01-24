@@ -2,6 +2,7 @@ package ua.company.persistence.idao;
 
 import ua.company.persistence.domain.Answer;
 
+import java.sql.Connection;
 import java.util.List;
 
 /**
@@ -33,7 +34,8 @@ public interface IAnswer {
      *
      * @param isRightAnswer indicate if this answer is right
      * @param questionId Id of question for which answer was inserted
+     * @param connection connection with database
      * @return Id of inserted Answer in case of successful insertion and 0 vice versa
      */
-    int insertAnswer (int isRightAnswer, int questionId);
+    int insertAnswer (int isRightAnswer, int questionId, Connection connection);
 }

@@ -2,6 +2,9 @@ package ua.company.persistence.idao;
 
 import ua.company.persistence.domain.Test;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  * ITest.java - interface for class TestDao.
  *
@@ -49,7 +52,9 @@ public interface ITest {
      * @param testName the name of test
      * @param timeLimit the time for deciding test
      * @param subjectId Id of subject
+     * @param connection connection with database
+     * @throws SQLException - if exception deal with database is occurred
      * @return Id of test if test was inserted and 0 vice versa
      */
-    int insertTest (String testName, int timeLimit, int subjectId);
+    int insertTest (String testName, int timeLimit, int subjectId, Connection connection) throws SQLException;
 }

@@ -9,27 +9,17 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-
     <project_charset>UTF-8</project_charset>
-    <junit.version>3.8.1</junit.version>
+    <junit.version>4.12</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
     <javaee-web-api.version>8.0</javaee-web-api.version>
     <servlet-api.version>3.1.0</servlet-api.version>
     <mail.version>1.6.0</mail.version>
-
-    <!--<jstl.version>1.2</jstl.version>-->
-    <!--<tomcat-dbcp.version>9.0.0.M21</tomcat-dbcp.version>-->
-
+    <mockito.version>1.10.19</mockito.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -59,6 +49,19 @@
       <artifactId>javax.mail</artifactId>
       <version>${mail.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>${junit.version}</version>
+          <scope>test</scope>
+      </dependency>
 
   </dependencies>
 

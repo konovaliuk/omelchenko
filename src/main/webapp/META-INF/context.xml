@@ -8,5 +8,5 @@
     username="root"
     password="rosronaldo"
     driverClassName="com.mysql.cj.jdbc.Driver"
-    url="jdbc:mysql://localhost:3306/quizsystem?serverTimezone=UTC"/>
+    url="jdbc:mysql://localhost:3306/quizsystem?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
 </Context>

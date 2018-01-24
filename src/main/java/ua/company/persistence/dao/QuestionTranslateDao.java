@@ -6,10 +6,7 @@ import ua.company.persistence.domain.QuestionTranslate;
 import ua.company.persistence.idao.IQuestionTranslate;
 import ua.company.service.logger.MyLogger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * QuestionTranslateDao.java - process requests to table questiontranslate in database.
@@ -85,19 +82,15 @@ public class QuestionTranslateDao implements IQuestionTranslate {
      * @param questionId Id of question which is inserted
      * @param questionText text of question
      * @param languageId Id of language
+     * @param connection connection with database
+     * @throws SQLException - if exception deal with database is occurred
      * @return true if question was inserted and false vice versa
      */
     @Override
-    public boolean insertQuestionTranslate(int questionId, String questionText, int languageId) {
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error("There is no connection with database: ", e);
-        }
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+    public boolean insertQuestionTranslate(int questionId, String questionText, int languageId, Connection connection)
+            throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT,
+                Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, questionId);
             preparedStatement.setString(2, questionText);
             preparedStatement.setInt(3, languageId);
@@ -108,9 +101,7 @@ public class QuestionTranslateDao implements IQuestionTranslate {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("Question was not inserted in table questiontranslate: ", e);
-        } finally {
-            connectionPool.close();
+            throw e;
         }
         return false;
     }

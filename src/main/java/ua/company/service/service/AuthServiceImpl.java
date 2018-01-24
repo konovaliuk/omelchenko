@@ -2,11 +2,14 @@ package ua.company.service.service;
 
 import org.apache.log4j.Logger;
 import ua.company.persistence.daofactory.DaoFactory;
+import ua.company.persistence.datasource.ConnectionPool;
 import ua.company.persistence.domain.*;
 import ua.company.persistence.idao.*;
 import ua.company.service.exception.NoSuchUserException;
 import ua.company.service.logger.MyLogger;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -23,7 +26,7 @@ public class AuthServiceImpl implements AuthService {
     private static final int WRONG = 0;
     private static final int UKRAINIAN_ID = 1;
     private static final int ENGLISH_ID = 2;
-    private static final String DEFAULT_SUBJECT_NAME = "All subjects";
+    private static final String DEFAULT_SUBJECT_ID = "5";
     private static final Integer TIME_LIMIT = 5;
     private int maxTestNumber;
     private int testNumber;
@@ -40,25 +43,26 @@ public class AuthServiceImpl implements AuthService {
     private int countQuestions = 0;
     private List<Result> results;
     private TreeMap<String, Double> resultByLogin;
+    private Connection connection;
     private int languageId;
 
     /**
      * Pass to dao layer parameters of user for registration.
-     * Set {@Link User#access} field to true.
+     * Set access field of user to true if user was registered.
      *
-     * @param login      - login of user.
-     * @param email      - email of user.
-     * @param password   - password of user. Password must start of string, contain at least one digit, lower case and upper case letter, at \
-     * least 8 symbols and no whitespace allowed.
-     * @param country    - country of user inhabitance.
-     * @param gender     - user gender.
+     * @param login    - login of user.
+     * @param email    - email of user.
+     * @param password - password of user. Password must start of string, contain at least one digit, lower case and upper case letter, at \
+     *                 least 8 symbols and no whitespace allowed.
+     * @param country  - country of user inhabitance.
+     * @param gender   - user gender.
      * @return inserted user in case of successful insertion and null vice versa
      */
     @Override
     public User registration(String login, String email, String password, String country, String gender) {
         IUser iUser = DaoFactory.getIUser();
         User user = iUser.insertUser(login, email, password, country, gender, STUDENT_TYPE_ID);
-        if (user!=null){
+        if (user != null) {
             user.setAccess(true);
         }
         return user;
@@ -66,12 +70,12 @@ public class AuthServiceImpl implements AuthService {
 
     /**
      * Pass to dao layer parameters of user for login.
-     * Set {@Link User#access} field to true.
+     * Set access field of user to true.
      *
-     * @param login login of user.
+     * @param login    login of user.
      * @param password password of user.
-     * @throws NoSuchUserException if there is no such user in database
      * @return user in case of successful search
+     * @throws NoSuchUserException if there is no such user in database
      */
     @Override
     public User login(String login, String password) throws NoSuchUserException {
@@ -88,7 +92,7 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Pass to dao layer parameters of user for login to check of presence this user in database.
      *
-     * @param login login of user.
+     * @param login    login of user.
      * @param password password of user.
      * @return true if user with such login and password is registered and false vice versa
      */
@@ -133,7 +137,7 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Get questions and answers of given test taking into account required language
      *
-     * @param test - required quiz.
+     * @param test   - required quiz.
      * @param locale - required language.
      * @return map of questions and answers for display to user
      */
@@ -167,7 +171,7 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Identify wrong answers of user
      *
-     * @param showQuiz - map of questions and answers
+     * @param showQuiz    - map of questions and answers
      * @param userAnswers - array of user answers for questions
      * @return list of wrong answers
      */
@@ -223,8 +227,8 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Pass to dao layer results of tests for writing to database
      *
-     * @param user - user who passed the quiz
-     * @param test - passed quiz
+     * @param user  - user who passed the quiz
+     * @param test  - passed quiz
      * @param score - result of passed quiz
      */
     @Override
@@ -260,17 +264,17 @@ public class AuthServiceImpl implements AuthService {
         resultByLogin = new TreeMap<>();
         for (Result result : results) {
             if (!resultByLogin.containsKey(result.getLogin())) {
-            String student = result.getLogin();
-            totalPoints = 0;
-            totalTestNumber = 0;
-            for (Result resultStudent : results) {
-                if (student.equals(resultStudent.getLogin())){
-                    totalPoints = totalPoints + resultStudent.getScore();
-                    totalTestNumber++;
+                String student = result.getLogin();
+                totalPoints = 0;
+                totalTestNumber = 0;
+                for (Result resultStudent : results) {
+                    if (student.equals(resultStudent.getLogin())) {
+                        totalPoints = totalPoints + resultStudent.getScore();
+                        totalTestNumber++;
+                    }
                 }
-            }
-            avScore = Math.round(totalPoints / (double)totalTestNumber);
-            resultByLogin.put(result.getLogin(), avScore);
+                avScore = Math.round(totalPoints / (double) totalTestNumber);
+                resultByLogin.put(result.getLogin(), avScore);
             }
         }
         return resultByLogin;
@@ -291,55 +295,73 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Process writing to database new test
      *
-     * @param questionsArr - list of questions
-     * @param subjectsArr - list of subjects
+     * @param questionsArr  - list of questions
+     * @param subjectsArr   - list of subjects
      * @param answersEngArr - list of answers in English
      * @param answersUkrArr - list of answers in Ukrainian
-     * @param isRightArr - list of sign which answer is right
+     * @param isRightArr    - list of sign which answer is right
+     * @param testName      - the name of test
+     * @throws SQLException - if exception deal with database is occurred
      */
     @Override
     public void writeTest(List<List<String>> questionsArr, List<String> subjectsArr, List<List<String>> answersEngArr,
-                          List<List<String>> answersUkrArr, List<List<String>> isRightArr) {
+                          List<List<String>> answersUkrArr, List<List<String>> isRightArr, String testName)
+            throws SQLException {
         LOGGER.info("Writing to database new Test.");
         LOGGER.info("Loop for questions.");
         List<Integer> questionsId = new ArrayList<>();
-        for (int i = 0; i < questionsArr.size(); i++) {
-            int questionId = writeQuestion(subjectsArr.get(i));
-            questionsId.add(questionId);
-            LOGGER.info("Received questionId " + questionId);
-            writeQuestionTranslate(questionId, questionsArr.get(i));
-            List<Integer> answerId = writeAnswer(isRightArr.get(i), questionId);
-            writeAnswerTranslate(answerId, answersEngArr.get(i), answersUkrArr.get(i));
-
+        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
+        try {
+            connection = connectionPool.getConnection();
+            connection.setAutoCommit(false);
+            for (int i = 0; i < questionsArr.size(); i++) {
+                int questionId = writeQuestion(subjectsArr.get(i));
+                questionsId.add(questionId);
+                LOGGER.info("Received questionId " + questionId);
+                writeQuestionTranslate(questionId, questionsArr.get(i));
+                List<Integer> answerId = writeAnswer(isRightArr.get(i), questionId);
+                writeAnswerTranslate(answerId, answersEngArr.get(i), answersUkrArr.get(i));
+            }
+            int testId = writeNewTest(testName, subjectsArr);
+            LOGGER.info("testId" + testId);
+            writeTestQuestion(testId, questionsId);
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            LOGGER.error("Test was not written to database: ", e);
+            connection.rollback();
+        } finally {
+            connectionPool.close();
         }
-        int testId = writeNewTest("testname", subjectsArr);
-        writeTestQuestion(testId, questionsId);
     }
 
     /**
      * Process writing to database new question
      *
      * @param subjectName - name of subject
+     * @throws SQLException - if exception deal with database is occurred
      * @return Id of inserted question in case of successful insertion and 0 vice versa
      */
-    private int writeQuestion(String subjectName) {
+    private int writeQuestion(String subjectName) throws SQLException {
         LOGGER.info("Write to question table.");
-        ISubject iSubject = DaoFactory.getISubject();
+        //ISubject iSubject = DaoFactory.getISubject();
         IQuestion iQuestion = DaoFactory.getIQuestion();
-        return iQuestion.insertQuestion(iSubject.getSubjectIdByName(subjectName));
+        //return iQuestion.insertQuestion(iSubject.getSubjectIdByName(subjectName));
+        return iQuestion.insertQuestion(Integer.parseInt(subjectName), connection);
     }
 
     /**
      * Process writing to database new question in different languages
      *
      * @param questionId - question Id
-     * @param questions - questions which will be written
+     * @param questions  - questions which will be written
+     * @throws SQLException - if exception deal with database is occurred
      */
-    private void writeQuestionTranslate(int questionId, List<String> questions) {
+    private void writeQuestionTranslate(int questionId, List<String> questions) throws SQLException {
         LOGGER.info("Write to questiontranslate table.");
         IQuestionTranslate iQuestionTranslate = DaoFactory.getIQuestionTranslate();
         for (int i = 0; i < questions.size(); i++) {
-            iQuestionTranslate.insertQuestionTranslate(questionId, questions.get(i), i + 1);
+            iQuestionTranslate.insertQuestionTranslate(questionId, questions.get(i), i + 1, connection);
         }
     }
 
@@ -347,7 +369,7 @@ public class AuthServiceImpl implements AuthService {
      * Process writing to database new answers
      *
      * @param isRightAnswer - sign whether the answer is right
-     * @param questionId - question Id
+     * @param questionId    - question Id
      * @return list of answers Id
      */
     private List<Integer> writeAnswer(List<String> isRightAnswer, int questionId) {
@@ -361,7 +383,7 @@ public class AuthServiceImpl implements AuthService {
             } else {
                 statusAnswer = RIGHT;
             }
-            answerId.add(iAnswer.insertAnswer(statusAnswer, questionId));
+            answerId.add(iAnswer.insertAnswer(statusAnswer, questionId, connection));
         }
         return answerId;
     }
@@ -369,53 +391,62 @@ public class AuthServiceImpl implements AuthService {
     /**
      * Process writing to database new answers in different languages
      *
-     * @param answerId - answer Id
+     * @param answerId      - answer Id
      * @param answersEngArr - list of answers in English
      * @param answersUkrArr - list of answers in Ukrainian
+     * @throws SQLException - if exception deal with database is occurred
      */
-    private void writeAnswerTranslate(List<Integer> answerId, List<String> answersEngArr, List<String> answersUkrArr) {
+    private void writeAnswerTranslate(List<Integer> answerId, List<String> answersEngArr, List<String> answersUkrArr)
+            throws SQLException {
         LOGGER.info("Write to answertranslate table.");
         IAnswerTranslate iAnswerTranslate = DaoFactory.getIAnswerTranslate();
         for (int i = 0; i < answerId.size(); i++) {
-            iAnswerTranslate.insertAnswerTranslate(answerId.get(0), answersUkrArr.get(0), UKRAINIAN_ID);
-            iAnswerTranslate.insertAnswerTranslate(answerId.get(0), answersEngArr.get(0), ENGLISH_ID);
+            iAnswerTranslate.insertAnswerTranslate(answerId.get(i), answersUkrArr.get(i), UKRAINIAN_ID, connection);
+            iAnswerTranslate.insertAnswerTranslate(answerId.get(i), answersEngArr.get(i), ENGLISH_ID, connection);
         }
     }
 
     /**
      * Process writing to database new test
      *
-     * @param testName - name of test
+     * @param testName    - name of test
      * @param subjectsArr - list of tests subjects
+     * @throws SQLException - if exception connected to database is occured
      * @return Id of test if test was inserted and 0 vice versa
      */
-    private int writeNewTest(String testName, List<String> subjectsArr) {
+    private int writeNewTest(String testName, List<String> subjectsArr) throws SQLException {
         LOGGER.info("Write to test table.");
-        String subjectName="";
+        Integer subjectId = 0;
         for (int i = 0; i < subjectsArr.size() - 1; i++) {
-            if (subjectsArr.get(i) != subjectsArr.get(i + 1)) {
-                subjectName = DEFAULT_SUBJECT_NAME;
+            LOGGER.info("Subject Id: " + subjectsArr.get(i));
+            if (!subjectsArr.get(i).equals(subjectsArr.get(i + 1))) {
+                subjectId = Integer.parseInt(DEFAULT_SUBJECT_ID);
+                LOGGER.info("Default subject Id: " + subjectId);
                 break;
-            }else{
-                subjectName = subjectsArr.get(i);
+            } else {
+                LOGGER.info("subject Id equals: " + subjectId);
+                subjectId = Integer.parseInt(subjectsArr.get(i));
             }
         }
-        ISubject iSubject = DaoFactory.getISubject();
+        //ISubject iSubject = DaoFactory.getISubject();
+        LOGGER.info("Subject Id: " + subjectId);
         ITest iTest = DaoFactory.getITest();
-        return iTest.insertTest(testName, TIME_LIMIT, iSubject.getSubjectIdByName(subjectName));
+        return iTest.insertTest(testName, TIME_LIMIT, subjectId, connection);
     }
 
     /**
      * Process writing to database questions of new test
      *
-     * @param testId - test Id
+     * @param testId      - test Id
      * @param questionsId - questions Id
+     * @throws SQLException - if exception deal with database is occurred
      */
-    private void writeTestQuestion(int testId, List<Integer> questionsId){
+    private void writeTestQuestion(int testId, List<Integer> questionsId) throws SQLException {
         LOGGER.info("Write to testquestion table.");
         ITestQuestion iTestQuestion = DaoFactory.getITestQuestion();
-        for (int i=0; i<questionsId.size(); i++){
-            iTestQuestion.insertTestQuestion(testId, questionsId.get(i));
+        for (int i = 0; i < questionsId.size(); i++) {
+            LOGGER.info("Question Id: " + questionsId.get(i) + ". Test id: " + testId);
+            iTestQuestion.insertTestQuestion(testId, questionsId.get(i), connection);
         }
     }
 }

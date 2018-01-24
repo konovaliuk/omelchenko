@@ -6,10 +6,7 @@ import ua.company.persistence.domain.Answer;
 import ua.company.persistence.idao.IAnswer;
 import ua.company.service.logger.MyLogger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,20 +126,13 @@ public class AnswerDao implements IAnswer {
      *
      * @param isRightAnswer indicate if this answer is right
      * @param questionId Id of question for which answer was inserted
+     * @param connection connection with database
      * @return Id of inserted Answer in case of successful insertion and 0 vice versa
      */
     @Override
-    public int insertAnswer(int isRightAnswer, int questionId) {
-
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error("There is no connection with database: ", e);
-        }
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+    public int insertAnswer(int isRightAnswer, int questionId, Connection connection) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT,
+                Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, isRightAnswer);
             preparedStatement.setInt(2, questionId);
             preparedStatement.executeUpdate();
@@ -153,8 +143,6 @@ public class AnswerDao implements IAnswer {
             }
         } catch (SQLException e) {
             LOGGER.error("Answer was not inserted in database: ", e);
-        } finally {
-            connectionPool.close();
         }
         return 0;
     }

@@ -6,10 +6,7 @@ import ua.company.persistence.domain.Test;
 import ua.company.persistence.idao.ITest;
 import ua.company.service.logger.MyLogger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -181,19 +178,14 @@ public class TestDao implements ITest {
      * @param testName the name of test
      * @param timeLimit the time for deciding test
      * @param subjectId Id of subject
+     * @param connection connection with database
+     * @throws SQLException - if exception deal with database is occurred
      * @return Id of test if test was inserted and 0 vice versa
      */
     @Override
-    public int insertTest(String testName, int timeLimit, int subjectId) {
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error("There is no connection with database: ", e);
-        }
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+    public int insertTest(String testName, int timeLimit, int subjectId, Connection connection) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT,
+                Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, testName);
             preparedStatement.setInt(2, timeLimit);
             preparedStatement.setInt(3, subjectId);
@@ -204,9 +196,7 @@ public class TestDao implements ITest {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("Test was not inserted in database: ", e);
-        } finally {
-            connectionPool.close();
+            throw e;
         }
         return 0;
     }

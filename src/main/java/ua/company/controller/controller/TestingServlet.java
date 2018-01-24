@@ -71,8 +71,15 @@ public class TestingServlet extends HttpServlet {
         } catch (IOException e) {
             LOGGER.error("IOException was occurred: ", e);
             page = ConfigManager.getInstance().getProperty(ConfigManager.getERROR());
+        } catch (Exception e){
+            LOGGER.error("Exception was occurred: ", e);
+            page = ConfigManager.getInstance().getProperty(ConfigManager.getERROR());
         }
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-        dispatcher.forward(request, response);
+        if (page!=null){
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
+            dispatcher.forward(request, response);
+        }else{
+            response.sendRedirect(request.getHeader("Referer"));
+        }
     }
 }

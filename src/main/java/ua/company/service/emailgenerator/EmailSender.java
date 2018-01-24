@@ -14,6 +14,7 @@ public interface EmailSender {
      *
      * @param name login of user
      * @param score the result of passed quiz
+     * @throws MessagingException throw exception if e-mail was not sent
      */
     void sendEmail(String name, double score) throws MessagingException;
 }

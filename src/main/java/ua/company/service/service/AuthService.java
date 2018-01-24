@@ -3,6 +3,7 @@ package ua.company.service.service;
 import ua.company.persistence.domain.*;
 import ua.company.service.exception.NoSuchUserException;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -18,7 +19,7 @@ public interface AuthService {
 
     /**
      * Pass to dao layer parameters of user for registration.
-     * Set {@Link User#access} field to true.
+     * Set access field of user to true.
      *
      * @param login      - login of user.
      * @param email      - email of user.
@@ -32,7 +33,7 @@ public interface AuthService {
 
     /**
      * Pass to dao layer parameters of user for login.
-     * Set {@Link User#access} field to true.
+     * Set access field of user to true.
      *
      * @param login login of user.
      * @param password password of user.
@@ -125,5 +126,6 @@ public interface AuthService {
      * @param isRightArr - list of sign which answer is right
      */
     void writeTest (List<List<String>> questionsArr, List<String> subjectsArr, List<List<String>> answersEngArr,
-                    List<List<String>> answersUkrArr, List<List<String>> isRightArr);
+                    List<List<String>> answersUkrArr, List<List<String>> isRightArr, String testName)
+            throws SQLException;
 }

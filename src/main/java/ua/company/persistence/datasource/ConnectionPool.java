@@ -69,30 +69,6 @@ public class ConnectionPool {
     }
 
     /**
-     * Begin transaction in database.
-     */
-    public void beginTransaction() {
-        try {
-            getConnection();
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            LOGGER.error("There is no connection with database: ", e);
-        }
-    }
-
-    /**
-     * Commit transaction to database.
-     */
-    public void commit() {
-        try {
-            connection.commit();
-            connection.setAutoCommit(true);
-        } catch (SQLException e) {
-            LOGGER.error("There is no connection with database: ", e);
-        }
-    }
-
-    /**
      * Close connection to database.
      */
     public void close() {

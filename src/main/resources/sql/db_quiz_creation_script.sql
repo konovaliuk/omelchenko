@@ -1,7 +1,7 @@
 ﻿-- -----------------------------------------------------
 -- Database QuizSystem
 -- -----------------------------------------------------
-CREATE DATABASE IF NOT EXISTS QuizSystem DEFAULT CHARACTER SET utf8;
+CREATE DATABASE IF NOT EXISTS QuizSystem  CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE QuizSystem;
 
 -- -----------------------------------------------------
@@ -10,7 +10,7 @@ USE QuizSystem;
 CREATE TABLE IF NOT EXISTS usertype (
   usertypeId INT NOT NULL AUTO_INCREMENT,
   usertype VARCHAR(45) NOT NULL UNIQUE,
-  PRIMARY KEY (usertypeId));
+  PRIMARY KEY (usertypeId)) CHARACTER SET utf8;
 
 -- -----------------------------------------------------
 -- Table user
@@ -25,7 +25,7 @@ country VARCHAR(50) NOT NULL,
 gender VARCHAR(10) NOT NULL,
 usertypeId INT NOT NULL,
 PRIMARY KEY (userId),
-FOREIGN KEY (usertypeId) REFERENCES usertype(usertypeId));
+FOREIGN KEY (usertypeId) REFERENCES usertype(usertypeId)) CHARACTER SET utf8;
 
 -- -----------------------------------------------------
 -- Table subject
@@ -34,7 +34,7 @@ FOREIGN KEY (usertypeId) REFERENCES usertype(usertypeId));
 CREATE TABLE IF NOT EXISTS subject (
   subjectId INT NOT NULL AUTO_INCREMENT,
   subjectName VARCHAR(50) NOT NULL UNIQUE,
-  PRIMARY KEY (subjectId));
+  PRIMARY KEY (subjectId)) CHARACTER SET utf8;
 
 -- -----------------------------------------------------
 -- Table test
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS test (
   timeLimit INT(10) NOT NULL,
   subjectId INT(10) NOT NULL,
   PRIMARY KEY (testId),
-  FOREIGN KEY (subjectId) REFERENCES subject(subjectId));
+  FOREIGN KEY (subjectId) REFERENCES subject(subjectId)) CHARACTER SET utf8;
 
 
 -- -----------------------------------------------------
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS test (
 CREATE TABLE IF NOT EXISTS language(
   languageId INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(20) NOT NULL,
-  PRIMARY KEY (languageId));
+  PRIMARY KEY (languageId)) CHARACTER SET utf8;
 
 
 -- -----------------------------------------------------
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS question(
   questionId INT NOT NULL AUTO_INCREMENT,
   subjectId INT(10) NOT NULL,
   PRIMARY KEY (questionId),
-  FOREIGN KEY (subjectId) REFERENCES subject(subjectId));
+  FOREIGN KEY (subjectId) REFERENCES subject(subjectId)) CHARACTER SET utf8;
 
 -- -----------------------------------------------------
 -- Table questiontranslate
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS questiontranslate(
   languageId INT NOT NULL,
   PRIMARY KEY (questiontranslateId),
   FOREIGN KEY (languageId) REFERENCES language(languageId),
-  FOREIGN KEY (questionId) REFERENCES question(questionId));
+  FOREIGN KEY (questionId) REFERENCES question(questionId)) CHARACTER SET utf8;
 
 -- -----------------------------------------------------
 -- Table answer
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS answer(
   isRight INT(1) NOT NULL,
   questionId INT NOT NULL,
   PRIMARY KEY (answerId),
-  FOREIGN KEY (questionId) REFERENCES question(questionId));
+  FOREIGN KEY (questionId) REFERENCES question(questionId)) CHARACTER SET utf8;
 
 
 -- -----------------------------------------------------
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS answertranslate(
   languageId INT NOT NULL,
   PRIMARY KEY (answertranslateId),
   FOREIGN KEY (languageId) REFERENCES language(languageId),
-  FOREIGN KEY (answerId) REFERENCES answer(answerId));
+  FOREIGN KEY (answerId) REFERENCES answer(answerId)) CHARACTER SET utf8;
 
 
 -- -----------------------------------------------------
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS testquestion (
   questionId INT NOT NULL,
   PRIMARY KEY (testquestionId),
   FOREIGN KEY (testId) REFERENCES test(testId),
-  FOREIGN KEY (questionId) REFERENCES question(questionId));
+  FOREIGN KEY (questionId) REFERENCES question(questionId)) CHARACTER SET utf8;
 
 -- -----------------------------------------------------
 -- Table result
@@ -133,5 +133,4 @@ CREATE TABLE IF NOT EXISTS result (
   PRIMARY KEY (resultId),
   FOREIGN KEY (testName) REFERENCES test(testName),
   FOREIGN KEY (subjectName) REFERENCES subject(subjectName),
-  FOREIGN KEY (login) REFERENCES user(login));
-
+  FOREIGN KEY (login) REFERENCES user(login)) CHARACTER SET utf8;

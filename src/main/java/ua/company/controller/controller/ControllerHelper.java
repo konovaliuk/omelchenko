@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 /**
- * ControllerHelper.java - process choice respective command class according to
+ * ControllerHelper.java - singleton class, process choice respective command class according to
  * command received from controller.
  *
  * @author Ruslan Omelchenko

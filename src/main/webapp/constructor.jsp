@@ -22,6 +22,26 @@
 	
 	<table border='0'>
 	<form id="constructorForm" action="Testing" method="post">
+		
+		
+		<c:if test="${testName eq null}">
+		<tr>
+			<td>
+				Name of test:
+			</td>
+			<td> 
+			</td> 
+			<td> 
+				<input type="text" name="nameoftest"></div>
+			</td> 
+			<td> 
+				
+			</td> 
+		
+		</tr>
+		</c:if>
+		
+		
 		<tr>
 			<td>
 			</td>
@@ -35,7 +55,7 @@
 			</td> 
 		<br>
 		</tr>
-		
+				
 		
 		<tr>
 			<td> 

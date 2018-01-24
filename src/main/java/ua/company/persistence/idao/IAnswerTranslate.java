@@ -3,6 +3,8 @@ package ua.company.persistence.idao;
 import ua.company.persistence.domain.Answer;
 import ua.company.persistence.domain.AnswerTranslate;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -28,7 +30,10 @@ public interface IAnswerTranslate {
      * @param answerId Id of answer which is inserted
      * @param answerText text of answer
      * @param languageId Id of language
+     * @param connection connection with database
+     * @throws SQLException - if exception deal with database is occurred
      * @return true if answer was inserted and false vice versa
      */
-    boolean insertAnswerTranslate (int answerId, String answerText, int languageId);
+    boolean insertAnswerTranslate (int answerId, String answerText, int languageId, Connection connection)
+            throws SQLException;
 }

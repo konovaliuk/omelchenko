@@ -2,6 +2,9 @@ package ua.company.persistence.idao;
 
 import ua.company.persistence.domain.QuestionTranslate;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  * IQuestionTranslate.java - interface for class QuestionTranslateDao.
  *
@@ -25,7 +28,10 @@ public interface IQuestionTranslate {
      * @param questionId Id of question which is inserted
      * @param questionText text of question
      * @param languageId Id of language
+     * @param connection connection with database
+     * @throws SQLException - if exception deal with database is occurred
      * @return true if question was inserted and false vice versa
      */
-    boolean insertQuestionTranslate (int questionId, String questionText, int languageId);
+    boolean insertQuestionTranslate (int questionId, String questionText, int languageId, Connection connection)
+            throws SQLException;
 }

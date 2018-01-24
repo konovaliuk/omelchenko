@@ -37,9 +37,12 @@ public class CharFilter implements Filter {
             throws IOException, ServletException {
         LOGGER.info("Read encoding from request.");
         encoding = servletRequest.getCharacterEncoding();
-        LOGGER.info("Set up necessary encoding.");
+        LOGGER.info("Current encoding: " + encoding);
         appEncoding = AppManager.getInstance().getProperty(AppManager.getENCODING());
+        LOGGER.info("Encoding from properties: " + appEncoding);
         if (!appEncoding.equalsIgnoreCase(encoding)){
+            LOGGER.info("Encodings are not equals. Set encoding: " + appEncoding);
+            servletRequest.setCharacterEncoding(appEncoding);
             servletResponse.setCharacterEncoding(appEncoding);
         }
         filterChain.doFilter(servletRequest, servletResponse);

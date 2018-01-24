@@ -7,10 +7,7 @@ import ua.company.persistence.domain.AnswerTranslate;
 import ua.company.persistence.idao.IAnswerTranslate;
 import ua.company.service.logger.MyLogger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,20 +94,15 @@ public class AnswerTranslateDao implements IAnswerTranslate {
      * @param answerId Id of answer which is inserted
      * @param answerText text of answer
      * @param languageId Id of language
+     * @param connection connection with database
+     * @throws SQLException - if exception deal with database is occurred
      * @return true if answer was inserted and false vice versa
      */
     @Override
-    public boolean insertAnswerTranslate(int answerId, String answerText, int languageId) {
-
-        ConnectionPool connectionPool = ConnectionPool.getConnectionPool();
-        Connection connection = null;
-        try {
-            connection = connectionPool.getConnection();
-        } catch (SQLException e) {
-            LOGGER.error("There is no connection with database: ", e);
-        }
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT)) {
+    public boolean insertAnswerTranslate(int answerId, String answerText, int languageId, Connection connection)
+            throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT,
+                Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, answerId);
             preparedStatement.setString(2, answerText);
             preparedStatement.setInt(3, languageId);
@@ -121,9 +113,7 @@ public class AnswerTranslateDao implements IAnswerTranslate {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.error("Answer was not inserted in table answertranslate: ", e);
-        } finally {
-            connectionPool.close();
+            throw e;
         }
         return false;
     }
